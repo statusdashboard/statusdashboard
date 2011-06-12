@@ -42,17 +42,10 @@ var socket = io.listen(server);
 socket.on('connection', function(client) {
     logger.log('New client connected: ' + client.sessionId);
     client.send({type: 'status', data: api.getStatus()});
+});
 
-    var callback = function(status) {
-      client.send({type: 'status', data: status});
-    };
-
-    client.on('disconnect',function(){
-      logger.log('Server has disconnected');
-      api.removeListener("refresh", callback);
-    });
-
-    api.on("refresh", callback);
+api.on("refresh", function(status) {
+  socket.broadcast({type: 'status', data: status});
 });
 
 logger.log('Server started.');
