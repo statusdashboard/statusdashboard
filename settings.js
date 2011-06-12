@@ -37,7 +37,7 @@ exports.create = function() {
   };
 
   settings['nodester'] = {
-    port: 10457,
+    port: 10487,
     services: [{
       name: 'bazoud.free.fr', 
       label: 'Olivier Bazoud blog',
