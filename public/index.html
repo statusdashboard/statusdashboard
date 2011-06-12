@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- $I$ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Services Status Dashboard</title>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+	<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.6/underscore-min.js"></script>
+	<script type="text/javascript" src="https://raw.github.com/LearnBoost/Socket.IO/0.6.3/socket.io.js"></script>
+  <link rel="stylesheet" href="/styles/main.css" type="text/css" media="screen" charset="utf-8" />
+	<link rel="stylesheet" href="/styles/master.css" type="text/css" media="screen" charset="utf-8" />
+  <script>
+    var socket = new io.Socket(null);
+    socket.connect();
+
+    socket.on('connect', function() {
+      // alert('connected');
+    });
+
+    socket.on('message', function (msg) {
+      if (msg.type == 'status') {
+        var status = msg.data;
+        var statusTab = _.map(status.services, function(value, key) { return value; });
+        var summarize = {};
+        summarize.lastupdate = status.lastupdate;
+        summarize.up = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'up'; }), function(memo, num){ return memo + 1; }, 0);
+        summarize.critical = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'critical'; }), function(memo, num){ return memo + 1; }, 0);;
+        summarize.down = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'down'; }), function(memo, num){ return memo + 1; }, 0);;
+        summarize.unknown = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'unknown'; }), function(memo, num){ return memo + 1; }, 0);;
+        $('#summarize').empty();
+        $('#projects').empty();
+        $("#projectTemplate").template("projectsList");
+        $("#summarizeTemplate").template("summarizeData");
+        $.tmpl("projectsList", statusTab).appendTo("#projects");
+        $.tmpl("summarizeData", summarize).appendTo("#summarize");
+      }
+    });
+
+    socket.on('close', function () {
+    });
+
+    socket.on('disconnect', function () {
+      $("#lastupdate").empty();
+      $("#lastupdate").html('Error occurs server side.');
+    });
+  </script>
+  <script id="projectTemplate" type="text/html">
+    <li class="project">
+      <h2>
+        <span class="service"><span class="strikethrough"></span><strong>${label}</strong></span>
+        <span class="status ${status} glow"><span class="strikethrough"></span><strong>${status}</strong></span>
+  			<span class="code"><span class="strikethrough"></span><strong>{{if statusCode > 0 && statusCode != 200}}${statusCode}{{else}}&nbsp;{{/if}}</strong></span>
+      </h2>
+      {{if message }}
+      <p class="info"><span class="label">Message:</span>${message}</p>
+      {{/if}}
+    </li>
+  </script>
+  <script id="summarizeTemplate" type="text/html">
+    <li class="project">
+      <h2>
+        <span class="summarizeup up glow"><span class="strikethrough"></span><strong>${up}</strong></span>
+        <span class="summarizecritical critical glow"><span class="strikethrough"></span><strong>${critical}</strong></span>
+        <span class="summarizedown down glow"><span class="strikethrough"></span><strong>${down}</strong></span>
+  			<span class="summarizeunknown unknown glow"><span class="strikethrough"></span><strong>${unknown}</strong></span>
+      </h2>
+      <p class="info"><span class="label">Last update:</span><span id="lastupdate">${lastupdate}</span></p>
+    </li>
+  </script>
+</head>
+<body>
+<div id="background">
+  <div id="wrapper">
+    <div class="lastupdate">
+Powered by <strong><a href="http://www.nodejs.org/" target="_blank">node.js</a></strong>, <a href="http://documentcloud.github.com/underscore" target="_blank"><strong>Underscore</strong></a>, <a href="http://jquery.com/" target="_blank"><strong>JQuery</strong></a> and <a href="http://api.jquery.com/jQuery.template" target="_blank"><strong>JQuery template</strong></a>.<br />
+    </div>
+    <div class="arrivals-board">
+      <h1>Services Status Dashboard</h1>
+      <div class="legend">
+  			<span class="summarizeup">Up</span>
+  			<span class="summarizecritical">Critical</span>
+  			<span class="summarizedown">Down</span>
+  			<span class="summarizeunknown">Unknown</span>
+      </div>
+      <ul id="summarize"></ul>
+      <div class="legend">
+  			<span class="service">Service</span>
+  			<span class="status">Status</span>
+  			<span class="code">Code</span>
+      </div>
+      <ul id="projects"></ul>
+    </div>
+    <div id="footer">
+      Author: <a href="http://twitter.com/obazoud">Olivier Bazoud</a> <br />
+      Inspired by <a href="http://culturedcode.com/status">Cultured Code Status</a>.<br />
+    </div>
+  </div>
+</div>
+</body>
+</html>
+

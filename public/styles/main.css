@@ -1,0 +1,456 @@
+/* $Id$ */
+/* see http://culturedcode.com/status */
+
+/* Kill Defaults */
+
+html, body, p, ul, ol, dl, li, h1, h2, h3, h4, img	{
+	margin: 0;
+	padding: 0;
+}
+
+ul {
+	list-style: none;
+}
+
+img	{
+	border: 0;
+}
+
+a {
+	outline: none;
+}
+
+/*
+============================================
+Layout
+============================================
+*/
+
+
+body	{
+	background: url(/images/background_solid.png);
+}
+
+#wrapper	{
+	width: 910px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+}
+
+#shadow	{
+	position: absolute;
+	width: 660px;
+	background: url(/images/page_shadow.png) repeat-y;
+	left: 0px;
+	top: 90px;
+}
+
+#page_header {
+	width: 660px;
+	height: 170px;
+	position: relative;
+}
+
+#page,
+.page_main {
+	margin-left: 15px;
+	margin-right: 15px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+#page_bottom, .page_bottom	{
+	width: 660px;
+	height: 30px;
+	background: url(/images/page_bottom.png) no-repeat;
+}
+
+#sidebar {
+	position: absolute;
+	left: 675px;
+	top: 90px;
+	width: 18em;
+	padding-top: 55px;
+}
+
+/*
+============================================
+Navigation
+============================================
+*/
+
+
+
+/* Navigation
+============================================================ */ 
+
+
+ul#navi	{
+	width: 790px;
+	height: 50px;
+	margin-left: 6px;
+	position: relative;
+	line-height: 0px; /* fixes IE6 stepdown bug */
+}
+
+
+ul#navi li a {
+	display: block;	height: 50px;
+	position: absolute; top: 0;
+	text-indent: -9999px;
+	background-image: url(/images/navigation3.png);
+	background-repeat: no-repeat;
+}
+
+
+ul#navi li#welcome_link a {
+	left: 0;
+	width: 160px;
+	background-position: 0px 0px;
+}
+ul#navi li#welcome_link a:hover {
+	background-position: 0px -60px;
+}
+ul#navi li#welcome_link a:active {
+	background-position: 0px -120px;
+}
+ul#navi li#welcome_link a.current {
+	background-position: 0px -120px;
+}
+
+
+ul#navi li#things_link a {
+	left: 160px;
+	width: 130px;
+	background-position: -160px 0px;
+}
+ul#navi li#things_link a:hover {
+	background-position: -160px -60px;
+}
+ul#navi li#things_link a:active {
+	background-position: -160px -120px;
+}
+ul#navi li#things_link a.current {
+	background-position: -160px -120px;
+}
+
+
+ul#navi li#thingsiphone_link a {
+	left: 290px;
+	width: 130px;
+	background-position: -290px 0px;
+}
+ul#navi li#thingsiphone_link a:hover {
+	background-position: -290px -60px;
+}
+ul#navi li#thingsiphone_link a:active {
+	background-position: -290px -120px;
+}
+ul#navi li#thingsiphone_link a.current {
+	background-position: -290px -120px;
+}
+
+
+ul#navi li#thingsipad_link a {
+	left: 420px;
+	width: 130px;
+	background-position: -420px 0px;
+}
+ul#navi li#thingsipad_link a:hover {
+	background-position: -420px -60px;
+}
+ul#navi li#thingsipad_link a:active {
+	background-position: -420px -120px;
+}
+ul#navi li#thingsipad_link a.current {
+	background-position: -420px -120px;
+}
+
+
+ul#navi li#support_link a {
+	left: 550px;
+	width: 80px;
+	background-position: -550px 0px;
+}
+ul#navi li#support_link a:hover {
+	background-position: -550px -60px;
+}
+ul#navi li#support_link a:active {
+	background-position: -550px -120px;
+}
+ul#navi li#support_link a.current {
+	background-position: -550px -120px;
+}
+
+
+ul#navi li#blog_link a {
+	left: 630px;
+	width: 80px;
+	background-position: -630px 0px;
+}
+ul#navi li#blog_link a:hover {
+	background-position: -630px -60px;
+}
+ul#navi li#blog_link a:active {
+	background-position: -630px -120px;
+}
+ul#navi li#blog_link a.current {
+	background-position: -630px -120px;
+}
+
+
+ul#navi li#about_link a {
+	left: 710px;
+	width: 80px;
+	background-position: -710px 0px;
+}
+ul#navi li#about_link a:hover {
+	background-position: -710px -60px;
+}
+ul#navi li#about_link a:active {
+	background-position: -710px -120px;
+}
+ul#navi li#about_link a.current {
+	background-position: -710px -120px;
+}
+
+
+
+ul#navi li a:hover {
+	background-position-y: -50px;
+}
+
+ul#navi li a:active {
+	background-position-y: -100px;
+}
+
+ul#navi li a.current {
+	background-position-y: -100px;
+	text-indent: -9999px;
+}
+
+
+
+/* Things World Navigation
+============================================================ */ 
+
+
+#thingsworld_header	{
+margin-top: 0;
+margin-left: 55px;
+width: 660px;
+height: 70px;
+position: relative;
+background: url(/images/thingsworld_logo.png);
+background-repeat: no-repeat;
+background-position: 0 0;
+}
+
+ul#thingsworld_navi	{
+/*margin-left: 160px;*/
+width: 550px;
+height: 50px;
+position: absolute;
+top: 10px;
+}
+
+ul#thingsworld_navi li a	{
+height: 50px;
+display: block;
+position: absolute;
+top: 0;
+text-indent: -9999px;
+}
+
+ul#thingsworld_navi li#things_index_link a	{
+left: 0;
+width: 160px;
+}
+
+ul#thingsworld_navi li#things_blog_link a	{
+left: 160px;
+width: 130px;
+background-image: url(/images/thingsworld_navigation_blog.png);
+}
+
+ul#thingsworld_navi li#things_wiki_link a	{
+left: 290px;
+width: 130px;
+background-image: url(/images/thingsworld_navigation_wiki.png);
+}
+
+ul#thingsworld_navi li#things_forum_link a	{
+left: 420px;
+width: 130px;
+background-image: url(/images/thingsworld_navigation_forum.png);
+}
+
+ul#thingsworld_navi li a:hover	{
+background-position: 0 -50px;
+}
+
+ul#thingsworld_navi li a.current	{
+background-position: 0 -100px;
+text-indent: -9999px;
+}
+
+
+
+/* Sidebar
+============================================================ */ 
+
+.sidebox {
+	background: url(/images/sidebar_separator.png) no-repeat;
+	padding: 10px 0px 20px 10px;
+}
+
+.sidebox.blank {
+	background: none;
+	padding: 10px 0px 20px 0px;
+}
+
+ul.sidebar_actions li	{
+	height: 64px;
+	margin-bottom: 10px;
+}
+
+ul.sidebar_actions li#download	a	{
+	background: url(/images/button_download.png) no-repeat;
+}
+
+ul.sidebar_actions li#purchase	a	{
+	background: url(/images/button_purchase.png) no-repeat;
+}
+
+ul.sidebar_actions li span {
+	display: block;
+	padding-top: 13px;
+	padding-bottom: 5px;
+	font-size: 18px;
+}
+
+ul.sidebar_actions li a {
+	padding-left: 70px;
+	display: block;
+	height: 64px;
+}
+
+ul.sidebar_actions li#download	a:hover, ul.sidebar_actions li#purchase a:hover{
+	background-position: 0 -64px;
+}
+
+
+
+/* Footer
+============================================================ */ 
+
+#footer	{
+	background: url(/images/background_solid.png);
+	margin-top: 0;
+	text-align: center;
+	font-size: 10px;
+	padding-bottom: 25px;
+}
+
+#footer ul#footer_links li {
+	display: inline;
+	color: #777;
+}
+
+#footer ul#footer_links li a {
+	color: #777;
+	text-decoration: none;
+}
+
+#footer ul#footer_links li a:hover {
+	text-decoration: underline;
+}
+
+#footer ul#footer_links li#webmaster_link {
+	text-align: right;
+	padding-right: 0.5em;
+	border-right: 0.1em solid #777;
+}
+
+#footer ul#footer_links li#contact_link {
+	text-align: left;
+	padding-left: 0.5em;
+}
+
+#footer ul#footer_links li#language_link img {
+	margin-left: 10px;
+	position: relative;
+	top: 2px;
+}
+
+body#contact_page #footer ul#footer_links li#contact_link a:hover {
+	text-decoration: none;
+}
+
+
+
+/* Typography
+============================================================ */ 
+
+body {
+	font-family: 'Lucida Grande', Verdana, Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	line-height: 20px;
+	color: #222;
+}
+
+p {
+	margin-bottom: 20px;
+}
+
+a {
+	text-decoration: none;
+	color: #4d6399;
+}
+
+a:hover	{
+	text-decoration: underline;
+}
+
+a:active {
+	border: none;
+}
+
+h2	{
+	font-size: 15px;
+	font-weight: normal;
+	margin-top: 23px;
+	margin-bottom: 9px;
+}
+
+#sidebar {
+	font-size: 11px;
+	line-height: 16px;
+	color: #4a5153;
+}
+
+#sidebar a { 
+	/* color: #405669; */
+}
+
+#sidebar p {
+	line-height: 16px;
+	margin-bottom: 16px;
+}
+
+#sidebar h4	{
+	margin-top: 35px;
+	margin-bottom: 8px;
+	font-size: 13px;
+	font-weight: normal;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: #181a1a;
+	/*color: #494f51;*/
+}
+
+pre, code {
+	font-family: Monaco, "Andale Mono" , "Lucida Console" , "Bitstream Vera Sans Mono" , "Courier New" , monospace;
+}
+
