@@ -8,8 +8,10 @@
 	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 	<script type="text/javascript" src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.6/underscore-min.js"></script>
 	<script type="text/javascript" src="/js/socket.io.js"></script>
+  <script type="text/javascript" src="js/jquery.gritter.min.js"></script>
   <link rel="stylesheet" href="/styles/main.css" type="text/css" media="screen" charset="utf-8" />
 	<link rel="stylesheet" href="/styles/master.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="/styles/jquery.gritter.css" type="text/css" media="screen" charset="utf-8" />
   <script>
     var socket = new io.Socket(null);
     socket.connect();
@@ -20,6 +22,11 @@
 
     socket.on('message', function (msg) {
       if (msg.type == 'status') {
+        $.gritter.add({
+          title: 'Breaking news',
+          time: 2000,          
+          text: 'Services Status dashboard is updating...'
+        });
         var status = msg.data;
         var statusTab = _.map(status.services, function(value, key) { return value; });
         var summarize = {};
