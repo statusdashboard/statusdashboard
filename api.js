@@ -70,7 +70,7 @@ var commands = {
   }
 };
 
-setInterval(updatingServices, 10000);
+setInterval(updatingServices, 20000);
 updatingServices();
 
 exports.services = function(req, res) {
