@@ -38,10 +38,18 @@ var server = http.createServer(function(req, res) {
 });
 server.listen(settings.port, settings.hostname);
 
+var count = 0;
+
 var socket = io.listen(server);
 socket.on('connection', function(client) {
-    logger.log('New client connected: ' + client.sessionId);
-    client.send({type: 'status', data: api.getStatus()});
+  logger.log('New client connected: ' + client.sessionId);
+  client.send({type: 'status', data: api.getStatus()});
+  count++;
+  socket.broadcast({type: 'count', data: count});
+  client.on('disconnect',function() {
+    count--;
+    socket.broadcast({type: 'count', data: count});
+  });
 });
 
 api.on("refresh", function(status) {

@@ -24,7 +24,7 @@
       if (msg.type == 'status') {
         $.gritter.add({
           title: 'Breaking news',
-          time: 2000,          
+          time: 2000,
           text: 'Services Status dashboard is updating...'
         });
         var status = msg.data;
@@ -41,6 +41,14 @@
         $("#summarizeTemplate").template("summarizeData");
         $.tmpl("projectsList", statusTab).appendTo("#projects");
         $.tmpl("summarizeData", summarize).appendTo("#summarize");
+      } else {
+        if (msg.type == 'count') {
+          $.gritter.add({
+            title: 'Breaking news',
+            time: 5000,
+            text: 'Services Status dashboard: ' + msg.data + ' users connected.'
+          });
+        }
       }
     });
 
