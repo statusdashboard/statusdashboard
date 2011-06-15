@@ -96,6 +96,50 @@ var commands = {
       service.statusCode = e.errno;
       service.message = e.message;
     });
+  },
+  ftp : function(service) {
+    service.status = "unknown";
+    service.statusCode = 0;
+    service.message = 'FTP check in progress...';
+
+    var stream = net.createConnection(service.port, service.host);
+
+    stream.addListener('connect', function () {
+      var ftpCommand = function(command, callback) {
+        stream.write(command + '\r\n');
+        var dataCallback = function(data) {
+          stream.removeListener('data', dataCallback);
+          var status = data.toString().match(/^\d\d\d/);
+          if (parseInt(status[0]) > 399) {
+            ftpError(status[0], data.toString());
+          } else {
+            return callback(data);
+          }
+        };
+        stream.addListener('data', dataCallback);
+      };
+
+      ftpCommand('USER ' + service.username, function(data) {
+        ftpCommand('PASS ' + service.password, function(data) {
+          service.status = "up";
+          service.statusCode = 0;
+          service.message = "";
+        });
+      });
+    });
+
+    var ftpError = function(status, message) {
+      service.status = "down";
+      service.statusCode = status;
+      service.message = message;
+    };
+
+    stream.addListener('error', function (e) {
+      service.status = "down";
+      service.statusCode = 0;
+      service.message = e.message;
+    });
+
   }
 };
 

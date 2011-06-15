@@ -33,6 +33,14 @@ exports.create = function() {
       host: '127.0.0.1', 
       port: '6379',
       cmd: 'PING\r\n'
+    }, {
+      name: 'FTP Local',
+      label: 'Ftp @ local',
+      check: 'ftp',
+      host: 'localhost',
+      port: '21',
+      username: 'statusdashboard',
+      password: 'statusdashboard'
     }]
   };
 
