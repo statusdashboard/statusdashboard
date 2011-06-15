@@ -12,6 +12,7 @@ Screenshots
 
 <img src="http://bazoud.free.fr/wp-content/uploads/ssd2.png" alt="">
 
+<img src="http://bazoud.free.fr/wp-content/uploads/ssd3.png" alt="">
 
 Dependencies
 =======
