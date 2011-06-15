@@ -39,7 +39,8 @@ How To Use
 or fork it
 * node server.js
 
-See settings.js to have your own settings. For example, in my local computer
+See settings.js to have your own settings. For example, in my local computer:
+
 * export APP_ENV=olivier
 * node server.js
 
