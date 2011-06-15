@@ -31,17 +31,18 @@ var commands = {
     };
 
     http.get(options, function(response) {
+      service.message = '';
       if (response.statusCode == 200) {
         service.status = "up";
+      } else if (response.statusCode == 301 || response.statusCode == 302) {
+        service.status = "unknown";
+        service.message = "Redirected to " + response.headers.location;
+      } else if (response.statusCode == 503 || response.statusCode == 404) {
+        service.status = "down";
       } else {
-        if (response.statusCode == 503 || response.statusCode == 404) {
-          service.status = "down";
-        } else {
-          service.status = "critical";
-        }
+        service.status = "critical";
       }
       service.statusCode = response.statusCode;
-      service.message = '';
     })
     .on('error', function(e) {
       service.status = "down";
@@ -57,17 +58,18 @@ var commands = {
     };
 
     https.get(options, function(response) {
-      if (response.statusCode == 200) {
-        service.status = "up";
-      } else {
-        if (response.statusCode == 503 || response.statusCode == 404) {
+      service.message = '';
+        if (response.statusCode == 200) {
+          service.status = "up";
+        } else if (response.statusCode == 301 || response.statusCode == 302) {
+          service.status = "unknown";
+          service.message = "Redirected to " + response.headers.location;
+        } else if (response.statusCode == 503 || response.statusCode == 404) {
           service.status = "down";
         } else {
           service.status = "critical";
         }
-      }
       service.statusCode = response.statusCode;
-      service.message = '';
     })
     .on('error', function(e) {
       service.status = "down";
