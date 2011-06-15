@@ -1,4 +1,5 @@
 var http = require('http');
+var https = require('https');
 var net = require('net');
 var logger = require('util');
 var settings = require('./settings').create();
@@ -30,6 +31,32 @@ var commands = {
     };
 
     http.get(options, function(response) {
+      if (response.statusCode == 200) {
+        service.status = "up";
+      } else {
+        if (response.statusCode == 503 || response.statusCode == 404) {
+          service.status = "down";
+        } else {
+          service.status = "critical";
+        }
+      }
+      service.statusCode = response.statusCode;
+      service.message = '';
+    })
+    .on('error', function(e) {
+      service.status = "down";
+      service.statusCode = 0;
+      service.message = e.message;
+    });
+  },
+  https : function(service) {
+    var options = {
+      host: service.host,
+      port: service.port,
+      path: service.path,
+    };
+
+    https.get(options, function(response) {
       if (response.statusCode == 200) {
         service.status = "up";
       } else {
