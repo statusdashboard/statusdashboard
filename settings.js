@@ -41,6 +41,11 @@ exports.create = function() {
       port: '21',
       username: 'statusdashboard',
       password: 'statusdashboard'
+    }, {
+      name: 'PID file',
+      label: 'Pid @ local',
+      check: 'pidfile',
+      pidfile: '/tmp/terminal.pid'
     }]
   };
 

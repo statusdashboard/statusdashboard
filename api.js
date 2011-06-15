@@ -1,6 +1,7 @@
 var http = require('http');
 var https = require('https');
 var net = require('net');
+var fs = require('fs');
 var logger = require('util');
 var settings = require('./settings').create();
 var EventEmitter = require('events').EventEmitter;
@@ -140,6 +141,30 @@ var commands = {
       service.message = e.message;
     });
 
+  },
+  pidfile : function(service) {
+    service.status = "unknown";
+    service.statusCode = 0;
+    service.message = '';
+    try {
+      var pid = fs.readFileSync(service.pidfile);
+    } catch (e) {
+      service.status = "unknown";
+      service.statusCode = e.errno;
+      service.message = e.message;
+      return;
+    }
+    try {
+      process.kill(pid, 0);
+      service.status = "up";
+      service.statusCode = 0;
+      service.message = '';
+    } catch (e) {
+      service.status = "down";
+      service.statusCode = e.errno;
+      service.message = e.message;
+      return;
+    }
   }
 };
 
