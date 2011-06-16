@@ -8,7 +8,9 @@ exports.create = function() {
     title: 'Services Status Dashboard',
     hostname: '127.0.0.1',
     port: 8080,
-    services: []
+    services: [],
+    serviceInterval: 20000,
+    serviceDelay: 500
   };
 
   settings['olivier'] = {
@@ -54,7 +56,8 @@ exports.create = function() {
       label: 'Pid @ local',
       check: 'pidfile',
       pidfile: '/tmp/terminal.pid'
-    }]
+    }],
+    serviceInterval: 5000,
   };
 
   settings['nodester'] = {

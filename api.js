@@ -27,7 +27,7 @@ updatingServices = function() {
   }
   setTimeout(function() {
     controller.emit("refresh", status);
-  }, 500);
+  }, settings.serviceDelay);
 };
 
 var commands = {
@@ -175,7 +175,7 @@ var commands = {
   }
 };
 
-setInterval(updatingServices, 20000);
+setInterval(updatingServices, settings.serviceInterval);
 updatingServices();
 
 exports.services = function(req, res) {
