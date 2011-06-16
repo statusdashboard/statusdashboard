@@ -65,7 +65,10 @@ exports.create = function() {
       check: 'http',
       host: 'bazoud.free.fr', 
       port: '80',
-      path: '/'
+      path: '/',
+      headers: {
+        'Host': 'bazoud.free.fr'
+      }
     }, {
       name: 'bazoud.free.fr', 
       label: 'Olivier Bazoud blog fail',
