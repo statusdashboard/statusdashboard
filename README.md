@@ -43,3 +43,10 @@ See settings.js to have your own settings. For example, in my local computer:
 * export APP_ENV=olivier
 * node server.js
 
+Early adopters
+=======
+
+* See http://status.exoplatform.org
+
+<img src="http://bazoud.free.fr/wp-content/uploads/ssd4.png" alt="status.exoplatform.org">
+
