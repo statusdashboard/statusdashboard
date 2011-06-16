@@ -36,6 +36,7 @@ var commands = {
       host: serviceDefinition.host,
       port: serviceDefinition.port,
       path: serviceDefinition.path,
+      headers: serviceDefinition.headers
     };
 
     http.get(options, function(response) {
