@@ -43,6 +43,7 @@ var count = 0;
 var socket = io.listen(server);
 socket.on('connection', function(client) {
   logger.log('New client connected: ' + client.sessionId);
+  client.send({type: 'title', data: settings.title});
   client.send({type: 'status', data: api.getStatus()});
   count++;
   socket.broadcast({type: 'count', data: count});

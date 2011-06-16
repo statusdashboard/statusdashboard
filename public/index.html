@@ -49,6 +49,12 @@
             text: 'Services Status dashboard: ' + msg.data + ' users connected.'
           });
         }
+        if (msg.type == 'title') {
+          if (msg.data.length > 0) {
+            $("#title").html(msg.data);
+            document.title = msg.data;
+          }
+        }
       }
     });
 
@@ -92,7 +98,7 @@
 Powered by <strong><a href="http://www.nodejs.org/" target="_blank">node.js</a></strong>, <a href="http://documentcloud.github.com/underscore" target="_blank"><strong>Underscore</strong></a>, <a href="http://jquery.com/" target="_blank"><strong>JQuery</strong></a> and <a href="http://api.jquery.com/jQuery.template" target="_blank"><strong>JQuery template</strong></a>.<br />
     </div>
     <div class="arrivals-board">
-      <h1>Services Status Dashboard</h1>
+      <h1 id="title">Services Status Dashboard</h1>
       <div class="legend">
   			<span class="summarizeup">Up</span>
   			<span class="summarizecritical">Critical</span>
