@@ -1,6 +1,7 @@
 var http = require('http');
 var https = require('https');
 var net = require('net');
+var sys = require('sys');
 var fs = require('fs');
 var logger = require('util');
 var settings = require('./settings').create();
@@ -10,25 +11,31 @@ module.exports = controller;
 
 var status = {};
 status.last = new Date().toGMTString();
-status.services = settings.services;
+status.services = [];
 
 updatingServices = function() {
   status.lastupdate = new Date().toUTCString();
   logger.log('Refreshing status board...');
-  for (var i = 0; i < status.services.length; i++) {
-    commands[status.services[i].check].call(null, status.services[i]);
+  for (var i = 0; i < settings.services.length; i++) {
+    status.services[i] = {};
+    status.services[i].name = settings.services[i].name;
+    status.services[i].label = settings.services[i].label;
+    status.services[i].status = 'unknown';
+    status.services[i].statusCode = 0;
+    status.services[i].message = '';
+    commands[settings.services[i].check].call(null, settings.services[i], status.services[i]);
   }
   setTimeout(function() {
     controller.emit("refresh", status);
-  }, 250);
+  }, 500);
 };
 
 var commands = {
-  http : function(service) {
+  http : function(serviceDefinition, service) {
     var options = {
-      host: service.host,
-      port: service.port,
-      path: service.path,
+      host: serviceDefinition.host,
+      port: serviceDefinition.port,
+      path: serviceDefinition.path,
     };
 
     http.get(options, function(response) {
@@ -51,11 +58,11 @@ var commands = {
       service.message = e.message;
     });
   },
-  https : function(service) {
+  https : function(serviceDefinition, service) {
     var options = {
-      host: service.host,
-      port: service.port,
-      path: service.path,
+      host: serviceDefinition.host,
+      port: serviceDefinition.port,
+      path: serviceDefinition.path,
     };
 
     https.get(options, function(response) {
@@ -78,8 +85,8 @@ var commands = {
       service.message = e.message;
     });
   },
-  tcp : function(service) {
-    var stream = net.createConnection(service.port, service.host);
+  tcp : function(serviceDefinition, service) {
+    var stream = net.createConnection(serviceDefinition.port, serviceDefinition.host);
     stream.addListener('data', function (buffer) {
       service.status = "up";
       service.statusCode = 0;
@@ -87,7 +94,7 @@ var commands = {
       stream.end();
     });
     stream.addListener('connect', function () {
-      stream.write(service.cmd);
+      stream.write(serviceDefinition.cmd);
     });
     stream.addListener('end', function () {
       stream.end();
@@ -98,12 +105,12 @@ var commands = {
       service.message = e.message;
     });
   },
-  ftp : function(service) {
+  ftp : function(serviceDefinition, service) {
     service.status = "unknown";
     service.statusCode = 0;
     service.message = 'FTP check in progress...';
 
-    var stream = net.createConnection(service.port, service.host);
+    var stream = net.createConnection(serviceDefinition.port, serviceDefinition.host);
 
     stream.addListener('connect', function () {
       var ftpCommand = function(command, callback) {
@@ -142,12 +149,12 @@ var commands = {
     });
 
   },
-  pidfile : function(service) {
+  pidfile : function(serviceDefinition, service) {
     service.status = "unknown";
     service.statusCode = 0;
     service.message = '';
     try {
-      var pid = fs.readFileSync(service.pidfile);
+      var pid = fs.readFileSync(serviceDefinition.pidfile);
     } catch (e) {
       service.status = "unknown";
       service.statusCode = e.errno;
