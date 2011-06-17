@@ -30,10 +30,10 @@ updatingServices = function() {
     var statusTab = _.map(status.services, function(value, key) { return value; });
     status.summarize = {};
     status.summarize.lastupdate = status.lastupdate;
-    status.summarize.up = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'up'; }), function(memo, num){ return memo + 1; }, 0);
-    status.summarize.critical = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'critical'; }), function(memo, num){ return memo + 1; }, 0);
-    status.summarize.down = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'down'; }), function(memo, num){ return memo + 1; }, 0);
-    status.summarize.unknown = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'unknown'; }), function(memo, num){ return memo + 1; }, 0);
+    status.summarize.up = _.reduce(_.select(status.services, function(data){ return data.status == 'up'; }), function(memo, num){ return memo + 1; }, 0);
+    status.summarize.critical = _.reduce(_.select(status.services, function(data){ return data.status == 'critical'; }), function(memo, num){ return memo + 1; }, 0);
+    status.summarize.down = _.reduce(_.select(status.services, function(data){ return data.status == 'down'; }), function(memo, num){ return memo + 1; }, 0);
+    status.summarize.unknown = _.reduce(_.select(status.services, function(data){ return data.status == 'unknown'; }), function(memo, num){ return memo + 1; }, 0);
 
     controller.emit("refresh", status);
   }, settings.serviceDelay);
