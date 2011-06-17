@@ -196,6 +196,10 @@ exports.servicesElement = function(req, res, value) {
   res.send(200, {}, JSON.stringify(status.services[value]));
 };
 
+module.exports.summarize = function(req, res) {
+  res.send(200, {}, { up: status.summarize.up, critical: status.summarize.critical, down: status.summarize.down, unknown: status.summarize.unknown });
+};
+
 exports.getServicesElement = function(value) {
   return status.services[value];
 };

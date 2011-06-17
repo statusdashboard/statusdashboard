@@ -43,6 +43,11 @@ See settings.js to have your own settings. For example, in my local computer:
 * export APP_ENV=olivier
 * node server.js
 
+REST API
+
+* curl http://127.0.0.1:8080/api/summarize
+{"up":4,"critical":0,"down":1,"unknown":1}
+
 Early adopters
 =======
 
