@@ -30,7 +30,7 @@ exports.create = function() {
       port: '80',
       path: '/'
     }, {
-      name: 'bazoud.free.fr',
+      name: 'bazoud.free.fr php',
       label: 'Olivier Bazoud blog test.php',
       check: 'http',
       host: 'bazoud.free.fr',
