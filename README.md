@@ -44,6 +44,7 @@ See settings.js to have your own settings. For example, in my local computer:
 * node server.js
 
 REST API
+=======
 
 <pre class="terminal">
 $ curl http://127.0.0.1:8080/api/services
