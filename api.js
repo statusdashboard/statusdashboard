@@ -188,12 +188,12 @@ var commands = {
 setInterval(updatingServices, settings.serviceInterval);
 updatingServices();
 
-exports.services = function(req, res) {
+module.exports.services = function(req, res) {
   res.send(200, {}, JSON.stringify(status));
 };
 
-exports.servicesElement = function(req, res, value) {
-  res.send(200, {}, JSON.stringify(status.services[value]));
+module.exports.servicesElement = function(req, res, value) {
+  res.send(200, {}, JSON.stringify(_.first(_.select(status.services, function(data){ return data.name == value; }))));
 };
 
 module.exports.summarize = function(req, res) {
