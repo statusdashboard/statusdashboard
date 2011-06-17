@@ -66,7 +66,7 @@
       <h2>
         <span class="service"><span class="strikethrough"></span><strong>${label}</strong></span>
         <span class="status ${status} glow"><span class="strikethrough"></span><strong>${status}</strong></span>
-  			<span class="code"><span class="strikethrough"></span><strong>{{if statusCode > 0 && statusCode != 200}}${statusCode}{{else}}&nbsp;{{/if}}</strong></span>
+        <span class="code"><span class="strikethrough"></span><strong>{{if statusCode != 0 && status != 'up'}}${statusCode}{{else}}&nbsp;{{/if}}</strong></span>
       </h2>
       {{if message }}
       <p class="info"><span class="label">Message:</span>${message}</p>
