@@ -29,18 +29,13 @@
         });
         var status = msg.data;
         var statusTab = _.map(status.services, function(value, key) { return value; });
-        var summarize = {};
-        summarize.lastupdate = status.lastupdate;
-        summarize.up = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'up'; }), function(memo, num){ return memo + 1; }, 0);
-        summarize.critical = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'critical'; }), function(memo, num){ return memo + 1; }, 0);
-        summarize.down = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'down'; }), function(memo, num){ return memo + 1; }, 0);
-        summarize.unknown = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'unknown'; }), function(memo, num){ return memo + 1; }, 0);
+
         $('#summarize').empty();
         $('#projects').empty();
         $("#projectTemplate").template("projectsList");
         $("#summarizeTemplate").template("summarizeData");
         $.tmpl("projectsList", statusTab).appendTo("#projects");
-        $.tmpl("summarizeData", summarize).appendTo("#summarize");
+        $.tmpl("summarizeData", status.summarize).appendTo("#summarize");
       } else {
         if (msg.type == 'count') {
           $.gritter.add({

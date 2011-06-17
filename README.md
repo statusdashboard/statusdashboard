@@ -22,6 +22,7 @@ Dependencies
 * socket.io 0.6.18
 * node-static 0.5.6
 * journey 0.4.0-pre-2
+* underscore 1.1.6
 
 Roadmap
 =======

@@ -4,6 +4,7 @@ var net = require('net');
 var sys = require('sys');
 var fs = require('fs');
 var logger = require('util');
+var _ = require('underscore')._;
 var settings = require('./settings').create();
 var EventEmitter = require('events').EventEmitter;
 var controller = new EventEmitter();
@@ -26,6 +27,14 @@ updatingServices = function() {
     commands[settings.services[i].check].call(null, settings.services[i], status.services[i]);
   }
   setTimeout(function() {
+    var statusTab = _.map(status.services, function(value, key) { return value; });
+    status.summarize = {};
+    status.summarize.lastupdate = status.lastupdate;
+    status.summarize.up = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'up'; }), function(memo, num){ return memo + 1; }, 0);
+    status.summarize.critical = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'critical'; }), function(memo, num){ return memo + 1; }, 0);
+    status.summarize.down = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'down'; }), function(memo, num){ return memo + 1; }, 0);
+    status.summarize.unknown = _.reduce(_.select(_.map(status.services, function(value, key) { return value; }), function(data){ return data.status == 'unknown'; }), function(memo, num){ return memo + 1; }, 0);
+
     controller.emit("refresh", status);
   }, settings.serviceDelay);
 };
