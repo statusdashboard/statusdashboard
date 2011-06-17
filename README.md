@@ -19,10 +19,9 @@ Dependencies
 
 * node.js 0.4.8
 * npm 1.0.6
-* socket.io
-* node-static
-* journey
-
+* socket.io 0.6.18
+* node-static 0.5.6
+* journey 0.4.0-pre-2
 
 Roadmap
 =======
