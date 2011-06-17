@@ -11,7 +11,7 @@ var controller = new EventEmitter();
 module.exports = controller;
 
 var status = {};
-status.last = new Date().toGMTString();
+status.lastupdate = new Date().toGMTString();
 status.services = [];
 
 updatingServices = function() {
