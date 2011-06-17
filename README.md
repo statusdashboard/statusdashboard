@@ -3,7 +3,7 @@ Status Dashboard
 
 Status Dashboard is status page for your configured services or applications.
 
-See the [demo](http://statusdashboard.nodester.com)
+See the [nodester demo]: [http://statusdashboard.nodester.com](http://statusdashboard.nodester.com)
 
 Screenshots
 =======
