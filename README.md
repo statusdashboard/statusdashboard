@@ -43,7 +43,7 @@ See settings.js to have your own settings. For example, in my local computer:
 * export APP_ENV=olivier
 * node server.js
 
-* Daemon init script for node.js: [https://gist.github.com/715255](https://gist.github.com/715255)
+Daemon init script for node.js: [https://gist.github.com/715255](https://gist.github.com/715255)
 
 REST API
 =======
