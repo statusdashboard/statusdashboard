@@ -73,6 +73,7 @@ var commands = {
       host: serviceDefinition.host,
       port: serviceDefinition.port,
       path: serviceDefinition.path,
+      headers: serviceDefinition.headers
     };
 
     https.get(options, function(response) {
