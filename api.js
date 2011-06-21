@@ -164,25 +164,31 @@ var commands = {
     service.status = "unknown";
     service.statusCode = 0;
     service.message = '';
-    try {
-      var pid = fs.readFileSync(serviceDefinition.pidfile);
-    } catch (e) {
-      service.status = "unknown";
-      service.statusCode = e.errno;
-      service.message = e.message;
-      return;
+    var pidfiles = [serviceDefinition.pidfile];
+    
+    if(serviceDefinition.pidfile.constructor === Array){
+      pidfiles = serviceDefinition.pidfile;
     }
-    try {
-      process.kill(pid, 0);
-      service.status = "up";
-      service.statusCode = 0;
-      service.message = '';
-    } catch (e) {
-      service.status = "down";
-      service.statusCode = e.errno;
-      service.message = e.message;
-      return;
+    for(var index =0; index< pidfiles.length; index ++){
+      try {
+        var pid = fs.readFileSync(pidfiles[index]);
+      } catch (e) {
+        service.status = "unknown";
+        service.statusCode = e.errno;
+        service.message = e.message;
+        return;
+      }
+      try {
+        process.kill(pid, 0);
+      } catch (e) {
+        service.status = "down";
+        service.statusCode = e.errno;
+        service.message = e.message;
+        return;
+      }
+      
     }
+    service.status = "up";
   }
 };
 
