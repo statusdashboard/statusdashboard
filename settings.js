@@ -13,7 +13,7 @@ exports.create = function() {
     serviceDelay: 500
   };
 
-  settings['localhost'] = {
+  settings['olivier'] = {
     port: 8080,
     services: [{
       name: 'couchdb', 
@@ -23,6 +23,20 @@ exports.create = function() {
       port: '5984',
       path: '/'
     }, {
+      name: 'bazoud.free.fr', 
+      label: 'Olivier Bazoud blog',
+      check: 'http',
+      host: 'bazoud.free.fr', 
+      port: '80',
+      path: '/'
+    }, {
+      name: 'bazoud.free.fr php',
+      label: 'Olivier Bazoud blog test.php',
+      check: 'http',
+      host: 'bazoud.free.fr',
+      port: '80',
+      path: '/test.php'
+    }, {
       name: 'redis', 
       label: 'Redis server @ local',
       check: 'tcp',
@@ -30,10 +44,18 @@ exports.create = function() {
       port: '6379',
       cmd: 'PING\r\n'
     }, {
+      name: 'FTP Local',
+      label: 'Ftp @ local',
+      check: 'ftp',
+      host: 'localhost',
+      port: '21',
+      username: 'statusdashboard',
+      password: 'statusdashboard'
+    }, {
       name: 'PID file',
       label: 'Pid @ local',
       check: 'pidfile',
-      pidfile: ['/Users/sreeix/code/talkto/mphoria/tmp/pids/resque_worker_1.pid','/Users/sreeix/code/talkto/mphoria/tmp/pids/resque_worker_2.pid']
+      pidfile: '/tmp/terminal.pid'
     }],
     serviceInterval: 5000,
   };
