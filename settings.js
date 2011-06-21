@@ -42,7 +42,8 @@ exports.create = function() {
       check: 'tcp',
       host: '127.0.0.1', 
       port: '6379',
-      cmd: 'PING\r\n'
+      cmd: 'PING\r\n',
+      rcv: '+PONG\r\n'
     }, {
       name: 'FTP Local',
       label: 'Ftp @ local',
