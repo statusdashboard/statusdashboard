@@ -99,9 +99,15 @@ var commands = {
   tcp : function(serviceDefinition, service) {
     var stream = net.createConnection(serviceDefinition.port, serviceDefinition.host);
     stream.addListener('data', function (buffer) {
-      service.status = "up";
-      service.statusCode = 0;
-      service.message = "";
+      if (!serviceDefinition.rcv || serviceDefinition.rcv == buffer) {
+        service.status = "up";
+        service.statusCode = 0;
+        service.message = "";
+      } else {
+        service.status = "critical";
+        service.statusCode = 0;
+        service.message = "Expected " + serviceDefinition.rcv + " but was " + buffer;
+      }
       stream.end();
     });
     stream.addListener('connect', function () {
