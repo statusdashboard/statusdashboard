@@ -166,10 +166,10 @@ var commands = {
     service.message = '';
     var pidfiles = [serviceDefinition.pidfile];
     
-    if(serviceDefinition.pidfile.constructor === Array){
+    if (serviceDefinition.pidfile.constructor === Array) {
       pidfiles = serviceDefinition.pidfile;
     }
-    for(var index =0; index< pidfiles.length; index ++){
+    for (var index = 0; index < pidfiles.length; index++) {
       try {
         var pid = fs.readFileSync(pidfiles[index]);
       } catch (e) {
@@ -179,14 +179,20 @@ var commands = {
         return;
       }
       try {
-        process.kill(pid, 0);
+        var pidInt = parseInt(pid);
+        if (isNaN(pidInt)) {
+          service.status = "critical";
+          service.message = 'pid \'' + pid + '\' is not a number';
+          return;
+        } else {
+          process.kill(pidInt, 0);
+        }
       } catch (e) {
         service.status = "down";
         service.statusCode = e.errno;
         service.message = e.message;
         return;
       }
-      
     }
     service.status = "up";
   }
