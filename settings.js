@@ -24,18 +24,51 @@ exports.create = function() {
       path: '/'
     }, {
       name: 'bazoud.free.fr', 
-      label: 'Olivier Bazoud blog',
+      label: 'Olivier Bazoud blog: Index',
       check: 'http',
       host: 'bazoud.free.fr', 
       port: '80',
       path: '/'
     }, {
-      name: 'bazoud.free.fr php',
-      label: 'Olivier Bazoud blog test.php',
+      name: 'bazoud.free.fr (Normal)',
+      label: 'Olivier Bazoud blog: Normal',
       check: 'http',
       host: 'bazoud.free.fr',
       port: '80',
       path: '/test.php'
+    }, {
+      name: 'bazoud.free.fr (FixedValue: ok)',
+      label: 'Olivier Bazoud blog: FixedValue ok',
+      check: 'http',
+      host: 'bazoud.free.fr',
+      port: '80',
+      path: '/test_ok.php',
+      checkFixedValueResponse: {
+        'ok': 'up',
+        'ko': 'critical'
+      }
+    }, {
+      name: 'bazoud.free.fr php (FixedValue: ko)',
+      label: 'Olivier Bazoud blog: FixedValue: ko',
+      check: 'http',
+      host: 'bazoud.free.fr',
+      port: '80',
+      path: '/test_ko.php',
+      checkFixedValueResponse: {
+        'ok': 'up',
+        'ko': 'critical'
+      }
+    }, {
+      name: 'bazoud.free.fr php (RangeValues: 10)',
+      label: 'Olivier Bazoud blog: RangeValues 10',
+      check: 'http',
+      host: 'bazoud.free.fr',
+      port: '80',
+      path: '/test10.php',
+      checkRangeValuesResponse: [
+        { 'status': 'up', 'min': 0, 'max': 10 },
+        { 'status': 'critical', 'min': 10 }
+      ]
     }, {
       name: 'redis', 
       label: 'Redis server @ local',

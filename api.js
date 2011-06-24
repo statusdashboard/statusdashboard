@@ -39,6 +39,66 @@ updatingServices = function() {
   }, settings.serviceDelay);
 };
 
+var checkHttpStatusCode = function(response, service) {
+  if (response.statusCode == 200) {
+    service.status = "up";
+  } else if (response.statusCode == 301 || response.statusCode == 302) {
+    service.status = "unknown";
+    service.message = "Redirected to " + response.headers.location;
+  } else if (response.statusCode == 503 || response.statusCode == 404) {
+    service.status = "down";
+  } else {
+    service.status = "critical";
+  }
+  service.statusCode = response.statusCode;
+};
+
+var checkRange = function(min, max, value) {
+  if (min && max && value >= min && value < max) {
+    return true;
+  } else if ( (min && value >= min) || (max && value < max) ) {
+    return true;
+  }
+  return false;
+};
+
+var checkHttpValueResponse = function(response, serviceDefinition, service) {
+  if (response.statusCode == 200 && (serviceDefinition.checkFixedValueResponse || serviceDefinition.checkRangeValuesResponse)) {
+    response.on('data', function (chunk) {
+      var value = ('' + chunk).substring(0, chunk.length - 1);
+      if (serviceDefinition.checkFixedValueResponse) {
+        if (serviceDefinition.checkFixedValueResponse[value]) {
+          service.status = serviceDefinition.checkFixedValueResponse[value];
+        } else {
+          service.status = "critical";
+          service.message = "Unexpected value " + value;
+        }
+      } else {
+        if (serviceDefinition.checkRangeValuesResponse) {
+          if (serviceDefinition.checkRangeValuesResponse.length == 0) {
+            service.status = "critical";
+            service.message = "No range defined!";
+          } else {
+            var found = false;
+            for(var i = 0; i < serviceDefinition.checkRangeValuesResponse.length; i++) {
+              var range = serviceDefinition.checkRangeValuesResponse[i];
+              if (checkRange(range.min, range.max, parseInt(value))) {
+                service.status = range.status;
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              service.status = "critical";
+              service.message = "No range matches";
+            }
+          }
+        }
+      }
+    });
+  }
+};
+
 var commands = {
   http : function(serviceDefinition, service) {
     var options = {
@@ -47,20 +107,10 @@ var commands = {
       path: serviceDefinition.path,
       headers: serviceDefinition.headers
     };
-
     http.get(options, function(response) {
       service.message = '';
-      if (response.statusCode == 200) {
-        service.status = "up";
-      } else if (response.statusCode == 301 || response.statusCode == 302) {
-        service.status = "unknown";
-        service.message = "Redirected to " + response.headers.location;
-      } else if (response.statusCode == 503 || response.statusCode == 404) {
-        service.status = "down";
-      } else {
-        service.status = "critical";
-      }
-      service.statusCode = response.statusCode;
+      checkHttpStatusCode(response, service);
+      checkHttpValueResponse(response, serviceDefinition, service);
     })
     .on('error', function(e) {
       service.status = "down";
@@ -78,17 +128,8 @@ var commands = {
 
     https.get(options, function(response) {
       service.message = '';
-        if (response.statusCode == 200) {
-          service.status = "up";
-        } else if (response.statusCode == 301 || response.statusCode == 302) {
-          service.status = "unknown";
-          service.message = "Redirected to " + response.headers.location;
-        } else if (response.statusCode == 503 || response.statusCode == 404) {
-          service.status = "down";
-        } else {
-          service.status = "critical";
-        }
-      service.statusCode = response.statusCode;
+      checkHttpStatusCode(response, service);
+      checkHttpValueResponse(response, serviceDefinition, service);
     })
     .on('error', function(e) {
       service.status = "down";
