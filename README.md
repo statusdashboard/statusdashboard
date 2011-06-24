@@ -48,16 +48,19 @@ Daemon init script for node.js: [https://gist.github.com/715255](https://gist.gi
 REST API
 =======
 
+* List services
 <pre class="terminal">
 $ curl http://127.0.0.1:8080/api/services
 {"last":"Fri, 17 Jun 2011 22:33:03 GMT","services":[{"name":"couchdb","label":"Couchdb server @ local","status":"up","statusCode":200,"message":""},{"name":"bazoud.free.fr","label":"Olivier Bazoud blog","status":"up","statusCode":200,"message":""},{"name":"bazoud.free.fr","label":"Olivier Bazoud blog test.php","status":"up","statusCode":200,"message":""},{"name":"redis","label":"Redis server @ local","status":"up","statusCode":0,"message":""},{"name":"FTP Local","label":"Ftp @ local","status":"down","statusCode":0,"message":"ECONNREFUSED, Connection refused"},{"name":"PID file","label":"Pid @ local","status":"unknown","statusCode":9,"message":"EBADF, Bad file descriptor '/tmp/terminal.pid'"}],"lastupdate":"Fri, 17 Jun 2011 22:33:08 GMT","summarize":{"lastupdate":"Fri, 17 Jun 2011 22:33:08 GMT","up":3,"critical":0,"down":1,"unknown":2}}
 </pre>
 
+* Retrieve a specific service
 <pre class="terminal">
 $ curl http://127.0.0.1:8080/api/services/couchdb
 {"name":"couchdb","label":"Couchdb server @ local","status":"up","statusCode":200,"message":""}
 </pre>
 
+* Retrieve a summary
 <pre class="terminal">
 $ curl http://127.0.0.1:8080/api/summarize
 {"up":4,"critical":0,"down":1,"unknown":1}
