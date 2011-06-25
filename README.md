@@ -17,6 +17,12 @@ Screenshots
 Dependencies
 =======
 
+* See package.json
+* run the following command to install the dependencies
+<pre class="terminal">
+$ npm install
+</pre>
+
 * node.js 0.4.8
 * npm 1.0.6
 * socket.io 0.6.18
