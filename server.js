@@ -1,6 +1,5 @@
 var logger = require('util');
 var http = require('http');
-var io = require('socket.io');
 var journey = require('journey');
 var router = new(journey.Router)();
 var static = require('node-static');
@@ -41,22 +40,21 @@ var server = http.createServer(function(req, res) {
 server.listen(settings.port, settings.hostname);
 
 var count = 0;
-
-var socket = io.listen(server);
-socket.on('connection', function(client) {
-  logger.log('New client connected: ' + client.sessionId);
-  client.send({type: 'title', data: settings.title});
-  client.send({type: 'status', data: api.getStatus()});
+var io = require('socket.io').listen(server);
+io.sockets.on('connection', function(socket) {
   count++;
-  socket.broadcast({type: 'count', data: count});
-  client.on('disconnect',function() {
-    count--;
-    socket.broadcast({type: 'count', data: count});
-  });
-});
+  logger.log('New client connected! (' + count + ')');
+  socket.emit('title', settings.title);
+  socket.emit('status', api.getStatus());
+  socket.broadcast.emit('count', count);
 
-api.on("refresh", function(status) {
-  socket.broadcast({type: 'status', data: status});
+  socket.on('disconnect', function() {
+    count--;
+    socket.broadcast.emit('count', count);
+  });
+  api.on("refresh", function(status) {
+    socket.emit('status', status);
+  });
 });
 
 logger.log('Server started.');
