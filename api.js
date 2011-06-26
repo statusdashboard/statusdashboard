@@ -10,6 +10,17 @@ var EventEmitter = require('events').EventEmitter;
 var controller = new EventEmitter();
 module.exports = controller;
 
+var plugins =[];
+fs.readdir('./plugins', function(err, files){
+  if(!err){
+   plugins = _.map(files, function(file){
+     return require('./plugins/'+file).create(controller);
+   });
+ }
+});
+  
+
+
 var status = {};
 status.lastupdate = new Date().toGMTString();
 status.services = [];
@@ -111,11 +122,13 @@ var commands = {
       service.message = '';
       checkHttpStatusCode(response, service);
       checkHttpValueResponse(response, serviceDefinition, service);
+      controller.emit(service.status, service);
     })
     .on('error', function(e) {
       service.status = "down";
       service.statusCode = 0;
       service.message = e.message;
+      controller.emit(service.status, service);
     });
   },
   https : function(serviceDefinition, service) {
@@ -130,11 +143,14 @@ var commands = {
       service.message = '';
       checkHttpStatusCode(response, service);
       checkHttpValueResponse(response, serviceDefinition, service);
+      controller.emit(service.status, service);
     })
     .on('error', function(e) {
       service.status = "down";
       service.statusCode = 0;
       service.message = e.message;
+      controller.emit("down", service);
+      
     });
   },
   tcp : function(serviceDefinition, service) {
@@ -150,6 +166,7 @@ var commands = {
         service.message = "Expected " + serviceDefinition.rcv + " but was " + buffer;
       }
       stream.end();
+      controller.emit(service.status, service);
     });
     stream.addListener('connect', function () {
       stream.write(serviceDefinition.cmd);
@@ -161,6 +178,7 @@ var commands = {
       service.status = "down";
       service.statusCode = e.errno;
       service.message = e.message;
+      controller.emit(service.status, service);      
     });
   },
   ftp : function(serviceDefinition, service) {
@@ -190,6 +208,7 @@ var commands = {
           service.status = "up";
           service.statusCode = 0;
           service.message = "";
+          controller.emit(service.status, service);
         });
       });
     });
@@ -198,12 +217,14 @@ var commands = {
       service.status = "down";
       service.statusCode = status;
       service.message = message;
+      controller.emit(service.status, service);
     };
 
     stream.addListener('error', function (e) {
       service.status = "down";
       service.statusCode = 0;
       service.message = e.message;
+      controller.emit(service.status, service);
     });
 
   },
@@ -223,6 +244,7 @@ var commands = {
         service.status = "unknown";
         service.statusCode = e.errno;
         service.message = e.message;
+        controller.emit(service.status, service);
         return;
       }
       try {
@@ -238,10 +260,12 @@ var commands = {
         service.status = "down";
         service.statusCode = e.errno;
         service.message = e.message;
+        controller.emit(service.status, service);
         return;
       }
     }
     service.status = "up";
+    controller.emit(service.status, service);
   }
 };
 
