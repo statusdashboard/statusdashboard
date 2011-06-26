@@ -78,7 +78,7 @@ var commands = {
       service.status = "down";
       service.statusCode = 0;
       service.message = e.message;
-      controller.emit("down", service);
+      controller.emit(service.status, service);
     });
   },
   https : function(serviceDefinition, service) {
@@ -119,14 +119,13 @@ var commands = {
         service.status = "up";
         service.statusCode = 0;
         service.message = "";
-        controller.emit(up, service);
       } else {
         service.status = "critical";
         service.statusCode = 0;
         service.message = "Expected " + serviceDefinition.rcv + " but was " + buffer;
-        controller.emit('critical', service);
       }
       stream.end();
+      controller.emit(service.status, service);
     });
     stream.addListener('connect', function () {
       stream.write(serviceDefinition.cmd);
@@ -138,7 +137,7 @@ var commands = {
       service.status = "down";
       service.statusCode = e.errno;
       service.message = e.message;
-      controller.emit("down", service);      
+      controller.emit(service.status, service);      
     });
   },
   ftp : function(serviceDefinition, service) {
@@ -168,7 +167,7 @@ var commands = {
           service.status = "up";
           service.statusCode = 0;
           service.message = "";
-          controller.emit('up', service);
+          controller.emit(service.status, service);
         });
       });
     });
@@ -177,14 +176,14 @@ var commands = {
       service.status = "down";
       service.statusCode = status;
       service.message = message;
-      controller.emit('down', service);
+      controller.emit(service.status, service);
     };
 
     stream.addListener('error', function (e) {
       service.status = "down";
       service.statusCode = 0;
       service.message = e.message;
-      controller.emit('error', service);
+      controller.emit(service.status, service);
     });
 
   },
@@ -204,7 +203,7 @@ var commands = {
         service.status = "unknown";
         service.statusCode = e.errno;
         service.message = e.message;
-        controller.emit('unknown', service);
+        controller.emit(service.status, service);
         return;
       }
       try {
@@ -220,13 +219,12 @@ var commands = {
         service.status = "down";
         service.statusCode = e.errno;
         service.message = e.message;
-        controller.emit("down", service);
+        controller.emit(service.status, service);
         return;
       }
     }
     service.status = "up";
-    controller.emit("up", service);
-    
+    controller.emit(service.status, service);
   }
 };
 
