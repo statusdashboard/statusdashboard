@@ -19,8 +19,6 @@ fs.readdir('./plugins', function(err, files){
  }
 });
   
-
-
 var status = {};
 status.lastupdate = new Date().toGMTString();
 status.services = [];
@@ -106,7 +104,10 @@ var checkHttpValueResponse = function(response, serviceDefinition, service) {
           }
         }
       }
+      controller.emit(service.status, service);
     });
+  } else {
+    controller.emit(service.status, service);
   }
 };
 
@@ -122,7 +123,6 @@ var commands = {
       service.message = '';
       checkHttpStatusCode(response, service);
       checkHttpValueResponse(response, serviceDefinition, service);
-      controller.emit(service.status, service);
     })
     .on('error', function(e) {
       service.status = "down";
@@ -143,14 +143,12 @@ var commands = {
       service.message = '';
       checkHttpStatusCode(response, service);
       checkHttpValueResponse(response, serviceDefinition, service);
-      controller.emit(service.status, service);
     })
     .on('error', function(e) {
       service.status = "down";
       service.statusCode = 0;
       service.message = e.message;
-      controller.emit("down", service);
-      
+      controller.emit(service.status, service);
     });
   },
   tcp : function(serviceDefinition, service) {
