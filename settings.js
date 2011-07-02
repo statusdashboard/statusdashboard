@@ -10,7 +10,8 @@ exports.create = function() {
     port: 8080,
     services: [],
     serviceInterval: 20000,
-    serviceDelay: 500
+    serviceDelay: 500,
+    plugins: [{name: 'redis_storage', description: 'stores status data into redis.', options: {host: '127.0.0.1', port:6379}}]
   };
 
   settings['olivier'] = {

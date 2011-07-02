@@ -2,14 +2,19 @@
 // up/down/unknown/critical are expected messages. Probably need to add transition status up -> down, down->up or up->critical
 // Needs redis to be running.
 // needs noderedis. install it via npm install hiredis redis
-var redis = require("redis"),client = redis.createClient();
+var redis = require("redis")
 
-var storeStatus = function (service){
-  client.rpush("statusdashboard:"+service.name, JSON.stringify({time: new Date().valueOf(), status: service.status, message: service.message, code:service.statusCode}));
-  
-}    
-exports.create = function(api){
+exports.create = function(api, options){
   console.log('Creating the Redis storage plugin');
+  var client = redis.createClient(options.port, options.host);
+  client.on('error', function(err){
+     console.log("Error " + err);
+  });
+  
+  var storeStatus = function (service){
+    client.rpush("statusdashboard:"+service.name, JSON.stringify({time: new Date().valueOf(), status: service.status, message: service.message, code:service.statusCode}));
+  }
+      
   api.on('up', function(service){
     storeStatus(service);
     console.log('success...'+ service.name);

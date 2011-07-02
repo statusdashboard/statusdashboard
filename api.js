@@ -2,7 +2,6 @@ var http = require('http');
 var https = require('https');
 var net = require('net');
 var sys = require('sys');
-var fs = require('fs');
 var logger = require('util');
 var _ = require('underscore')._;
 var settings = require('./settings').create();
@@ -10,13 +9,10 @@ var EventEmitter = require('events').EventEmitter;
 var controller = new EventEmitter();
 module.exports = controller;
 
-var plugins =[];
-fs.readdir('./plugins', function(err, files){
-  if(!err){
-   plugins = _.map(files, function(file){
-     return require('./plugins/'+file).create(controller);
-   });
- }
+
+var plugins = _.map(settings.plugins, function(plugin){
+  console.log("creating plugin "+ plugin.name);
+  return require('./plugins/'+plugin.name).create(controller, plugin.options);
 });
   
 var status = {};
