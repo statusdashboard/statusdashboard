@@ -10,10 +10,11 @@ var controller = new EventEmitter();
 module.exports = controller;
 
 
-var plugins = _.map(settings.plugins, function(plugin){
+var plugins = _.inject(settings.plugins, function(memo, plugin){
   console.log("creating plugin "+ plugin.name);
-  return require('./plugins/'+plugin.name).create(controller, plugin.options);
-});
+  memo[plugin.name] = require('./plugins/'+plugin.name).create(controller, plugin.options);
+  return memo;
+}, {});
   
 var status = {};
 status.lastupdate = new Date().toGMTString();
@@ -272,6 +273,21 @@ module.exports.services = function(req, res) {
 
 module.exports.servicesElement = function(req, res, value) {
   res.send(200, {}, JSON.stringify(_.first(_.select(status.services, function(data){ return data.name == value; }))));
+};
+
+module.exports.serviceHistory = function(req, res, value) {
+  var service = _.detect(status.services, function(data){ return data.name == value; });
+  console.log(service);
+  console.log(plugins);
+  var redis_storage = plugins['redis_storage'];
+  if(redis_storage && service){
+    redis_storage.history(service, function(err, data){
+      res.send(200, {}, JSON.stringify(data));
+    });
+      
+  }else {
+    res.send(200, {}, "Enable redis_storage plugin to get historical info");  
+  }
 };
 
 module.exports.summarize = function(req, res) {

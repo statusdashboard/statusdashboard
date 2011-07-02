@@ -34,4 +34,11 @@ exports.create = function(api, options){
     storeStatus(service);
     console.log('critical...'+ service.name);
   });  
+  
+  return {
+    history: function(service, callback){
+      console.log("getting history");
+      client.lrange('statusdashboard:'+service.name, 0, 100,callback);
+    }
+  };
 };
