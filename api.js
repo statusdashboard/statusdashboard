@@ -78,7 +78,7 @@ var checkStatusDashboardResponse = function(response, serviceDefinition, service
         service.status = 'up';
       }else {
         service.status = 'down';
-        service.message = "Services up: "+ summary.up + ", Services down: "+ summary.down + ", Services critical: "+summary.critical + ", Services unknown: "+summary.unknown 
+        service.message = "Services up: "+ summary.up + ", Services down: "+ summary.down + ", Services critical: "+summary.critical + ", Services unknown: "+summary.unknown; 
       }
       controller.emit(service.status, service);
     });
