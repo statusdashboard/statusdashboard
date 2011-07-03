@@ -10,6 +10,7 @@ var api = require('./api');
 // router
 router.get(/^\/api\/services$/).bind(api.services);
 router.get(/^\/api\/services\/([a-z\-]+)$/).bind(api.servicesElement);
+router.get(/^\/api\/services\/history\/([a-z\-]+)$/).bind(api.serviceHistory);
 router.get(/^\/api\/summarize$/).bind(api.summarize);
 
 // static

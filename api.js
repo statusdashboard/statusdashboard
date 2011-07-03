@@ -2,7 +2,6 @@ var http = require('http');
 var https = require('https');
 var net = require('net');
 var sys = require('sys');
-var fs = require('fs');
 var logger = require('util');
 var _ = require('underscore')._;
 var settings = require('./settings').create();
@@ -10,14 +9,12 @@ var EventEmitter = require('events').EventEmitter;
 var controller = new EventEmitter();
 module.exports = controller;
 
-var plugins =[];
-fs.readdir('./plugins', function(err, files){
-  if(!err){
-   plugins = _.map(files, function(file){
-     return require('./plugins/'+file).create(controller);
-   });
- }
-});
+
+var plugins = _.inject(settings.plugins, function(memo, plugin){
+  console.log("creating plugin "+ plugin.name);
+  memo[plugin.name] = require('./plugins/'+plugin.name).create(controller, plugin.options);
+  return memo;
+}, {});
   
 var status = {};
 status.lastupdate = new Date().toGMTString();
@@ -276,6 +273,21 @@ module.exports.services = function(req, res) {
 
 module.exports.servicesElement = function(req, res, value) {
   res.send(200, {}, JSON.stringify(_.first(_.select(status.services, function(data){ return data.name == value; }))));
+};
+
+module.exports.serviceHistory = function(req, res, value) {
+  var service = _.detect(status.services, function(data){ return data.name == value; });
+  console.log(service);
+  console.log(plugins);
+  var redis_storage = plugins['redis_storage'];
+  if(redis_storage && service){
+    redis_storage.history(service, function(err, data){
+      res.send(200, {}, JSON.stringify(data));
+    });
+      
+  }else {
+    res.send(200, {}, "Enable redis_storage plugin to get historical info");  
+  }
 };
 
 module.exports.summarize = function(req, res) {
