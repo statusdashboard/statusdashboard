@@ -16,7 +16,7 @@ fs.readdir(__dirname + '/plugins', function(err, files) {
     var pattern = /^.*\.js$/
     plugins = _.map(files, function(file) {
       if (fs.statSync(__dirname + '/plugins/' + file).isFile() && pattern.test(file)) {
-        return require(__dirname + '/plugins/' + file).create(controller);
+        return require(__dirname + '/plugins/' + file).create(controller, settings);
       } else {
         logger.log("exclude " + file);
       }

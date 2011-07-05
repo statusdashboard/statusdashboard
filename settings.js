@@ -92,6 +92,17 @@ exports.create = function() {
       pidfile: '/tmp/terminal.pid'
     }],
     serviceInterval: 5000,
+    plugins : {
+      irc : {
+        server: 'irc.freenode.net',
+        nick: 'ircPlugin',
+        options: {
+          debug: true,
+          port: 8001,
+          channels: ['#statusdashboard']
+        }
+      }
+    }
   };
 
   settings['nodester'] = {
