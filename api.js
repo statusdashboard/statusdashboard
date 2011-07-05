@@ -11,12 +11,17 @@ var controller = new EventEmitter();
 module.exports = controller;
 
 var plugins = [];
-fs.readdir('./plugins', function(err, files){
-  if(!err){
-   plugins = _.map(files, function(file){
-     return require('./plugins/'+file).create(controller);
-   });
- }
+fs.readdir('./plugins', function(err, files) {
+  if (!err) {
+    var pattern = /^.*\.js$/
+    plugins = _.map(files, function(file) {
+      if (fs.statSync('./plugins/' + file).isFile() && pattern.test(file)) {
+        return require('./plugins/' + file).create(controller);
+      } else {
+        logger.log("exclude " + file);
+      }
+    });
+  }
 });
   
 var status = {};
