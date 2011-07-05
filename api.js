@@ -10,7 +10,7 @@ var EventEmitter = require('events').EventEmitter;
 var controller = new EventEmitter();
 module.exports = controller;
 
-var plugins =[];
+var plugins = [];
 fs.readdir('./plugins', function(err, files){
   if(!err){
    plugins = _.map(files, function(file){
@@ -69,6 +69,20 @@ var checkRange = function(min, max, value) {
     return true;
   }
   return false;
+};
+var checkStatusDashboardResponse = function(response, serviceDefinition, service) {
+  if(response.statusCode === 200){
+    response.on('data', function(chunk){
+      summary = JSON.parse(chunk);
+      if(summary.critical === 0 && summary.down === 0 && summary.unknown ===0){
+        service.status = 'up';
+      }else {
+        service.status = 'down';
+        service.message = "Services up: "+ summary.up + ", Services down: "+ summary.down + ", Services critical: "+summary.critical + ", Services unknown: "+summary.unknown; 
+      }
+      controller.emit(service.status, service);
+    });
+  }
 };
 
 var checkHttpValueResponse = function(response, serviceDefinition, service) {
@@ -264,6 +278,24 @@ var commands = {
     }
     service.status = "up";
     controller.emit(service.status, service);
+  },
+  statusdashboard : function(serviceDefinition, service) {
+    var options = {
+      host: serviceDefinition.host,
+      port: serviceDefinition.port,
+      path: '/api/summarize'
+    };
+    http.get(options, function(response) {
+      service.message = '';
+      checkHttpStatusCode(response, service);
+      checkStatusDashboardResponse(response, serviceDefinition, service);
+    })
+    .on('error', function(e) {
+      service.status = "down";
+      service.statusCode = 0;
+      service.message = e.message;
+      controller.emit(service.status, service);
+    });
   }
 };
 
