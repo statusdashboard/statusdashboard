@@ -1,4 +1,5 @@
 var logger = require('util');
+var sys = require('sys');
 var http = require('http');
 var journey = require('journey');
 var router = new(journey.Router)();
@@ -55,6 +56,10 @@ io.sockets.on('connection', function(socket) {
   api.on("refresh", function(status) {
     socket.emit('status', status);
   });
+});
+
+api.on("routeContribution", function(route) {
+  router.route(route.method, route.path).bind(route.binding);
 });
 
 logger.log('Server started.');
