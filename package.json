@@ -1,6 +1,11 @@
 {
     "name": "statusdashboard",
     "version": "0.1.0",
+    "author": "obazoud",
+    "repository": {
+      "type": "git",
+      "url": "http://github.com/obazoud/statusdashboard.git"
+    },
     "main": "server.js",
     "dependencies": {
         "socket.io": "0.7.2",
