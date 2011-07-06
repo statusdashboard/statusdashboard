@@ -102,6 +102,13 @@ exports.create = function() {
           port: 8001,
           channels: ['#statusdashboard']
         }
+      },
+      twitter: {
+        enable: false,
+        consumer_key: "",
+        consumer_secret: "",
+        access_token_key: "",
+        access_token_secret: ""
       }
     }
   };
