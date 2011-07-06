@@ -37,9 +37,15 @@ How To Use
 or fork it
 * node server.js
 
-See settings.js to have your own settings. For example, in my local computer:
+Add your entry in settings.js. 
 
-* export APP_ENV=olivier
+<pre class="json">
+settings['xxx'] = {
+...
+};
+</pre>
+
+* export APP_ENV=xxx
 * node server.js
 
 Daemon init script for node.js: [https://gist.github.com/715255](https://gist.github.com/715255)
