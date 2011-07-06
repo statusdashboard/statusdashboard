@@ -1,7 +1,7 @@
 var irc = require('irc');
 
 exports.create = function(api, settings) {
-  if (settings.plugins && settings.plugins.irc) {
+  if (settings.plugins && settings.plugins.irc && settings.plugins.irc.enable) {
     console.log('Creating the plugin: ' + __filename);
     var bot = new irc.Client(settings.plugins.irc.server, settings.plugins.irc.nick, settings.plugins.irc.options);
 

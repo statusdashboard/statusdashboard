@@ -94,6 +94,7 @@ exports.create = function() {
     serviceInterval: 5000,
     plugins : {
       irc : {
+        enable: false,
         server: 'irc.freenode.net',
         nick: 'ircPlugin',
         options: {
