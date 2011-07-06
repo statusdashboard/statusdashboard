@@ -96,7 +96,7 @@ exports.create = function() {
       irc : {
         enable: false,
         server: 'irc.freenode.net',
-        nick: 'ircPlugin',
+        nick: 'status',
         options: {
           debug: false,
           port: 8001,
