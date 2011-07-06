@@ -80,5 +80,6 @@ Early adopters
 <img src="http://bazoud.free.fr/wp-content/uploads/ssd4.png" alt="status.exoplatform.org">
 
 * Another example of statusdashboard being used for the <a href="https://twitter.com/shufflr">@shufflr</a> app
+
 <img src="http://bazoud.free.fr/wp-content/uploads/ssd5.png" alt="">
 
