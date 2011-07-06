@@ -98,7 +98,7 @@ exports.create = function() {
         server: 'irc.freenode.net',
         nick: 'ircPlugin',
         options: {
-          debug: true,
+          debug: false,
           port: 8001,
           channels: ['#statusdashboard']
         }
