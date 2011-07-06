@@ -50,6 +50,15 @@ settings['xxx'] = {
 
 Daemon init script for node.js: [https://gist.github.com/715255](https://gist.github.com/715255)
 
+Plugins
+=======
+
+Some plugins are available out-of-the-box:
+* Console
+* IRC bot
+* Twitter
+
+
 REST API
 =======
 
