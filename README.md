@@ -81,6 +81,13 @@ $ curl http://127.0.0.1:8080/api/summarize
 {"up":4,"critical":0,"down":1,"unknown":1}
 </pre>
 
+* And plugin can add to statusdashboard REST API
+<pre class="terminal">
+$ curl http://127.0.0.1:8080/api/history/couchdb
+["{\"time\":1310024374699,\"status\":\"up\",\"message\":\"\",\"code\":200}","{\"time\":1310024379591,\"status\":\"up\",\"message\":\"\",\"code\":200}", ...]
+</pre>
+
+
 
 Early adopters
 =======
