@@ -13,7 +13,8 @@
         "journey": "0.4.0-pre-2",
         "underscore": "1.1.6",
         "irc": "0.2.0",
-        "twitter": "0.1.17"
+        "twitter": "0.1.17",
+        "redis": "0.6.6"
     },
     "engine": "node 0.4.8"
 }

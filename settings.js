@@ -109,6 +109,14 @@ exports.create = function() {
         consumer_secret: "",
         access_token_key: "",
         access_token_secret: ""
+      },
+      history: {
+        enable: false,
+        host: "127.0.0.1",
+        port: 6379,
+        namespace: "statusdashboard",
+        options: {
+        }
       }
     }
   };
