@@ -48,6 +48,24 @@ settings['xxx'] = {
 * export APP_ENV=xxx
 * node server.js
 
+You can override settings with an external settings for private information like passwords, ..
+
+* vi ~/.statusdashboard/settings.js
+<pre class="json">
+appSettings = {
+  "port":8081,
+  services: [{
+    name: 'FTP Local',
+    password: 'azerty'
+  }]
+}</pre>
+
+* export APP_SETTINGS=~/.statusdashboard/settings.js
+
+
+Service
+=======
+
 Daemon init script for node.js: [https://gist.github.com/715255](https://gist.github.com/715255)
 
 Plugins

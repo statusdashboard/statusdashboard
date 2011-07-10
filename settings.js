@@ -1,4 +1,6 @@
 var os = require('os');
+var fs = require('fs');
+var path = require("path");
 var logger = require('util');
 
 exports.create = function() {
@@ -143,19 +145,47 @@ exports.create = function() {
     }]
   };
 
+  var mySettings = defaults;
+
+  // logger.log("Dumping:\r\n" + JSON.stringify(mySettings));
+
   if (process.env.APP_ENV) {
-    var settings = merge(defaults, settings[process.env.APP_ENV]);
-    return settings;
+    logger.log("Loading " + process.env.APP_ENV + " settings.");
+    mySettings = merge(mySettings, settings[process.env.APP_ENV]);
   }
 
-  return defaults;
+  // logger.log("Dumping:\r\n" + JSON.stringify(mySettings));
+
+  if (process.env.APP_SETTINGS) {
+    logger.log("Loading " + process.env.APP_SETTINGS + " configuration.");
+    if (path.existsSync(process.env.APP_SETTINGS)) {
+      eval(fs.readFileSync(process.env.APP_SETTINGS, encoding="UTF-8"));
+      mySettings = merge(mySettings, appSettings);
+    } else {
+      logger.log("WARN: " + process.env.APP_SETTINGS + " does not exist or not a file.");
+    }
+  }
+
+  // logger.log("Dumping:\r\n" + JSON.stringify(mySettings));
+
+  return mySettings;
 };
 
 function merge(obj1, obj2) {
   for (var p in obj2) {
     try {
-      if (obj2[p].constructor == Object) {
-        obj1[p] = merge(obj1[p], obj2[p]);
+      if (typeof(obj2[p]) == 'object') {
+        if (obj2[p].constructor == Array) {
+          for (var i in obj1[p]) {
+            for (var j in obj2[p]) {
+              if (obj1[p][i].name == obj2[p][j].name) {
+                obj1[p][i] = merge(obj1[p][i], obj2[p][j]);
+              }
+            }
+          }
+        } else {
+          obj1[p] = merge(obj1[p], obj2[p]);
+        }
       } else {
         obj1[p] = obj2[p];
       }
