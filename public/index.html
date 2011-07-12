@@ -21,7 +21,7 @@
         data: "",
         dataType: "json",
         success: function(data) {
-          alert(data.transports);
+          // alert(data.transports);
           var socket = io.connect(null, {transports: data.transports});
 
           socket.on('connect', function() {
