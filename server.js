@@ -43,6 +43,12 @@ server.listen(settings.port, settings.hostname);
 
 var count = 0;
 var io = require('socket.io').listen(server);
+
+// https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
+io.enable('browser client minification');
+io.enable('browser client etag');
+io.set('log level', 1);
+
 io.sockets.on('connection', function(socket) {
   count++;
   logger.log('New client connected! (' + count + ')');
