@@ -166,7 +166,7 @@ exports.create = function() {
   if (process.env.APP_SETTINGS) {
     logger.log("Loading appSettings: " + process.env.APP_SETTINGS);
     if (path.existsSync(process.env.APP_SETTINGS)) {
-      eval(fs.readFileSync(process.env.APP_SETTINGS, encoding="UTF-8"));
+      appSettings = require(process.env.APP_SETTINGS).create();
       mySettings = merge(mySettings, appSettings);
     } else {
       logger.log("WARN: " + process.env.APP_SETTINGS + " does not exist or not a file.");
