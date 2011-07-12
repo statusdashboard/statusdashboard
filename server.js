@@ -12,6 +12,7 @@ var api = require('./api');
 router.get(/^\/api\/services$/).bind(api.services);
 router.get(/^\/api\/services\/([a-z\-]+)$/).bind(api.servicesElement);
 router.get(/^\/api\/summarize$/).bind(api.summarize);
+router.get(/^\/api\/config\/client$/).bind(api.configClient);
 
 // static
 var files = new (static.Server)('./public');

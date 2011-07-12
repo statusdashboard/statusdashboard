@@ -323,6 +323,10 @@ exports.getServicesElement = function(value) {
   return status.services[value];
 };
 
+module.exports.configClient = function(req, res) {
+  res.send(200, {}, JSON.stringify(settings.client));
+}
+
 module.exports.getStatus = function() {
   return status;
 };
