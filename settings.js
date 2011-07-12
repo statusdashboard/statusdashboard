@@ -133,8 +133,8 @@ exports.create = function() {
   settings['nodester'] = {
     port: 10487,
     services: [{
-      name: 'bazoud.free.fr', 
-      label: 'Olivier Bazoud blog',
+      name: 'bazoud.free.fr - test1',
+      label: 'Olivier Bazoud blog test1',
       check: 'http',
       host: 'bazoud.free.fr', 
       port: '80',
@@ -143,8 +143,8 @@ exports.create = function() {
         'Host': 'bazoud.free.fr'
       }
     }, {
-      name: 'bazoud.free.fr', 
-      label: 'Olivier Bazoud blog fail',
+      name: 'bazoud.free.fr - test2',
+      label: 'Olivier Bazoud blog test2',
       check: 'http',
       host: 'bazoud.free.fr', 
       port: '80',
