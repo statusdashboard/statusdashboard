@@ -15,7 +15,7 @@ router.get(/^\/api\/summarize$/).bind(api.summarize);
 router.get(/^\/api\/config\/client$/).bind(api.configClient);
 
 // static
-var files = new (static.Server)('./public');
+var files = new (static.Server)(__dirname + '/public');
 
 // server
 var server = http.createServer(function(req, res) {
