@@ -52,12 +52,16 @@ You can override settings with an external settings for private information like
 
 * vi ~/.statusdashboard/settings.js
 <pre class="json">
-appSettings = {
-  "port":8081,
-  services: [{
-    name: 'FTP Local',
-    password: 'azerty'
-  }]
+exports.create = function() {
+  var appSettings = {
+    port: 8081,
+    services: [{
+      name: 'FTP Local',
+      password: 'xxx'
+    }]
+  };
+  return appSettings;
+};
 }</pre>
 
 * export APP_SETTINGS=~/.statusdashboard/settings.js
