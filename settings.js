@@ -1,4 +1,5 @@
 var os = require('os');
+var sys = require('sys');
 var fs = require('fs');
 var path = require("path");
 var logger = require('util');
@@ -147,17 +148,17 @@ exports.create = function() {
 
   var mySettings = defaults;
 
-  // logger.log("Dumping:\r\n" + JSON.stringify(mySettings));
+  // logger.log("Dumping defaults:\r\n" + JSON.stringify(mySettings));
 
   if (process.env.APP_ENV) {
-    logger.log("Loading " + process.env.APP_ENV + " settings.");
+    logger.log("Loading settings: " + process.env.APP_ENV);
     mySettings = merge(mySettings, settings[process.env.APP_ENV]);
   }
 
-  // logger.log("Dumping:\r\n" + JSON.stringify(mySettings));
+  // logger.log("Dumping after APP_ENV:\r\n" + JSON.stringify(mySettings));
 
   if (process.env.APP_SETTINGS) {
-    logger.log("Loading " + process.env.APP_SETTINGS + " configuration.");
+    logger.log("Loading appSettings: " + process.env.APP_SETTINGS);
     if (path.existsSync(process.env.APP_SETTINGS)) {
       eval(fs.readFileSync(process.env.APP_SETTINGS, encoding="UTF-8"));
       mySettings = merge(mySettings, appSettings);
@@ -166,7 +167,7 @@ exports.create = function() {
     }
   }
 
-  // logger.log("Dumping:\r\n" + JSON.stringify(mySettings));
+  // logger.log("Dumping after APP_SETTINGS:\r\n" + JSON.stringify(mySettings));
 
   return mySettings;
 };
@@ -176,10 +177,22 @@ function merge(obj1, obj2) {
     try {
       if (typeof(obj2[p]) == 'object') {
         if (obj2[p].constructor == Array) {
-          for (var i in obj1[p]) {
+          if (obj2[p].length != 0) {
             for (var j in obj2[p]) {
-              if (obj1[p][i].name == obj2[p][j].name) {
-                obj1[p][i] = merge(obj1[p][i], obj2[p][j]);
+              if (obj1[p].length == 0) {
+                obj1[p][0] = obj2[p][j];
+              } else {
+                var found = false;
+                for (var i in obj1[p]) {
+                  if (obj1[p][i].name == obj2[p][j].name) {
+                    obj1[p][i] = merge(obj1[p][i], obj2[p][j]);
+                    found = true;
+                    break;
+                  }
+                }
+                if (!found) {
+                  obj1[p][obj1[p].length] = obj2[p][j];
+                }
               }
             }
           }
@@ -190,6 +203,7 @@ function merge(obj1, obj2) {
         obj1[p] = obj2[p];
       }
     } catch(e) {
+      // logger.log(e);
       obj1[p] = obj2[p];
     }
   }
