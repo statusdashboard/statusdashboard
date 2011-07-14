@@ -327,6 +327,11 @@ module.exports.configClient = function(req, res) {
   res.send(200, {}, JSON.stringify(settings.client));
 }
 
+module.exports.plugins = function(req, res) {
+  var plugins = _.map(_.select(_.map(settings.plugins, function(num, key) { return { name:key, enable: num.enable, client: num.client } }), function(data) { return (data.enable == true && data.client == t); }), function(num, key) { return { name:num.name } });
+  res.send(200, {}, JSON.stringify(plugins));
+}
+
 module.exports.getStatus = function() {
   return status;
 };

@@ -21,6 +21,7 @@ router.get(/^\/api\/services$/).bind(api.services);
 router.get(/^\/api\/services\/([a-z\-]+)$/).bind(api.servicesElement);
 router.get(/^\/api\/summarize$/).bind(api.summarize);
 router.get(/^\/api\/config\/client$/).bind(api.configClient);
+router.get(/^\/api\/plugins$/).bind(api.plugins);
 
 // static
 var docRoot = new (static.Server)(__dirname + '/public');

@@ -68,6 +68,15 @@
           });
         }
       });
+      $.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: '/api/plugins',
+        data: "",
+        dataType: "json",
+        success: function(data) {
+        }
+      });
     });
   </script>
   <script id="projectTemplate" type="text/html">
@@ -107,6 +116,8 @@
   			<span class="summarizeunknown">Unknown</span>
       </div>
       <ul id="summarize"></ul>
+      <div class="plugins">
+      </div>
       <div class="legend">
   			<span class="service">Service</span>
   			<span class="status">Status</span>

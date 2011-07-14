@@ -102,6 +102,9 @@ exports.create = function() {
     }],
     serviceInterval: 5000,
     plugins : {
+      console : {
+        enable: true
+      },
       irc : {
         enable: false,
         server: 'irc.freenode.net',
@@ -120,12 +123,13 @@ exports.create = function() {
         access_token_secret: ""
       },
       history: {
-        enable: false,
+        enable: true,
         host: "127.0.0.1",
         port: 6379,
         namespace: "statusdashboard",
         options: {
-        }
+        },
+        client: true
       }
     }
   };
