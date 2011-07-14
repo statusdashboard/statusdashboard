@@ -5,6 +5,14 @@ var journey = require('journey');
 var router = new(journey.Router)();
 var static = require('node-static');
 
+process.on('exit', function () {
+  logger.log('Bye bye Statusdashboard.');
+});
+
+process.on('uncaughtException', function(err) {
+  logger.log(err);
+});
+
 // settings
 var settings = require('./settings').create();
 var api = require('./api');
