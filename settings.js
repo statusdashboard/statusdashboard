@@ -123,7 +123,7 @@ exports.create = function() {
         access_token_secret: ""
       },
       history: {
-        enable: true,
+        enable: false,
         host: "127.0.0.1",
         port: 6379,
         namespace: "statusdashboard",

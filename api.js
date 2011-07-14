@@ -10,17 +10,17 @@ var EventEmitter = require('events').EventEmitter;
 var controller = new EventEmitter();
 module.exports = controller;
 
-var plugins = [];
-fs.readdir(__dirname + '/plugins', function(err, files) {
+fs.readdir(__dirname + '/plugins', function(err, pluginDirectories) {
   if (!err) {
-    var pattern = /^.*\.js$/
-    plugins = _.map(files, function(file) {
-      if (fs.statSync(__dirname + '/plugins/' + file).isFile() && pattern.test(file)) {
-        return require(__dirname + '/plugins/' + file).create(controller, settings);
+    _.each(pluginDirectories, function(directory) {
+      if (fs.statSync(__dirname + '/plugins/' + directory).isDirectory() && fs.statSync(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').isFile()) {
+        return require(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').create(controller, settings);
       } else {
-        logger.log("exclude " + file);
+        logger.log("Excluding plugin: " + directory);
       }
     });
+  } else {
+    logger.log("Error when creating plugin: " + err);
   }
 });
   
