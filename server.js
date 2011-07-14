@@ -23,7 +23,7 @@ router.get(/^\/api\/summarize$/).bind(api.summarize);
 router.get(/^\/api\/config\/client$/).bind(api.configClient);
 
 // static
-var files = new (static.Server)(__dirname + '/public');
+var docRoot = new (static.Server)(__dirname + '/public');
 
 // server
 var server = http.createServer(function(req, res) {
@@ -34,7 +34,7 @@ var server = http.createServer(function(req, res) {
   req.on('end', function() {
     router.handle(req, body, function (route) {
       if (route.status === 404) {
-        files.serve(req, res, function (err, result) {
+        docRoot.serve(req, res, function (err, result) {
           if (err && (err.status === 404)) { 
             res.writeHead(404);
             res.end('File not found.');
