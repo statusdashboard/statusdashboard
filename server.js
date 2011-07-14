@@ -3,7 +3,9 @@ var sys = require('sys');
 var http = require('http');
 var journey = require('journey');
 var router = new(journey.Router)();
-var static = require('node-static');
+var paperboy = require('paperboy');
+var url = require('url');
+var _ = require('underscore')._;
 
 process.on('exit', function () {
   logger.log('Bye bye Statusdashboard.');
@@ -13,6 +15,10 @@ process.on('uncaughtException', function(err) {
   logger.log(err);
 });
 
+String.prototype.startsWith = function(str) {
+    return (this.indexOf(str) === 0);
+}
+
 // settings
 var settings = require('./settings').create();
 var api = require('./api');
@@ -21,10 +27,11 @@ router.get(/^\/api\/services$/).bind(api.services);
 router.get(/^\/api\/services\/([a-z\-]+)$/).bind(api.servicesElement);
 router.get(/^\/api\/summarize$/).bind(api.summarize);
 router.get(/^\/api\/config\/client$/).bind(api.configClient);
-router.get(/^\/api\/plugins$/).bind(api.plugins);
+router.get(/^\/api\/plugins\/client$/).bind(api.pluginsClient);
 
 // static
-var docRoot = new (static.Server)(__dirname + '/public');
+var docRoot = __dirname + '/public';
+var pluginsDocRoot = [];
 
 // server
 var server = http.createServer(function(req, res) {
@@ -35,16 +42,25 @@ var server = http.createServer(function(req, res) {
   req.on('end', function() {
     router.handle(req, body, function (route) {
       if (route.status === 404) {
-        docRoot.serve(req, res, function (err, result) {
-          if (err && (err.status === 404)) { 
-            res.writeHead(404);
-            res.end('File not found.');
+        paperboy.deliver(docRoot, req, res).otherwise(function(err) {
+          var pathname = url.parse(req.url).pathname;
+          var pluginDocRootSelect = _.select(pluginsDocRoot, function(data) { return pathname.toString().startsWith(data.prefix); });
+          if (pluginDocRootSelect && pluginDocRootSelect[0]) {
+            var pluginDocRoot = pluginDocRootSelect[0];
+            req.url = pathname.toString().replace(pluginDocRoot.prefix, "");
+            paperboy.deliver(pluginDocRoot.docRoot, req, res).otherwise(function(err) {
+              res.writeHead(404);
+              res.end('File not found.');
+            });
+          } else {
+            res.writeHead(route.status, route.headers);
+            res.end(route.body);
           }
         });
-        return;
+      } else {
+        res.writeHead(route.status, route.headers);
+        res.end(route.body);
       }
-      res.writeHead(route.status, route.headers);
-      res.end(route.body);
     });
   });
 });
@@ -76,6 +92,13 @@ io.sockets.on('connection', function(socket) {
 
 api.on("routeContribution", function(route) {
   router.route(route.method, route.path).bind(route.binding);
+});
+
+api.on("staticContribution", function(plugin) {
+  logger.log("Add static contribution: " + plugin);
+  var docRoot = __dirname + '/plugins/' + plugin + '/public';
+  pluginsDocRoot.push( { prefix: "/api/" + plugin, docRoot: docRoot });
+  logger.log("Add static contribution: " + sys.inspect(pluginsDocRoot));
 });
 
 logger.log('Server started.');

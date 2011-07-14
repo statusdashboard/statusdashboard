@@ -84,6 +84,9 @@ body {
 		.legend .service {
 			left: 12px;
 		}
+		.legend .plugin {
+			left: 12px;
+		}
 		.legend .summarizeup {
 			left: 50px;
 		}
@@ -103,8 +106,10 @@ body {
 			left: 507px;
 		}
 
-
 	/* PROJECTS */
+  .plugin {
+    cursor: pointer;
+  }
 
 	.project {
 		font-size: 18px; line-height: 24px;

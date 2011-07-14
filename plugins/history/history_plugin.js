@@ -17,6 +17,9 @@ exports.create = function(api, settings) {
     // new route should be: /api/[pluginName]/whatever
     api.emit("routeContribution", { method: 'GET', path: /^\/api\/history\/([a-z\-]+)$/, binding: module.exports.history });
 
+    // serve static file: /api/[pluginName]/public
+    api.emit("staticContribution", 'history');
+
     var storeStatus = function (service) {
       client.rpush(settings.plugins.history.namespace + ":" + service.name, JSON.stringify({time: new Date().valueOf(), status: service.status, message: service.message, code:service.statusCode}));
     }
