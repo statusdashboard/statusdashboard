@@ -15,7 +15,8 @@ exports.create = function(api, settings) {
     });
 
     // new route should be: /api/[pluginName]/whatever
-    api.emit("routeContribution", { method: 'GET', path: /^\/api\/history\/([a-z\-]+)$/, binding: module.exports.history });
+    api.emit("routeContribution", { method: 'GET', path: /^\/api\/history\/service\/([a-z\-]+)$/, binding: module.exports.history });
+    api.emit("routeContribution", { method: 'GET', path: /^\/api\/history\/all\/([a-z\-]+)$/, binding: module.exports.allHistory });
 
     // serve static file: /api/[pluginName]/public
     api.emit("staticContribution", 'history');
@@ -48,6 +49,16 @@ exports.create = function(api, settings) {
 
 module.exports.history = function(req, res, value) {
   client.lrange(mysettings.plugins.history.namespace + ":" + value, 0, 100, function(err, data) {
+    if (!err) {
+      res.send(200, {}, JSON.stringify(data));
+    } else {
+      res.send(500, {}, err);
+    }
+  });
+};
+
+module.exports.allHistory = function(req, res, value) {
+  client.lrange(mysettings.plugins.history.namespace + ":" + value, 0, -1, function(err, data) {
     if (!err) {
       res.send(200, {}, JSON.stringify(data));
     } else {

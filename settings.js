@@ -103,7 +103,7 @@ exports.create = function() {
     serviceInterval: 5000,
     plugins : {
       console : {
-        enable: true
+        enable: false
       },
       irc : {
         enable: false,

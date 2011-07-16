@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- $I$ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>History chart</title>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+		<script type="text/javascript">
+		  $(document).ready(function() {
+        var options = {
+			      chart: {
+			          renderTo: 'container'
+			      },
+			      rangeSelector: {
+			          selected: 1
+			      },
+			      title: {
+			          text: 'Statusdashboard history'
+			      },
+			      xAxis: {
+			          maxZoom: 14 * 24 * 3600000 // fourteen days
+			      },
+			      yAxis: {
+			          title: {
+			              text: 'Status'
+			          }
+			      },
+			      series: [{
+              name : "Status",
+              data : [],
+              type: 'area',
+  		        threshold: null
+            }]
+  		  };
+        $.getJSON('/api/history/all/couchdb', function(items) {
+          for(item in items) {
+            var json = JSON.parse(items[item]);
+            var status;
+            switch(json.status) {
+              case 'up':
+                status = 2;
+                break;
+              case 'critical':
+                status = 1;
+                break;
+              case 'down':
+                status = 0;
+                break;
+              case 'unknown':
+                status = -1;
+                break;
+            }
+            // alert(json.status + ' ' + status);
+            var data = [json.time, status];
+            options.series[0].data.push(data);
+          }
+  			  var chart = new Highcharts.StockChart(options);
+        });
+		  });
+		</script>
+		
+	</head>
+	<body>
+		<script type="text/javascript" src="http://highcharts.com/js/testing-stock.js"></script>
+		<script type="text/javascript" src="http://highcharts.com/js/modules/exporting.js"></script>		
+		<div id="container" style="height: 500px"></div>		
+	</body>
+</html>
