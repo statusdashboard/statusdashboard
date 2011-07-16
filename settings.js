@@ -39,14 +39,14 @@ exports.create = function() {
       port: '80',
       path: '/'
     }, {
-      name: 'bazoud.free.fr (Normal)',
+      name: 'bazoud.free.fr-normal',
       label: 'Olivier Bazoud blog: Normal',
       check: 'http',
       host: 'bazoud.free.fr',
       port: '80',
       path: '/test.php'
     }, {
-      name: 'bazoud.free.fr (FixedValue: ok)',
+      name: 'bazoud.free.fr-fixedvalue-ok',
       label: 'Olivier Bazoud blog: FixedValue ok',
       check: 'http',
       host: 'bazoud.free.fr',
@@ -57,7 +57,7 @@ exports.create = function() {
         'ko': 'critical'
       }
     }, {
-      name: 'bazoud.free.fr php (FixedValue: ko)',
+      name: 'bazoud.free.fr-fixedvalue-ko)',
       label: 'Olivier Bazoud blog: FixedValue: ko',
       check: 'http',
       host: 'bazoud.free.fr',
@@ -68,7 +68,7 @@ exports.create = function() {
         'ko': 'critical'
       }
     }, {
-      name: 'bazoud.free.fr php (RangeValues: 10)',
+      name: 'bazoud.free.fr-rangevalues-10',
       label: 'Olivier Bazoud blog: RangeValues 10',
       check: 'http',
       host: 'bazoud.free.fr',
@@ -87,7 +87,7 @@ exports.create = function() {
       cmd: 'PING\r\n',
       rcv: '+PONG\r\n'
     }, {
-      name: 'FTP Local',
+      name: 'FTP-Local',
       label: 'Ftp @ local',
       check: 'ftp',
       host: 'localhost',
@@ -95,7 +95,7 @@ exports.create = function() {
       username: 'statusdashboard',
       password: 'statusdashboard'
     }, {
-      name: 'PID file',
+      name: 'PID-file',
       label: 'Pid @ local',
       check: 'pidfile',
       pidfile: '/tmp/terminal.pid'
@@ -123,7 +123,7 @@ exports.create = function() {
         access_token_secret: ""
       },
       history: {
-        enable: false,
+        enable: true,
         host: "127.0.0.1",
         port: 6379,
         namespace: "statusdashboard",

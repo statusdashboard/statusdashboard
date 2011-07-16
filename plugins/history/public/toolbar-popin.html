@@ -4,57 +4,73 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>History chart</title>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
 		<script type="text/javascript">
 		  $(document).ready(function() {
         var options = {
-			      chart: {
-			          renderTo: 'container'
-			      },
-			      rangeSelector: {
-			          selected: 1
-			      },
-			      title: {
-			          text: 'Statusdashboard history'
-			      },
-			      xAxis: {
-			          maxZoom: 14 * 24 * 3600000 // fourteen days
-			      },
-			      yAxis: {
-			          title: {
-			              text: 'Status'
-			          }
-			      },
-			      series: [{
-              name : "Status",
-              data : [],
-              type: 'area',
-  		        threshold: null
-            }]
-  		  };
-        $.getJSON('/api/history/all/couchdb', function(items) {
-          for(item in items) {
-            var json = JSON.parse(items[item]);
-            var status;
-            switch(json.status) {
-              case 'up':
-                status = 2;
-                break;
-              case 'critical':
-                status = 1;
-                break;
-              case 'down':
-                status = 0;
-                break;
-              case 'unknown':
-                status = -1;
-                break;
+          chart: {
+            renderTo: 'container',
+            type: 'spline'
+          },
+          title: {
+            text: 'Statusdashboard history'
+          },
+          xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: {
+              month: '%e. %b',
+              year: '%b'
             }
-            // alert(json.status + ' ' + status);
-            var data = [json.time, status];
-            options.series[0].data.push(data);
+          },
+          yAxis: {
+            title: {
+              text: 'Status'
+            },
+            min: -1,
+            max: 3
+          },
+          tooltip: {
+            formatter: function() {
+              var series = this.point.series;
+              var unit = series.unit && series.unit[0];
+              var format = '%A, %b %e, %Y, %H:%M:%S';
+              if (unit == 'day') { // skip hours
+                format = '%A, %b %e, %Y';
+              }
+              return '<b>' + Highcharts.dateFormat(format, this.x) + '</b>' + '<br/>Status: ' + this.y;
+            }
+          },
+          series: []
+        };
+        $.getJSON('/api/history/all', function(data) {
+          var i = 0;
+          for (var name in data) {
+            options.series[i] = {
+              name : name,
+              data : []
+            };
+            var items = data[name];
+            for(item in items) {
+              var status;
+              switch(items[item].status) {
+                case 'up':
+                  status = 2;
+                  break;
+                case 'critical':
+                  status = 1;
+                  break;
+                case 'down':
+                  status = 0;
+                  break;
+                case 'unknown':
+                  status = -1;
+                  break;
+              }
+              options.series[i].data.push(new Array(items[item].time, status));
+            }
+            i = i + 1;
           }
-  			  var chart = new Highcharts.StockChart(options);
+          var chart = new Highcharts.Chart(options);
         });
 		  });
 		</script>
