@@ -31,7 +31,16 @@
               text: 'Status'
             },
             min: -1,
-            max: 3
+            max: 3,
+            labels: {
+              formatter: function() {
+                if (this.value == 2) return "UP";
+                if (this.value == 1) return "CRITICAL";
+                if (this.value == 0) return "DOWN";
+                if (this.value == -1) return "UNKNOW";
+                return "";
+              }
+            }
           },
           tooltip: {
             formatter: function() {
@@ -41,7 +50,12 @@
               if (unit == 'day') { // skip hours
                 format = '%A, %b %e, %Y';
               }
-              return this.series.name.toUpperCase() + '<br/><b>' + Highcharts.dateFormat(format, this.x) + '</b>' + '<br/>Status: ' + this.y;
+              var msg = this.series.name.toUpperCase() + '<br/><b>' + Highcharts.dateFormat(format, this.x) + '</b>' + '<br/>Status: ';
+              if (this.y == 2) return msg + "UP";
+              if (this.y == 1) return msg + "CRITICAL";
+              if (this.y == 0) return msg + "DOWN";
+              if (this.y == -1) return msg + "UNKNOW";
+              return msg + "??";
             }
           },
           series: []
