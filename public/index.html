@@ -119,9 +119,13 @@
     </li>
   </script>
   <script id="pluginsTemplate" type="text/html">
-    {{each(i, plugin) plugins}}
-      <a id="plugin${i}" href="#"><img border="0" class="plugin" src="/api/${plugin.name}/images/toolbar-logo.png" alt="Plugin ${plugin.name}" title="Plugin ${plugin.name}"></a>
-    {{/each}}
+    <ul>
+      {{each(i, plugin) plugins}}
+        <li>
+        <a id="plugin${i}" href="#"><img border="0" class="plugin" src="/api/${plugin.name}/images/toolbar-logo.png" alt="Plugin ${plugin.name}" title="Plugin ${plugin.name}"></a>
+        </li>
+      {{/each}}
+    </ul>
     </script>
   </script>
 </head>
@@ -141,9 +145,7 @@
       <div class="legend">
         <span class="plugin">Plugins</span>
       </div>
-      <div>
-        <div id="plugins">
-        </div>
+      <div id="plugins" class="plugins">
       </div>
       <div class="legend">
   			<span class="service">Service</span>

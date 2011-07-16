@@ -111,6 +111,12 @@ body {
     cursor: pointer;
   }
 
+  .plugins {
+      clear: both !important;
+      display: block !important;
+      margin: 4px 5px 0px;
+  }
+
 	.project {
 		font-size: 18px; line-height: 24px;
 
