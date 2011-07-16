@@ -80,7 +80,11 @@ Some plugins are available out-of-the-box:
 * Console
 * IRC bot
 * Twitter
-* History, save service state in <a href="http://redis.io">Redis</a> (Thanks to <a href="https://github.com/sreeix">sreeix</a> initial pull request)
+* History, save service state in <a href="http://redis.io">Redis</a> (Thanks to <a href="https://github.com/sreeix">sreeix</a> initial pull request) and graph it!
+
+<img src="http://bazoud.free.fr/wp-content/uploads/ssd7.png" alt="">
+
+<img src="http://bazoud.free.fr/wp-content/uploads/ssd8.png" alt="">
 
 REST API
 =======
