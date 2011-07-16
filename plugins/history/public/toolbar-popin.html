@@ -10,10 +10,14 @@
         var options = {
           chart: {
             renderTo: 'container',
-            type: 'spline'
+            type: 'spline',
+            zoomType: 'x'
           },
           title: {
             text: 'Statusdashboard history'
+          },
+          subtitle: {
+            text: 'Click and drag in the plot area to zoom in'
           },
           xAxis: {
             type: 'datetime',
