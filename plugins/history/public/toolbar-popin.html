@@ -37,7 +37,7 @@
               if (unit == 'day') { // skip hours
                 format = '%A, %b %e, %Y';
               }
-              return '<b>' + Highcharts.dateFormat(format, this.x) + '</b>' + '<br/>Status: ' + this.y;
+              return this.series.name.toUpperCase() + '<br/><b>' + Highcharts.dateFormat(format, this.x) + '</b>' + '<br/>Status: ' + this.y;
             }
           },
           series: []
