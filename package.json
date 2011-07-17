@@ -8,7 +8,7 @@
     },
     "main": "server.js",
     "dependencies": {
-        "socket.io": "0.7.2",
+        "socket.io": "0.7.6",
         "paperboy": "0.0.2",
         "journey": "0.4.0-pre-2",
         "underscore": "1.1.6",
