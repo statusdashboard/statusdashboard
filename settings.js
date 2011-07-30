@@ -130,6 +130,23 @@ exports.create = function() {
         options: {
         },
         client: true
+      },
+      mail: {
+        enable: false,
+        sender: 'xxx',
+        to: 'xxx',
+        subject: '[statusdashboard]: Alert',
+        options: {
+          nodemailer: {
+            host: 'smtp.gmail.com',
+            port: 465,
+            use_authentication: true,
+            ssl: true,
+            user: 'xxx',
+            pass: 'xxx',
+            debug: false
+          }
+        }
       }
     }
   };
