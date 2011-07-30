@@ -1,10 +1,10 @@
 var logger = require('util');
 var sys = require('sys');
-var twitter = require('twitter');
 
 exports.create = function(api, settings) {
   if (settings.plugins && settings.plugins.twitter && settings.plugins.twitter.enable) {
     console.log('Creating the plugin: ' + __filename);
+    var twitter = require('twitter');
 
     var twit = new twitter({
       consumer_key: settings.plugins.twitter.consumer_key,

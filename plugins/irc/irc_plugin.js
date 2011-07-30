@@ -1,8 +1,8 @@
-var irc = require('irc');
 
 exports.create = function(api, settings) {
   if (settings.plugins && settings.plugins.irc && settings.plugins.irc.enable) {
     console.log('Creating the plugin: ' + __filename);
+    var irc = require('irc');
     var channels = settings.plugins.irc.options.channels;
     var bot = new irc.Client(settings.plugins.irc.server, settings.plugins.irc.nick, settings.plugins.irc.options);
     var lastCount = 0;
