@@ -130,3 +130,8 @@ Early adopters
 
 <img src="http://bazoud.free.fr/wp-content/uploads/ssd6.png" alt="">
 
+In the news
+=======
+
+* IT Wars: [StatusDashboard monitoring avec Node.js](http://www.it-wars.com/article265/statusdashboard-monitoring-avec-node-js)
+
