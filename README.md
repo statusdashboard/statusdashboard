@@ -118,15 +118,19 @@ $ curl http://127.0.0.1:8080/api/history/service/couchdb
 Early adopters
 =======
 
-* See http://status.exoplatform.org
+* [Exoplatform](http://status.exoplatform.org)
 
 <img src="http://bazoud.free.fr/wp-content/uploads/ssd4.png" alt="status.exoplatform.org">
 
-* Another example of statusdashboard being used for the <a href="https://twitter.com/shufflr">@shufflr</a> app
+* [Shufflr](https://twitter.com/shufflr)
 
 <img src="http://bazoud.free.fr/wp-content/uploads/ssd5.png" alt="">
 
-* IRC Plugin screenshot
+* [Ekino](http://www.ekino.com)
+
+<img src="http://bazoud.free.fr/wp-content/uploads/ssd9.png" alt="">
+
+* IRC Plugin screenshot @ exoplatform
 
 <img src="http://bazoud.free.fr/wp-content/uploads/ssd6.png" alt="">
 
