@@ -70,7 +70,7 @@ exports.create = function() {
 Service
 =======
 
-Daemon init script for node.js: [https://gist.github.com/715255](https://gist.github.com/715255)
+Daemon init script for node.js: [https://gist.github.com/1123553](https://gist.github.com/1123553)
 
 Plugins
 =======
