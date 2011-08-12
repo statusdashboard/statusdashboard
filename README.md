@@ -107,6 +107,12 @@ $ curl http://127.0.0.1:8080/api/summarize
 {"up":4,"critical":0,"down":1,"unknown":1}
 </pre>
 
+* Version of application
+<pre class="terminal">
+$ curl -iX GET http://127.0.0.1:8080/api/version
+{"commit":"641b97cbcfdc53b1b2b825d588afe08e412471d4","author":"obazoud","committer":"obazoud","date":"Fri, 12 Aug 2011 10:15:27 GMT"}
+</pre>
+
 * And plugin can contribute to statusdashboard REST API
 <pre class="terminal">
 $ curl http://127.0.0.1:8080/api/history/service/couchdb

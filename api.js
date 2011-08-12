@@ -336,3 +336,21 @@ module.exports.getStatus = function() {
   return status;
 };
 
+module.exports.version = function(req, res) {
+  var gitteh = require("gitteh");
+  var path = require("path");
+
+  var repository = gitteh.openRepository(path.join(__dirname, ".", ".git"));
+  var headRef = repository.getReference("HEAD");
+  headRef = headRef.resolve();
+  var walker = repository.createWalker();
+  walker.sort(gitteh.GIT_SORT_TIME);
+  walker.push(headRef.target);
+  var commit = walker.next();
+  if (commit) {
+    res.send(404, {}, { commit: commit.id, author: commit.author.name, committer: commit.committer.name, date: commit.committer.time.toUTCString()});
+  } else {
+    res.send(404, {}, {});
+  }
+}
+
