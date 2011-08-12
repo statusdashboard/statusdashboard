@@ -348,7 +348,7 @@ module.exports.version = function(req, res) {
   walker.push(headRef.target);
   var commit = walker.next();
   if (commit) {
-    res.send(404, {}, { commit: commit.id, author: commit.author.name, committer: commit.committer.name, date: commit.committer.time.toUTCString()});
+    res.send(404, {}, { commit: commit.id, author: commit.author.name, committer: commit.committer.name, date: commit.committer.time.toUTCString(), message: commit.message});
   } else {
     res.send(404, {}, {});
   }
