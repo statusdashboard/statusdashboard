@@ -354,3 +354,13 @@ module.exports.version = function(req, res) {
   }
 }
 
+var startupTime = new Date().valueOf();
+
+module.exports.uptime = function(req, res) {
+  var humanized_time_span = require(__dirname + '/lib/humanized_time_span.js');
+  var now = new Date().valueOf();
+  var uptime = now - startupTime;
+  var human = humanized_time_span.humanized_time_span(startupTime, now);
+  res.send(200, {}, { startupTime: startupTime, now: now, uptime: uptime, human: human});
+}
+
