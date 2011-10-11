@@ -6,6 +6,7 @@ var fs = require('fs');
 var logger = require('util');
 var _ = require('underscore')._;
 var settings = require('./settings').create();
+var humanized_time_span = require(__dirname + '/lib/humanized_time_span.js');
 var EventEmitter = require('events').EventEmitter;
 var controller = new EventEmitter();
 module.exports = controller;
@@ -337,12 +338,29 @@ module.exports.getStatus = function() {
 };
 
 var startupTime = new Date().valueOf();
+var date_formats = {
+  past: [
+    { ceiling: 60, text: "$seconds seconds ago" },
+    { ceiling: 3600, text: "$minutes minutes and $seconds seconds ago" },
+    { ceiling: 86400, text: "$hours hours, $minutes minutes and $seconds seconds ago" },
+    { ceiling: 2629744, text: "$days days, hours hours, $minutes minutes and $seconds seconds ago" },
+    { ceiling: 31556926, text: "$months months, $days days, hours hours, $minutes minutes and $seconds seconds ago" },
+    { ceiling: null, text: "$years years ago, $months months, $days days, hours hours, $minutes minutes and $seconds seconds" }
+  ],
+  future: [
+    { ceiling: 60, text: "in $seconds seconds" },
+    { ceiling: 3600, text: "in $minutes minutes" },
+    { ceiling: 86400, text: "in $hours hours" },
+    { ceiling: 2629744, text: "in $days days" },
+    { ceiling: 31556926, text: "in $months months" },
+    { ceiling: null, text: "in $years years" }
+  ]
+};
 
 module.exports.uptime = function(req, res) {
-  var humanized_time_span = require(__dirname + '/lib/humanized_time_span.js');
   var now = new Date().valueOf();
   var uptime = now - startupTime;
-  var human = humanized_time_span.humanized_time_span(startupTime, now);
+  var human = humanized_time_span.humanized_time_span(startupTime, now, date_formats);
   res.send(200, {}, { startupTime: startupTime, now: now, uptime: uptime, human: human});
 }
 
