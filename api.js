@@ -343,9 +343,9 @@ var date_formats = {
     { ceiling: 60, text: "$seconds seconds ago" },
     { ceiling: 3600, text: "$minutes minutes and $seconds seconds ago" },
     { ceiling: 86400, text: "$hours hours, $minutes minutes and $seconds seconds ago" },
-    { ceiling: 2629744, text: "$days days, hours hours, $minutes minutes and $seconds seconds ago" },
-    { ceiling: 31556926, text: "$months months, $days days, hours hours, $minutes minutes and $seconds seconds ago" },
-    { ceiling: null, text: "$years years ago, $months months, $days days, hours hours, $minutes minutes and $seconds seconds" }
+    { ceiling: 2629744, text: "$days days, $hours hours, $minutes minutes and $seconds seconds ago" },
+    { ceiling: 31556926, text: "$months months, $days days, $hours hours, $minutes minutes and $seconds seconds ago" },
+    { ceiling: null, text: "$years years ago, $months months, $days days, $hours hours, $minutes minutes and $seconds seconds" }
   ],
   future: [
     { ceiling: 60, text: "in $seconds seconds" },
