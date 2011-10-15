@@ -173,6 +173,29 @@ exports.create = function() {
     }]
   };
 
+  settings['no.de'] = {
+    hostname: '0.0.0.0',
+    port: 80,
+    services: [{
+      name: 'bazoud.free.fr - test1',
+      label: 'Olivier Bazoud blog test1',
+      check: 'http',
+      host: 'bazoud.free.fr', 
+      port: '80',
+      path: '/',
+      headers: {
+        'Host': 'bazoud.free.fr'
+      }
+    }, {
+      name: 'bazoud.free.fr - test2',
+      label: 'Olivier Bazoud blog test2',
+      check: 'http',
+      host: 'bazoud.free.fr', 
+      port: '80',
+      path: '/test.php'
+    }]
+  };
+
   var mySettings = defaults;
 
   // logger.log("Dumping defaults:\r\n" + JSON.stringify(mySettings));
