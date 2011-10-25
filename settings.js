@@ -32,48 +32,48 @@ exports.create = function() {
       port: '5984',
       path: '/'
     }, {
-      name: 'bazoud.free.fr', 
+      name: 'blog.bazoud.com', 
       label: 'Olivier Bazoud blog: Index',
       check: 'http',
-      host: 'bazoud.free.fr', 
+      host: 'blog.bazoud.com', 
       port: '80',
       path: '/'
     }, {
-      name: 'bazoud.free.fr-normal',
-      label: 'Olivier Bazoud blog: Normal',
+      name: 'blog.bazoud.com-healthCheck',
+      label: 'Olivier Bazoud blog: healthCheck',
       check: 'http',
-      host: 'bazoud.free.fr',
+      host: 'blog.bazoud.com',
       port: '80',
-      path: '/test.php'
+      path: '/healthCheck'
     }, {
-      name: 'bazoud.free.fr-fixedvalue-ok',
+      name: 'blog.bazoud.com-fixedvalue-ok',
       label: 'Olivier Bazoud blog: FixedValue ok',
       check: 'http',
-      host: 'bazoud.free.fr',
+      host: 'blog.bazoud.com',
       port: '80',
-      path: '/test_ok.php',
+      path: '/healthCheck',
       checkFixedValueResponse: {
         'ok': 'up',
         'ko': 'critical'
       }
     }, {
-      name: 'bazoud.free.fr-fixedvalue-ko)',
+      name: 'healthCheck-fixedvalue-ko)',
       label: 'Olivier Bazoud blog: FixedValue: ko',
       check: 'http',
-      host: 'bazoud.free.fr',
+      host: 'blog.bazoud.com',
       port: '80',
-      path: '/test_ko.php',
+      path: '/healthCheckKO',
       checkFixedValueResponse: {
         'ok': 'up',
         'ko': 'critical'
       }
     }, {
-      name: 'bazoud.free.fr-rangevalues-10',
+      name: 'blog.bazoud.com-rangevalues-10',
       label: 'Olivier Bazoud blog: RangeValues 10',
       check: 'http',
-      host: 'bazoud.free.fr',
+      host: 'blog.bazoud.com',
       port: '80',
-      path: '/test10.php',
+      path: '/healthCheckRange',
       checkRangeValuesResponse: [
         { 'status': 'up', 'min': 0, 'max': 10 },
         { 'status': 'critical', 'min': 10 }
@@ -154,22 +154,22 @@ exports.create = function() {
   settings['nodester'] = {
     port: 10487,
     services: [{
-      name: 'bazoud.free.fr - test1',
-      label: 'Olivier Bazoud blog test1',
+      name: 'blog.bazoud.com - index',
+      label: 'Olivier Bazoud blog index',
       check: 'http',
-      host: 'bazoud.free.fr', 
+      host: 'blog.bazoud.com', 
       port: '80',
       path: '/',
       headers: {
-        'Host': 'bazoud.free.fr'
+        'Host': 'blog.bazoud.com'
       }
     }, {
-      name: 'bazoud.free.fr - test2',
-      label: 'Olivier Bazoud blog test2',
+      name: 'blog.bazoud.com - healthCheck',
+      label: 'Olivier Bazoud blog healthCheck',
       check: 'http',
-      host: 'bazoud.free.fr', 
+      host: 'blog.bazoud.com', 
       port: '80',
-      path: '/test.php'
+      path: '/healthCheck'
     }]
   };
 
@@ -177,22 +177,22 @@ exports.create = function() {
     hostname: '0.0.0.0',
     port: 80,
     services: [{
-      name: 'bazoud.free.fr - test1',
-      label: 'Olivier Bazoud blog test1',
+      name: 'blog.bazoud.com - index',
+      label: 'Olivier Bazoud blog index',
       check: 'http',
-      host: 'bazoud.free.fr', 
+      host: 'blog.bazoud.com', 
       port: '80',
       path: '/',
       headers: {
-        'Host': 'bazoud.free.fr'
+        'Host': 'blog.bazoud.com'
       }
     }, {
-      name: 'bazoud.free.fr - test2',
-      label: 'Olivier Bazoud blog test2',
+      name: 'blog.bazoud.com - healthCheck',
+      label: 'Olivier Bazoud blog healthCheck',
       check: 'http',
-      host: 'bazoud.free.fr', 
+      host: 'blog.bazoud.com', 
       port: '80',
-      path: '/test.php'
+      path: '/healthCheck'
     }]
   };
 
