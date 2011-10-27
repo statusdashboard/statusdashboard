@@ -150,6 +150,9 @@ exports.create = function() {
 
   settings['nodester'] = {
     port: 10487,
+    client: {
+      transports: ['xhr-polling']
+    },
     services: [{
       name: 'blog.bazoud.com - index',
       label: 'Olivier Bazoud blog index',
