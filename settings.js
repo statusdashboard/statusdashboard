@@ -21,9 +21,6 @@ exports.create = function() {
 
   settings['olivier'] = {
     port: 8080,
-    client: {
-      transports: ['websocket']
-    },
     services: [{
       name: 'couchdb', 
       label: 'Couchdb server @ local',
