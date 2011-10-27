@@ -26,6 +26,11 @@
           // alert(data.transports);
           var socket = io.connect(null, {transports: data.transports});
 
+          $(window).bind('beforeunload', function() {
+            socket.disconnect();
+            // return 'disconnect';
+          });
+
           socket.on('connect', function() {
             // alert('connected');
           });
