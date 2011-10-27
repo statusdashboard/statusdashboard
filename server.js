@@ -84,6 +84,7 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('disconnect', function() {
     count--;
+    logger.log('Client disconnect! (' + count + ')');
     socket.broadcast.emit('count', count);
   });
   api.on("refresh", function(status) {
