@@ -1,5 +1,4 @@
-var logger = require('util');
-var sys = require('sys');
+var util = require('util');
 var http = require('http');
 var journey = require('journey');
 var router = new(journey.Router)();
@@ -8,11 +7,11 @@ var url = require('url');
 var _ = require('underscore')._;
 
 process.on('exit', function () {
-  logger.log('Bye bye Statusdashboard.');
+  util.log('Bye bye Statusdashboard.');
 });
 
 process.on('uncaughtException', function(err) {
-  logger.log(err);
+  util.log(err);
 });
 
 String.prototype.startsWith = function(str) {
@@ -77,14 +76,14 @@ io.set('log level', 1);
 
 io.sockets.on('connection', function(socket) {
   count++;
-  logger.log('New client connected! (' + count + ')');
+  util.log('New client connected! (' + count + ')');
   socket.emit('title', settings.title);
   socket.emit('status', api.getStatus());
   socket.broadcast.emit('count', count);
 
   socket.on('disconnect', function() {
     count--;
-    logger.log('Client disconnect! (' + count + ')');
+    util.log('Client disconnect! (' + count + ')');
     socket.broadcast.emit('count', count);
   });
   api.on("refresh", function(status) {
@@ -97,12 +96,12 @@ api.on("routeContribution", function(route) {
 });
 
 api.on("staticContribution", function(plugin) {
-  logger.log("Add static contribution: " + plugin);
+  util.log("Add static contribution: " + plugin);
   var docRoot = __dirname + '/plugins/' + plugin + '/public';
   pluginsDocRoot.push( { prefix: "/api/" + plugin, docRoot: docRoot });
-  logger.log("Add static contribution: " + sys.inspect(pluginsDocRoot));
+  util.log("Add static contribution: " + util.inspect(pluginsDocRoot));
 });
 
-logger.log('Server started.');
-logger.log('Server running at http://' + settings.hostname + ':' + settings.port);
+util.log('Server started.');
+util.log('Server running at http://' + settings.hostname + ':' + settings.port);
 

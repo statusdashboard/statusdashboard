@@ -14,7 +14,8 @@
         "underscore": "1.1.6",
         "irc": "0.2.0",
         "twitter": "0.1.17",
-        "redis": "0.6.6",
+        "redis": "0.7.1",
+        "hiredis": "0.1.13",
         "nodemailer": "0.1.22"
     },
     "engine": "node 0.4.8"
