@@ -1,5 +1,4 @@
 var logger = require('util');
-var sys = require('sys');
 
 exports.create = function(api, settings) {
   if (settings.plugins && settings.plugins.mail && settings.plugins.mail.enable) {

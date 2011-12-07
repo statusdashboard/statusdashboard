@@ -1,5 +1,4 @@
 var logger = require('util');
-var sys = require('sys');
 var client;
 var mysettings;
 
