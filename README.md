@@ -11,11 +11,11 @@ Demo:
 Screenshots
 =======
 
-<img src="http://bazoud.free.fr/wp-content/uploads/ssd1.png" alt="">
+<img src="http://blog.bazoud.com/images/ssd1.png" alt="">
 
-<img src="http://bazoud.free.fr/wp-content/uploads/ssd2.png" alt="">
+<img src="http://blog.bazoud.com/images/ssd2.png" alt="">
 
-<img src="http://bazoud.free.fr/wp-content/uploads/ssd3.png" alt="">
+<img src="http://blog.bazoud.com/images/ssd3.png" alt="">
 
 Dependencies
 =======
@@ -85,9 +85,9 @@ Some plugins are available out-of-the-box:
 * Twitter
 * History, save service state in <a href="http://redis.io">Redis</a> (Thanks to <a href="https://github.com/sreeix">sreeix</a> initial pull request) and graph it!
 
-<img src="http://bazoud.free.fr/wp-content/uploads/ssd7a.png" alt="">
+<img src="http://blog.bazoud.com/images/ssd7a.png" alt="">
 
-<img src="http://bazoud.free.fr/wp-content/uploads/ssd8a.png" alt="">
+<img src="http://blog.bazoud.com/images/ssd8a.png" alt="">
 
 REST API
 =======
@@ -129,19 +129,19 @@ Early adopters
 
 * [Exoplatform](http://status.exoplatform.org)
 
-<img src="http://bazoud.free.fr/wp-content/uploads/ssd4.png" alt="status.exoplatform.org">
+<img src="http://blog.bazoud.com/images/ssd4.png" alt="status.exoplatform.org">
 
 * [Shufflr](https://twitter.com/shufflr)
 
-<img src="http://bazoud.free.fr/wp-content/uploads/ssd5.png" alt="">
+<img src="http://blog.bazoud.com/images/ssd5.png" alt="">
 
 * [Ekino](http://www.ekino.com)
 
-<img src="http://bazoud.free.fr/wp-content/uploads/ssd9.png" alt="">
+<img src="http://blog.bazoud.com/images/ssd9.png" alt="">
 
 * IRC Plugin screenshot @ exoplatform
 
-<img src="http://bazoud.free.fr/wp-content/uploads/ssd6.png" alt="">
+<img src="http://blog.bazoud.com/images/ssd6.png" alt="">
 
 In the news
 =======
