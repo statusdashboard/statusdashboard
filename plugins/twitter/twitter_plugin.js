@@ -1,5 +1,4 @@
-var logger = require('util');
-var sys = require('sys');
+var util = require('util');
 
 exports.create = function(api, settings) {
   if (settings.plugins && settings.plugins.twitter && settings.plugins.twitter.enable) {
@@ -15,10 +14,10 @@ exports.create = function(api, settings) {
 
     twit.tweet = function(message, options) {
       twit.verifyCredentials(function (data) {
-        // logger.log("verifyCredentials: " + sys.puts(sys.inspect(data)));
+        // util.log("verifyCredentials: " + util.puts(util.inspect(data)));
       }).updateStatus(message, function (data) {
-        logger.log("Send a tweet: " + message);
-        // logger.log("updateStatus: " + sys.puts(sys.inspect(data)));
+        util.log("Send a tweet: " + message);
+        // util.log("updateStatus: " + util.puts(util.inspect(data)));
       });
     };
 

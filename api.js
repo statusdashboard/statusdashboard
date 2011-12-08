@@ -1,7 +1,6 @@
 var http = require('http');
 var https = require('https');
 var net = require('net');
-var sys = require('sys');
 var fs = require('fs');
 var logger = require('util');
 var _ = require('underscore')._;

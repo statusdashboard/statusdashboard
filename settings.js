@@ -1,5 +1,4 @@
 var os = require('os');
-var sys = require('sys');
 var fs = require('fs');
 var path = require("path");
 var logger = require('util');
