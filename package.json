@@ -10,7 +10,7 @@
     "dependencies": {
         "socket.io": "0.8.5",
         "paperboy": "0.0.2",
-        "journey": "0.4.0-pre-2",
+        "journey": "0.4.0-pre-3",
         "underscore": "1.1.6",
         "irc": "0.2.0",
         "twitter": "0.1.17",
