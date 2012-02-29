@@ -2,6 +2,8 @@ var http = require('http');
 var https = require('https');
 var net = require('net');
 var fs = require('fs');
+var dgram = require('dgram');
+var Buffer = require('buffer').Buffer;
 var logger = require('util');
 var _ = require('underscore')._;
 var settings = require('./settings').create();
@@ -197,6 +199,31 @@ var commands = {
       service.message = e.message;
       controller.emit(service.status, service);      
     });
+  },
+  udp : function(serviceDefinition, service) {
+    var sock = dgram.createSocket("udp4");
+    sock.on("message", function (buffer, from) {
+      if (!serviceDefinition.rcv || serviceDefinition.rcv == buffer) {
+        service.status = "up";
+        service.statusCode = 0;
+        service.message = "";
+      } else {
+        service.status = "critical";
+        service.statusCode = 0;
+        service.message = "Expected " + serviceDefinition.rcv + " but was '" + buffer;
+      }
+      sock.close();
+      controller.emit(service.status, service);
+    });
+    sock.on("error", function (exception) {
+      service.status = "down";
+      service.statusCode = 0;
+      service.message = exception;
+      controller.emit(service.status, service);
+      sock.close();
+    });
+    var buf = new Buffer(serviceDefinition.cmd);
+    sock.send(buf, 0, buf.length, serviceDefinition.port, serviceDefinition.host);
   },
   ftp : function(serviceDefinition, service) {
     service.status = "unknown";
