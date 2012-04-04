@@ -79,16 +79,17 @@ io.sockets.on('connection', function(socket) {
   util.log('New client connected! (' + count + ')');
   socket.emit('title', settings.title);
   socket.emit('status', api.getStatus());
-  socket.broadcast.emit('count', count);
+  io.sockets.emit('count', count);
 
   socket.on('disconnect', function() {
     count--;
     util.log('Client disconnect! (' + count + ')');
     socket.broadcast.emit('count', count);
   });
-  api.on("refresh", function(status) {
-    socket.emit('status', status);
-  });
+});
+
+api.on("refresh", function(status) {
+  io.sockets.emit('status', status);
 });
 
 api.on("routeContribution", function(route) {
