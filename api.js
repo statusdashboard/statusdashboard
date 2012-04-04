@@ -12,6 +12,9 @@ var EventEmitter = require('events').EventEmitter;
 var controller = new EventEmitter();
 module.exports = controller;
 
+var pkginfo = require('pkginfo')(module, 'name', 'version', 'description');
+var info = { description: module.exports.description, name: module.exports.name, version: module.exports.version };
+
 fs.readdir(__dirname + '/plugins', function(err, pluginDirectories) {
   if (!err) {
     _.each(pluginDirectories, function(directory) {
@@ -388,5 +391,9 @@ module.exports.uptime = function(req, res) {
   var uptime = now - startupTime;
   var human = humanized_time_span.humanized_time_span(startupTime, now, date_formats);
   res.send(200, {}, { startupTime: startupTime, now: now, uptime: uptime, human: human});
+}
+
+module.exports.info = function(req, res) {
+  res.send(200, {}, info);
 }
 

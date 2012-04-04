@@ -28,6 +28,7 @@ router.get(/^\/api\/summarize$/).bind(api.summarize);
 router.get(/^\/api\/config\/client$/).bind(api.configClient);
 router.get(/^\/api\/plugins\/client$/).bind(api.pluginsClient);
 router.get(/^\/api\/uptime$/).bind(api.uptime);
+router.get(/^\/api\/info$/).bind(api.info);
 
 // static
 var docRoot = __dirname + '/public';

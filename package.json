@@ -1,6 +1,6 @@
 {
     "name": "statusdashboard",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "A services status dashboard",
     "author": "Olivier Bazoud <olivier.bazoud@gmail.com>",
     "homepage": "http://github.com/obazoud/statusdashboard.git",
@@ -36,6 +36,7 @@
       "twitter": "0.1.18",
       "redis": "0.7.1",
       "hiredis": "0.1.14",
+      "pkginfo": "0.2.3",
       "nodemailer": "0.1.22"
     }
 }
