@@ -18,8 +18,9 @@ exports.create = function() {
     serviceDelay: 500
   };
 
-  settings['olivier'] = {
+  settings['demo'] = {
     port: 8080,
+    hostname: '0.0.0.0',
     services: [{
       name: 'couchdb', 
       label: 'Couchdb server @ local',
@@ -147,56 +148,7 @@ exports.create = function() {
     }
   };
 
-  settings['nodester'] = {
-    port: 10487,
-    client: {
-      transports: ['xhr-polling']
-    },
-    services: [{
-      name: 'blog.bazoud.com - index',
-      label: 'Olivier Bazoud blog index',
-      check: 'http',
-      host: 'blog.bazoud.com', 
-      port: '80',
-      path: '/',
-      headers: {
-        'Host': 'blog.bazoud.com'
-      }
-    }, {
-      name: 'blog.bazoud.com - healthCheck',
-      label: 'Olivier Bazoud blog healthCheck',
-      check: 'http',
-      host: 'blog.bazoud.com', 
-      port: '80',
-      path: '/healthCheck'
-    }]
-  };
-
-  settings['no.de'] = {
-    hostname: '0.0.0.0',
-    port: 80,
-    services: [{
-      name: 'blog.bazoud.com - index',
-      label: 'Olivier Bazoud blog index',
-      check: 'http',
-      host: 'blog.bazoud.com', 
-      port: '80',
-      path: '/',
-      headers: {
-        'Host': 'blog.bazoud.com'
-      }
-    }, {
-      name: 'blog.bazoud.com - healthCheck',
-      label: 'Olivier Bazoud blog healthCheck',
-      check: 'http',
-      host: 'blog.bazoud.com', 
-      port: '80',
-      path: '/healthCheck'
-    }]
-  };
-
   var mySettings = defaults;
-
   // logger.log("Dumping defaults:\r\n" + JSON.stringify(mySettings));
 
   if (process.env.APP_ENV) {
@@ -217,7 +169,6 @@ exports.create = function() {
   }
 
   // logger.log("Dumping after APP_SETTINGS:\r\n" + JSON.stringify(mySettings));
-
   return mySettings;
 };
 

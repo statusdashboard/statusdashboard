@@ -1,3 +1,4 @@
+var util = require('util');
 var http = require('http');
 var https = require('https');
 var net = require('net');
@@ -338,15 +339,15 @@ setInterval(updatingServices, settings.serviceInterval);
 updatingServices();
 
 module.exports.services = function(req, res) {
-  res.send(200, {}, JSON.stringify(status));
+  res.send(JSON.stringify(status), 200);
 };
 
 module.exports.servicesElement = function(req, res, value) {
-  res.send(200, {}, JSON.stringify(_.first(_.select(status.services, function(data){ return data.name == value; }))));
+  res.send(JSON.stringify(_.first(_.select(status.services, function(data){ return data.name == value; }))), 200);
 };
 
 module.exports.summarize = function(req, res) {
-  res.send(200, {}, { up: status.summarize.up, critical: status.summarize.critical, down: status.summarize.down, unknown: status.summarize.unknown });
+  res.send({ up: status.summarize.up, critical: status.summarize.critical, down: status.summarize.down, unknown: status.summarize.unknown }, 200);
 };
 
 exports.getServicesElement = function(value) {
@@ -354,12 +355,13 @@ exports.getServicesElement = function(value) {
 };
 
 module.exports.configClient = function(req, res) {
-  res.send(200, {}, JSON.stringify(settings.client));
+  console.log(util.inspect(settings.client));
+  res.send(JSON.stringify(settings.client), 200);
 }
 
 module.exports.pluginsClient = function(req, res) {
   var plugins = _.map(_.select(_.map(settings.plugins, function(num, key) { return { name:key, enable: num.enable, client: num.client } }), function(data) { return (data.enable == true && data.client == true); }), function(num, key) { return { name:num.name } });
-  res.send(200, {}, JSON.stringify(plugins));
+  res.send(JSON.stringify(plugins), 200);
 }
 
 module.exports.getStatus = function() {
@@ -390,10 +392,10 @@ module.exports.uptime = function(req, res) {
   var now = new Date().valueOf();
   var uptime = now - startupTime;
   var human = humanized_time_span.humanized_time_span(startupTime, now, date_formats);
-  res.send(200, {}, { startupTime: startupTime, now: now, uptime: uptime, human: human});
+  res.send({ startupTime: startupTime, now: now, uptime: uptime, human: human}, 200);
 }
 
 module.exports.info = function(req, res) {
-  res.send(200, {}, info);
+  res.send(info, 200);
 }
 

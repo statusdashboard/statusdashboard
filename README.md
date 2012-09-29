@@ -48,7 +48,7 @@ settings['xxx'] = {
 };
 </pre>
 
-* export APP_ENV=xxx
+* export APP_ENV=demo
 * node server.js
 
 You can override settings with an external settings for private information like passwords, ..
@@ -148,4 +148,3 @@ In the news
 
 * IT Wars: [StatusDashboard monitoring avec Node.js](http://www.it-wars.com/article265/statusdashboard-monitoring-avec-node-js)
 * William Durand blog: [Services Status Dashboard](http://williamdurand.fr/2012/01/16/services-status-dashboard/)
-

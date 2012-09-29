@@ -1,8 +1,5 @@
+var path = require('path');
 var util = require('util');
-var http = require('http');
-var journey = require('journey');
-var router = new(journey.Router)();
-var paperboy = require('paperboy');
 var url = require('url');
 var _ = require('underscore')._;
 
@@ -18,62 +15,61 @@ String.prototype.startsWith = function(str) {
     return (this.indexOf(str) === 0);
 }
 
-// settings
+// Directories
+var rootPath = process.cwd();
+var staticPath = path.join(rootPath, 'public');
+
+// Settings
 var settings = require('./settings').create();
 var api = require('./api');
-// router
-router.get(/^\/api\/services$/).bind(api.services);
-router.get(/^\/api\/services\/([a-z\-]+)$/).bind(api.servicesElement);
-router.get(/^\/api\/summarize$/).bind(api.summarize);
-router.get(/^\/api\/config\/client$/).bind(api.configClient);
-router.get(/^\/api\/plugins\/client$/).bind(api.pluginsClient);
-router.get(/^\/api\/uptime$/).bind(api.uptime);
-router.get(/^\/api\/info$/).bind(api.info);
 
-// static
-var docRoot = __dirname + '/public';
-var pluginsDocRoot = [];
-
-// server
-var server = http.createServer(function(req, res) {
-  var body = '';
-  req.on('data', function(chunk) { 
-    body += chunk; 
-  });
-  req.on('end', function() {
-    router.handle(req, body, function (route) {
-      if (route.status === 404) {
-        paperboy.deliver(docRoot, req, res).otherwise(function(err) {
-          var pathname = url.parse(req.url).pathname;
-          var pluginDocRootSelect = _.select(pluginsDocRoot, function(data) { return pathname.toString().startsWith(data.prefix); });
-          if (pluginDocRootSelect && pluginDocRootSelect[0]) {
-            var pluginDocRoot = pluginDocRootSelect[0];
-            req.url = pathname.toString().replace(pluginDocRoot.prefix, "");
-            paperboy.deliver(pluginDocRoot.docRoot, req, res).otherwise(function(err) {
-              res.writeHead(404);
-              res.end('File not found.');
-            });
-          } else {
-            res.writeHead(route.status, route.headers);
-            res.end(route.body);
-          }
-        });
-      } else {
-        res.writeHead(route.status, route.headers);
-        res.end(route.body);
-      }
-    });
-  });
+// Server
+var express = require('express')
+var app = express.createServer();
+app.configure(function () {
+  util.log("Express server static directory: " + staticPath);
+  app.use(express.static(staticPath));
+  app.use(express.favicon(path.join(staticPath, 'favicon.ico')));
+  app.use(express.logger());
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
 });
-server.listen(settings.port, settings.hostname);
+var port = process.env.PORT || settings.port;
+app.listen(port, settings.hostname);
+util.log('Server running at http://' + settings.hostname + ':' + port);
+
+// Routes
+app.get(/^\/api\/services$/, api.services);
+app.get(/^\/api\/services\/([a-z\-]+)$/, api.servicesElement);
+app.get(/^\/api\/summarize$/, api.summarize);
+app.get(/^\/api\/config\/client$/, api.configClient);
+app.get(/^\/api\/plugins\/client$/, api.pluginsClient);
+app.get(/^\/api\/uptime$/, api.uptime);
+app.get(/^\/api\/info$/, api.info);
+
+app.get('/healthCheck', function(req, res) {
+  res.send('ok', 200);
+});
+
+api.on("routeContribution", function(route) {
+  app.get(route.path, route.binding);
+  util.log("Add route contribution: " + route.path);
+});
+
+api.on("staticContribution", function(plugin) {
+  var docRoot = __dirname + '/plugins/' + plugin + '/public';
+  app.use("/api/" + plugin, express.static(docRoot));
+  util.log("Add static contribution: " + plugin + ", " + docRoot);
+});
 
 var count = 0;
-var io = require('socket.io').listen(server);
-
+var io = require('socket.io').listen(app);
 // https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
-io.enable('browser client minification');
-io.enable('browser client etag');
-io.set('log level', 1);
+io.configure(function () {
+  io.enable('browser client minification');
+  io.enable('browser client etag');
+  io.set('log level', 1);
+});
 
 io.sockets.on('connection', function(socket) {
   count++;
@@ -93,17 +89,4 @@ api.on("refresh", function(status) {
   io.sockets.emit('status', status);
 });
 
-api.on("routeContribution", function(route) {
-  router.route(route.method, route.path).bind(route.binding);
-});
-
-api.on("staticContribution", function(plugin) {
-  util.log("Add static contribution: " + plugin);
-  var docRoot = __dirname + '/plugins/' + plugin + '/public';
-  pluginsDocRoot.push( { prefix: "/api/" + plugin, docRoot: docRoot });
-  util.log("Add static contribution: " + util.inspect(pluginsDocRoot));
-});
-
 util.log('Server started.');
-util.log('Server running at http://' + settings.hostname + ':' + settings.port);
-
