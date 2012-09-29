@@ -208,7 +208,7 @@ exports.create = function() {
 
   if (process.env.APP_SETTINGS) {
     logger.log("Loading appSettings: " + process.env.APP_SETTINGS);
-    if (path.existsSync(process.env.APP_SETTINGS)) {
+    if (fs.existsSync(process.env.APP_SETTINGS)) {
       appSettings = require(process.env.APP_SETTINGS).create();
       mySettings = merge(mySettings, appSettings);
     } else {
