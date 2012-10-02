@@ -1,3 +1,4 @@
+var _ = require('underscore')._;
 
 exports.create = function(api, settings) {
   if (settings.plugins && settings.plugins.irc && settings.plugins.irc.enable) {
@@ -7,6 +8,8 @@ exports.create = function(api, settings) {
     var bot = new irc.Client(settings.plugins.irc.server, settings.plugins.irc.nick, settings.plugins.irc.options);
     var lastCount = 0;
     var lastService = {};
+    var connected = false;
+    var cache = [];
 
     bot.on('connect', function() {
       api.on('up', function(service) {
@@ -32,9 +35,9 @@ exports.create = function(api, settings) {
         }
         if (lastService[service.name].status != service.status) {
           if (service.status == 'up') {
-            bot.say(channels, "[" + service.status.toUpperCase() + "] " + service.name);
+            pushMessage("[" + service.status.toUpperCase() + "] " + service.name);
           } else {
-            bot.say(channels, "[" + service.status.toUpperCase() + "] " + service.name + ", Code: " +  service.statusCode + ", Message: " + service.message);
+            pushMessage("[" + service.status.toUpperCase() + "] " + service.name + ", Code: " +  service.statusCode + ", Message: " + service.message);
           }
         }
         lastService[service.name].status = service.status;
@@ -53,6 +56,30 @@ exports.create = function(api, settings) {
     bot.on('error', function(message) {
       console.error('ERROR: %s: %s', message.command, message.args.join(' '));
     });
+    
+    bot.on('join', function(channel, who) {
+      console.log('%s has joined %s', who, channel);
+      if (who == settings.plugins.irc.nick) {
+        // TODO : Let's do it for each channel of the list...
+        console.log('You are now connected to channel %s and ready to send messages', channel);
+        connected = true;
+        _.each(cache, function(message){
+          bot.say(channels, message);
+        });
+        cache = [];
+      }
+    });
+  }
+  
+  // Send the message or cache it
+  // TODO : Limit cache size by configuration
+  var pushMessage = function(message) {
+    console.log('Pushing message %s ', message);
+    if (connected) {
+      bot.says(channels, message);
+    } else {
+      cache.push(message);
+    }
   }
 };
 
