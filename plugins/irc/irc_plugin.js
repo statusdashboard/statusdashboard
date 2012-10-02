@@ -10,6 +10,7 @@ exports.create = function(api, settings) {
     var lastService = {};
     var connected = false;
     var cache = [];
+    var maxElements = settings.plugins.irc.maxElements || 10;
 
     bot.on('connect', function() {
       api.on('up', function(service) {
@@ -72,15 +73,14 @@ exports.create = function(api, settings) {
   }
   
   // Send the message or cache it
-  // TODO : Limit cache size by configuration
   var pushMessage = function(message) {
     console.log('Pushing message %s ', message);
     if (connected) {
       bot.say(channels, message);
     } else {
-      cache.push(message);
+      if (_.size(cache) < maxElements) {
+        cache.push(message);
+      }
     }
   }
 };
-
-
