@@ -76,7 +76,7 @@ exports.create = function(api, settings) {
   var pushMessage = function(message) {
     console.log('Pushing message %s ', message);
     if (connected) {
-      bot.says(channels, message);
+      bot.say(channels, message);
     } else {
       cache.push(message);
     }
