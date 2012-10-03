@@ -3,6 +3,10 @@ var fs = require('fs');
 var path = require("path");
 var logger = require('util');
 
+// Hack nodejs API change
+fs.exists = fs.exists || require('path').exists;
+fs.existsSync = fs.existsSync || require('path').existsSync;
+
 exports.create = function() {
   var settings = {};
 
