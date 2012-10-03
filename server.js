@@ -35,6 +35,7 @@ var docRoot = __dirname + '/public';
 var pluginsDocRoot = [];
 
 // server
+var port = process.env.PORT || settings.port;
 var server = http.createServer(function(req, res) {
   var body = '';
   req.on('data', function(chunk) { 
@@ -65,7 +66,7 @@ var server = http.createServer(function(req, res) {
     });
   });
 });
-server.listen(settings.port, settings.hostname);
+server.listen(port, settings.hostname);
 
 var count = 0;
 var io = require('socket.io').listen(server);
@@ -105,5 +106,5 @@ api.on("staticContribution", function(plugin) {
 });
 
 util.log('Server started.');
-util.log('Server running at http://' + settings.hostname + ':' + settings.port);
+util.log('Server running at http://' + settings.hostname + ':' + port);
 
