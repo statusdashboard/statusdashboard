@@ -43,11 +43,6 @@
           });
 
           socket.on('status', function (status) {
-            $.gritter.add({
-              title : 'Breaking news',
-              time  : 2000,
-              text  : 'Services Status dashboard is updating...'
-            });
             var statusTab = _.map(status.services, function(value, key) { return value; });
 
             $('#summarize').empty();
