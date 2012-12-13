@@ -53,7 +53,12 @@ app.get('/healthCheck', function(req, res) {
 
 api.on("routeContribution", function(route) {
   app.get(route.path, route.binding);
-  util.log("Add route contribution: " + route.path);
+  util.log("Add GET route contribution: " + route.path);
+});
+
+api.on("postRouteContribution", function(route) {
+  app.post(route.path, route.binding);
+  util.log("Add POST route contribution: " + route.path);
 });
 
 api.on("staticContribution", function(plugin) {
