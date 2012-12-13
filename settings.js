@@ -148,6 +148,10 @@ exports.create = function() {
             debug: false
           }
         }
+      },
+      webhook: {
+        enable : false,
+        url: 'http://localhost:8080/api/webhook/test'
       }
     }
   };
