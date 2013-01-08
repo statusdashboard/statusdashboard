@@ -24,7 +24,8 @@
         dataType: "json",
         success: function(data) {
           // console.log(data.transports);
-          var socket = io.connect(null, {transports: data.transports});
+          var path = location.pathname.substr(1);
+          var socket = io.connect(null, {transports: data.transports, resource: path + "socket.io"});
 
           $(window).bind('beforeunload', function() {
             socket.disconnect();
