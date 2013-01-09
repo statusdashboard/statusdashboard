@@ -7,24 +7,25 @@
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js"></script>
-	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-  <script type="text/javascript" src="/js/jquery.gritter.min.js"></script>
-  <script type="text/javascript" src="/js/jquery.fancybox-1.3.4.pack.js"></script>
-  <link rel="stylesheet" href="/styles/main.css" type="text/css" media="screen" charset="utf-8" />
-	<link rel="stylesheet" href="/styles/master.css" type="text/css" media="screen" charset="utf-8" />
-  <link rel="stylesheet" href="/styles/jquery.gritter.css" type="text/css" media="screen" charset="utf-8" />
-  <link rel="stylesheet" href="./styles/jquery.fancybox-1.3.4.css" type="text/css" media="screen" charset="utf-8" />
+	<script type="text/javascript" src="socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="js/jquery.gritter.min.js"></script>
+  <script type="text/javascript" src="js/jquery.fancybox-1.3.4.pack.js"></script>
+  <link rel="stylesheet" href="styles/main.css" type="text/css" media="screen" charset="utf-8" />
+	<link rel="stylesheet" href="styles/master.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="styles/jquery.gritter.css" type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" href="styles/jquery.fancybox-1.3.4.css" type="text/css" media="screen" charset="utf-8" />
   <script>
     $(document).ready(function() {
       $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: '/api/config/client',
+        url: 'api/config/client',
         data: "",
         dataType: "json",
         success: function(data) {
           // console.log(data.transports);
-          var socket = io.connect(null, {transports: data.transports});
+          var path = location.pathname.substr(1);
+          var socket = io.connect(null, {transports: data.transports, resource: path + "socket.io"});
 
           $(window).bind('beforeunload', function() {
             socket.disconnect();
@@ -73,7 +74,7 @@
       $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: '/api/plugins/client',
+        url: 'api/plugins/client',
         data: "",
         dataType: "json",
         success: function(data) {
@@ -88,7 +89,7 @@
               'speedIn'      :  600,
               'speedOut'     :  200,
               'type'         : 'iframe',
-              'href'         : '/api/' + plugin.name + '/toolbar-popin.html'
+              'href'         : 'api/' + plugin.name + '/toolbar-popin.html'
             });
           });
         }
@@ -122,7 +123,7 @@
     <ul>
       {{each(i, plugin) plugins}}
         <li>
-        <a id="plugin${i}" href="#"><img border="0" class="plugin" src="/api/${plugin.name}/images/toolbar-logo.png" alt="Plugin ${plugin.name}" title="Plugin ${plugin.name}"></a>
+        <a id="plugin${i}" href="#"><img border="0" class="plugin" src="api/${plugin.name}/images/toolbar-logo.png" alt="Plugin ${plugin.name}" title="Plugin ${plugin.name}"></a>
         </li>
       {{/each}}
     </ul>

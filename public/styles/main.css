@@ -28,7 +28,7 @@ Layout
 
 
 body	{
-	background: url(/images/background_solid.png);
+	background: url(../images/background_solid.png);
 }
 
 #wrapper	{
@@ -41,7 +41,7 @@ body	{
 #shadow	{
 	position: absolute;
 	width: 660px;
-	background: url(/images/page_shadow.png) repeat-y;
+	background: url(../images/page_shadow.png) repeat-y;
 	left: 0px;
 	top: 90px;
 }
@@ -63,7 +63,7 @@ body	{
 #page_bottom, .page_bottom	{
 	width: 660px;
 	height: 30px;
-	background: url(/images/page_bottom.png) no-repeat;
+	background: url(../images/page_bottom.png) no-repeat;
 }
 
 #sidebar {
@@ -99,7 +99,7 @@ ul#navi li a {
 	display: block;	height: 50px;
 	position: absolute; top: 0;
 	text-indent: -9999px;
-	background-image: url(/images/navigation3.png);
+	background-image: url(../images/navigation3.png);
 	background-repeat: no-repeat;
 }
 
@@ -242,7 +242,7 @@ margin-left: 55px;
 width: 660px;
 height: 70px;
 position: relative;
-background: url(/images/thingsworld_logo.png);
+background: url(../images/thingsworld_logo.png);
 background-repeat: no-repeat;
 background-position: 0 0;
 }
@@ -271,19 +271,19 @@ width: 160px;
 ul#thingsworld_navi li#things_blog_link a	{
 left: 160px;
 width: 130px;
-background-image: url(/images/thingsworld_navigation_blog.png);
+background-image: url(../images/thingsworld_navigation_blog.png);
 }
 
 ul#thingsworld_navi li#things_wiki_link a	{
 left: 290px;
 width: 130px;
-background-image: url(/images/thingsworld_navigation_wiki.png);
+background-image: url(../images/thingsworld_navigation_wiki.png);
 }
 
 ul#thingsworld_navi li#things_forum_link a	{
 left: 420px;
 width: 130px;
-background-image: url(/images/thingsworld_navigation_forum.png);
+background-image: url(../images/thingsworld_navigation_forum.png);
 }
 
 ul#thingsworld_navi li a:hover	{
@@ -301,7 +301,7 @@ text-indent: -9999px;
 ============================================================ */ 
 
 .sidebox {
-	background: url(/images/sidebar_separator.png) no-repeat;
+	background: url(../images/sidebar_separator.png) no-repeat;
 	padding: 10px 0px 20px 10px;
 }
 
@@ -316,11 +316,11 @@ ul.sidebar_actions li	{
 }
 
 ul.sidebar_actions li#download	a	{
-	background: url(/images/button_download.png) no-repeat;
+	background: url(../images/button_download.png) no-repeat;
 }
 
 ul.sidebar_actions li#purchase	a	{
-	background: url(/images/button_purchase.png) no-repeat;
+	background: url(../images/button_purchase.png) no-repeat;
 }
 
 ul.sidebar_actions li span {
@@ -346,7 +346,7 @@ ul.sidebar_actions li#download	a:hover, ul.sidebar_actions li#purchase a:hover{
 ============================================================ */ 
 
 #footer	{
-	background: url(/images/background_solid.png);
+	background: url(../images/background_solid.png);
 	margin-top: 0;
 	text-align: center;
 	font-size: 10px;
