@@ -2,7 +2,7 @@
 /* see http://culturedcode.com/status */
 
 body {
-	background: url(/images/background_solid.png) repeat;
+	background: url(../images/background_solid.png) repeat;
 }
 
 #wrapper {
@@ -44,9 +44,9 @@ body {
 	-webkit-box-shadow: 0px 2px 4px #000; -moz-box-shadow: 0px 2px 4px #000;
 	
 	background: #333;
-	background: url(/images/status-board-background-bottom.png) bottom left repeat;
-	background: url(/images/status-board-background-top.png) top left repeat-x,
-		url(/images/status-board-background-bottom.png) bottom left repeat;
+	background: url(../images/status-board-background-bottom.png) bottom left repeat;
+	background: url(../images/status-board-background-top.png) top left repeat-x,
+		url(../images/status-board-background-bottom.png) bottom left repeat;
 	
 }
 
@@ -152,7 +152,7 @@ body {
 			.project h2 .summarizeunknown {
 				display: block; height: 38px;
 				position: absolute; top: 8px;
-				background-image: url(/images/status-display-background-left.png); background-position: top left; background-repeat: no-repeat;
+				background-image: url(../images/status-display-background-left.png); background-position: top left; background-repeat: no-repeat;
 				margin-right: 5px; padding-left: 8px;
 				overflow: hidden;
 			}
@@ -203,13 +203,13 @@ body {
 			.project h2 span strong {
 				display: block;
 				font-weight: inherit;
-				background-image: url(/images/status-display-background-right.png); background-position: top right; background-repeat: no-repeat;
+				background-image: url(../images/status-display-background-right.png); background-position: top right; background-repeat: no-repeat;
 				padding-left: 3px; /* add 8 from parent */
 			}
 
 			.project h2 span .strikethrough {
 				display: block; height: 38px;
-				background: url(/images/status-display-strikethrough.png) 0px 17px repeat-x;
+				background: url(../images/status-display-strikethrough.png) 0px 17px repeat-x;
 				position: absolute; top: 0px; left: 2px;
 			}
 		
@@ -228,17 +228,17 @@ body {
 
 			/* ICONS */
 			.project.tm h2 .service strong:before {
-				content: url(/images/status-display-tmicon.png);
+				content: url(../images/status-display-tmicon.png);
 				vertical-align: -5px;
 				padding-right: 4px;
 			}
 			.project.tt h2 .service strong:before {
-				content: url(/images/status-display-tticon.png);
+				content: url(../images/status-display-tticon.png);
 				vertical-align: -5px;
 				padding-right: 3px;
 			}
 			.project.tm.tt h2 .service strong:before {
-				content: url(/images/status-display-tmicon.png) url(airport-display-tticon.png);
+				content: url(../images/status-display-tmicon.png) url(airport-display-tticon.png);
 				vertical-align: -5px;
 				padding-right: 4px;
 			}
@@ -321,7 +321,7 @@ body {
 		}
 
 		.project .person:before {
-			content: url(/images/status-display-person.png);
+			content: url(../images/status-display-person.png);
 			padding-right: 3px;
 		}
 

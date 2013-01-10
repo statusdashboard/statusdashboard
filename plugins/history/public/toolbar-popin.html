@@ -60,7 +60,7 @@
           },
           series: []
         };
-        $.getJSON('/api/history/all', function(data) {
+        $.getJSON('all', function(data) {
           var i = 0;
           for (var name in data) {
             options.series[i] = {
