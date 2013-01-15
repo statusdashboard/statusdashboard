@@ -1,18 +1,25 @@
 var path = require('path'),
     util = require('util'),
-    url = require('url'),
-    _ = require('underscore')._;
+    url  = require('url'),
+    _    = require('underscore')._;
 
 exports.dashboard = function(settings) {
   var rootPath = process.cwd(),
-      api = require('./api'),
-      express = require('express'),
-      app = express.createServer();
+      api      = require('./api'),
+      express  = require('express'),
+      app      = express.createServer();
 
+  /**
+    Express app definition
+
+    This application is the main front end. It serves the required statif files,
+    and connects the API calls to an HTTP server
+  */
   app.configure(function () {
     var staticPath = path.join(rootPath, 'public');
 
     util.log("Express server static directory: " + staticPath);
+
     app.use(express['static'].call(null, staticPath));
     app.use(express.favicon(path.join(staticPath, 'favicon.ico')));
     app.use(express.logger());
@@ -24,7 +31,9 @@ exports.dashboard = function(settings) {
 
   util.log('Server running at http://' + settings.hostname + ':' + settings.port);
 
-  // Routes
+  /**
+    Routes are connected to the api, and an extra route is added for self-health checking
+  */
   app.get(/^\/api\/services$/, api.services);
   app.get(/^\/api\/services\/([a-z\-]+)$/, api.servicesElement);
   app.get(/^\/api\/summarize$/, api.summarize);
@@ -37,6 +46,50 @@ exports.dashboard = function(settings) {
     res.send('ok', 200);
   });
 
+  /**
+    Socket.IO configuration
+
+    The main goal of this path is to share information about who is connected,
+    and to make it possible to receive status updates in real-time.
+
+    https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
+  */
+  var count = 0;
+  var io = require('socket.io').listen(app);
+
+  io.configure(function () {
+    io.enable('browser client minification');
+    io.enable('browser client etag');
+    io.set('log level', 1);
+  });
+
+  io.sockets.on('connection', function(socket) {
+
+    count++;
+    util.log('New client connected! (' + count + ')');
+
+    socket.emit('title', settings.title);
+    socket.emit('status', api.getStatus());
+
+    io.sockets.emit('count', count);
+
+    socket.on('disconnect', function() {
+      count--;
+      util.log('Client disconnect! (' + count + ')');
+      socket.broadcast.emit('count', count);
+    });
+  });
+
+  /**
+    API event handling
+
+    The following events are of interest to us:
+
+    * routeContribution:
+    * postRouteContribution:
+    * staticContribution:
+    * refresh: when we get new data, pass it to the front-end client
+  */
   api.on("routeContribution", function(route) {
     app.get(route.path, route.binding);
     util.log("Add GET route contribution: " + route.path);
@@ -51,30 +104,6 @@ exports.dashboard = function(settings) {
     var docRoot = __dirname + '/plugins/' + plugin + '/public';
     app.use("/api/" + plugin, express['static'].call(null, docRoot));
     util.log("Add static contribution: " + plugin + ", " + docRoot);
-  });
-
-  var count = 0;
-  var io = require('socket.io').listen(app);
-
-  // https://github.com/LearnBoost/Socket.IO/wiki/Configuring-Socket.IO
-  io.configure(function () {
-    io.enable('browser client minification');
-    io.enable('browser client etag');
-    io.set('log level', 1);
-  });
-
-  io.sockets.on('connection', function(socket) {
-    count++;
-    util.log('New client connected! (' + count + ')');
-    socket.emit('title', settings.title);
-    socket.emit('status', api.getStatus());
-    io.sockets.emit('count', count);
-
-    socket.on('disconnect', function() {
-      count--;
-      util.log('Client disconnect! (' + count + ')');
-      socket.broadcast.emit('count', count);
-    });
   });
 
   api.on("refresh", function(status) {
