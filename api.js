@@ -2,7 +2,6 @@ var util = require('util'),
     fs = require('fs'),
     logger = require('util'),
     _ = require('underscore')._,
-    settings = require('./settings').create(),
     humanized_time_span = require(__dirname + '/lib/humanized_time_span.js'),
     EventEmitter = require('events').EventEmitter,
     controller = new EventEmitter();
@@ -11,33 +10,41 @@ module.exports = controller;
 
 var pkginfo = require('pkginfo')(module, 'name', 'version', 'description');
 var info = { description: module.exports.description, name: module.exports.name, version: module.exports.version };
-
-/**
-    Load available plugins
-*/
-fs.readdir(__dirname + '/plugins', function(err, pluginDirectories) {
-  if (!err) {
-    _.each(pluginDirectories, function(directory) {
-      if (fs.statSync(__dirname + '/plugins/' + directory).isDirectory() && fs.statSync(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').isFile()) {
-        return require(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').create(controller, settings);
-      } else {
-        logger.log("Excluding plugin: " + directory);
-      }
-    });
-  } else {
-    logger.log("Error when creating plugin: " + err);
-  }
-});
-
-/**
-  Load available sources
-*/
+var settings;
 var sources = {};
-sourceFiles = fs.readdirSync(__dirname + '/lib/sources');
-_.each(sourceFiles, function(source) {
+
+module.exports.setup = function (settings) {
+
+  module.exports.configure(settings);
+
+  /**
+      Load available plugins
+  */
+  fs.readdir(__dirname + '/plugins', function(err, pluginDirectories) {
+    if (!err) {
+      _.each(pluginDirectories, function(directory) {
+        if (fs.statSync(__dirname + '/plugins/' + directory).isDirectory() && fs.statSync(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').isFile()) {
+          return require(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').create(controller, settings);
+        } else {
+          logger.log("Excluding plugin: " + directory);
+        }
+      });
+    } else {
+      logger.log("Error when creating plugin: " + err);
+    }
+  });
+
+  /**
+    Load available sources
+  */
+
+  sourceFiles = fs.readdirSync(__dirname + '/lib/sources');
+
+  _.each(sourceFiles, function(source) {
     source = source.substr(0, source.length - 3);
     sources[source] = require(__dirname + '/lib/sources/' + source).check;
-});
+  });
+};
 
 /**
     Create a status object
@@ -46,10 +53,14 @@ var status = {};
 status.lastupdate = new Date().toGMTString();
 status.services = [];
 
+module.exports.configure = function (s) {
+    settings = s;
+};
+
 /**
     Updating Service display at a given interval
 */
-var updatingServices = function() {
+module.exports.updatingServices = function() {
   status.lastupdate = new Date().toUTCString();
 
   logger.log('Refreshing status board...');
@@ -85,8 +96,14 @@ var updatingServices = function() {
   }, settings.serviceDelay);
 };
 
-setInterval(updatingServices, settings.serviceInterval);
-updatingServices();
+module.exports.start = function () {
+  module.exports.serviceCheckIntervalPointer = setInterval(module.exports.updatingServices, settings.serviceInterval);
+  module.exports.updatingServices();
+};
+
+module.exports.stop = function () {
+    clearInterval(module.exports.serviceCheckIntervalPointer);
+};
 
 /**
     Returns a list of available services

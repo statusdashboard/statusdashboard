@@ -90,6 +90,8 @@ exports.dashboard = function(settings) {
     * staticContribution:
     * refresh: when we get new data, pass it to the front-end client
   */
+  api.setup(settings);
+
   api.on("routeContribution", function(route) {
     app.get(route.path, route.binding);
     util.log("Add GET route contribution: " + route.path);
@@ -110,5 +112,6 @@ exports.dashboard = function(settings) {
     io.sockets.emit('status', status);
   });
 
+  api.start();
   util.log('Server started.');
 };
