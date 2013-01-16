@@ -4,7 +4,7 @@ var path = require('path'),
     _    = require('underscore')._;
 
 exports.dashboard = function(settings) {
-  var rootPath = process.cwd(),
+  var rootPath = path.dirname(module.filename),
       api      = require('./api'),
       express  = require('express'),
       app      = express.createServer();
