@@ -67,6 +67,7 @@ module.exports.removeService = function (name) {
   for (var i = 0; i < settings.services.length; i++) {
     if (settings.services[i].name === name) {
       settings.services.splice(i, 1);
+      status.services.splice(i, 1);
       return true;
     }
   }
