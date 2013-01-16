@@ -6,10 +6,14 @@ var util = require('util'),
     EventEmitter = require('events').EventEmitter,
     controller = new EventEmitter();
 
+/**
+  Set this module as an express.js controller
+*/
 module.exports = controller;
 
-var pkginfo = require('pkginfo')(module, 'name', 'version', 'description');
-var info = { description: module.exports.description, name: module.exports.name, version: module.exports.version };
+/**
+  Setup and configuration helper. Should be called once
+*/
 var settings;
 var sources = {};
 
@@ -18,7 +22,7 @@ module.exports.setup = function (settings) {
   module.exports.configure(settings);
 
   /**
-      Load available plugins
+    Load available plugins
   */
   fs.readdir(__dirname + '/plugins', function(err, pluginDirectories) {
     if (!err) {
@@ -47,20 +51,37 @@ module.exports.setup = function (settings) {
 };
 
 /**
-    Create a status object
+  Configuration manipulations helpers
 */
-var status = {};
-status.lastupdate = new Date().toGMTString();
-status.services = [];
-
 module.exports.configure = function (s) {
-    settings = s;
+  settings = s;
+};
+
+module.exports.addService = function (serviceCfg) {
+  logger.log('Adding new service: ' + serviceCfg.name);
+  module.exports.removeService(serviceCfg.name);
+  settings.services.push(serviceCfg);
+};
+
+module.exports.removeService = function (name) {
+  for (var i = 0; i < settings.services.length; i++) {
+    if (settings.services[i].name === name) {
+      settings.services.splice(i, 1);
+      return true;
+    }
+  }
+
+  return false;
 };
 
 /**
     Updating Service display at a given interval
 */
-module.exports.updatingServices = function() {
+var status = {};
+status.lastupdate = new Date().toGMTString();
+status.services = [];
+
+module.exports.checkAllServices = function() {
   status.lastupdate = new Date().toUTCString();
 
   logger.log('Refreshing status board...');
@@ -96,13 +117,13 @@ module.exports.updatingServices = function() {
   }, settings.serviceDelay);
 };
 
-module.exports.start = function () {
-  module.exports.serviceCheckIntervalPointer = setInterval(module.exports.updatingServices, settings.serviceInterval);
-  module.exports.updatingServices();
+module.exports.startChecking = function () {
+  module.exports.serviceCheckIntervalPointer = setInterval(module.exports.checkAllServices, settings.serviceInterval);
+  module.exports.checkAllServices();
 };
 
-module.exports.stop = function () {
-    clearInterval(module.exports.serviceCheckIntervalPointer);
+module.exports.stopChecking = function () {
+  clearInterval(module.exports.serviceCheckIntervalPointer);
 };
 
 /**
@@ -119,10 +140,15 @@ module.exports.servicesElement = function(req, res, value) {
 };
 
 /**
-    Summary report
+  Summary report
 */
 module.exports.summarize = function(req, res) {
-  res.send({ up: status.summarize.up, critical: status.summarize.critical, down: status.summarize.down, unknown: status.summarize.unknown }, 200);
+  res.send({
+      up: status.summarize.up,
+      critical: status.summarize.critical,
+      down: status.summarize.down,
+      unknown: status.summarize.unknown
+  }, 200);
 };
 
 exports.getServicesElement = function(value) {
@@ -130,7 +156,6 @@ exports.getServicesElement = function(value) {
 };
 
 module.exports.configClient = function(req, res) {
-  console.log(util.inspect(settings.client));
   res.send(JSON.stringify(settings.client), 200);
 };
 
@@ -147,10 +172,16 @@ module.exports.pluginsClient = function(req, res) {
   res.send(JSON.stringify(plugins), 200);
 };
 
+/**
+  Give access to the whole status object
+*/
 module.exports.getStatus = function() {
   return status;
 };
 
+/**
+  Advertise uptime in human-readable format
+*/
 var startupTime = new Date().valueOf();
 var date_formats = {
   past: [
@@ -177,6 +208,12 @@ module.exports.uptime = function(req, res) {
   var human = humanized_time_span.humanized_time_span(startupTime, now, date_formats);
   res.send({ startupTime: startupTime, now: now, uptime: uptime, human: human}, 200);
 };
+
+/**
+  Advertise application information
+*/
+var pkginfo = require('pkginfo')(module, 'name', 'version', 'description');
+var info = { description: module.exports.description, name: module.exports.name, version: module.exports.version };
 
 module.exports.info = function(req, res) {
   res.send(info, 200);

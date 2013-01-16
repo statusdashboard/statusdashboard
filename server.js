@@ -112,6 +112,9 @@ exports.dashboard = function(settings) {
     io.sockets.emit('status', status);
   });
 
-  api.start();
+  api.startChecking();
+
+  // We make the API available for external control
+  this.api = api;
   util.log('Server started.');
 };
