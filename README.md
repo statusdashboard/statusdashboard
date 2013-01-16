@@ -18,14 +18,15 @@ Screenshots
 
 <img src="http://blog.bazoud.com/images/ssd3.png" alt="">
 
-Dependencies
-=======
 
-* See package.json
-* run the following command to install the dependencies
-<pre class="terminal">
-$ npm install
-</pre>
+Installation
+============
+
+* npm install statusdashboard
+or
+* npm install git+https://github.com/iobazoud/statusdashboard#master
+
+Optionally, you can install as a global package
 
 Roadmap
 =======
@@ -37,11 +38,9 @@ Roadmap
 How To Use
 =======
 
-* git clone git@github.com:obazoud/statusdashboard.git
-or fork it
-* node server.js
+### As an application
 
-Add your entry in settings.js. 
+Add your entry in settings.js.
 
 <pre class="json">
 settings['xxx'] = {
@@ -50,7 +49,7 @@ settings['xxx'] = {
 </pre>
 
 * export APP_ENV=demo
-* node server.js
+* ./bin/statusdashboard
 
 You can override settings with an external settings for private information like passwords, ..
 
@@ -70,6 +69,36 @@ exports.create = function() {
 
 * export APP_SETTINGS=~/.statusdashboard/settings.js
 
+### As a node module
+
+``
+var dashboard = require('statusdashboard').dashboard(settings);
+
+``
+
+#### Code
+
+##### dashboard.api.addService(serviceObject)
+
+Add a new service to be checked
+
+##### dashboard.api.removeService(ServiceName)
+
+Remove a service to be checked
+
+##### dashboard.api.startChecking
+
+Start the scheduled checks. Automatically is started by default when instanciating dashboard
+
+##### dashboard.api.stopChecking
+
+Stop the scheduled checks
+
+##### dashboard.api.getStatus()
+
+Return the current status of checked services
+
+**All other calls available in api.js are to be used at your own risk. You have been warned**
 
 Service
 =======
