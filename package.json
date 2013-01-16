@@ -30,7 +30,7 @@
   },
   "main": "./server.js",
   "bin": {
-    "dashboard": "./bin/statusdashboard"
+    "statusdashboard": "./bin/statusdashboard"
   },
   "engines": {
     "node": ">=0.6.1"
