@@ -31,6 +31,10 @@ exports.create = function(api, settings) {
         checkChanges(service);
       });
 
+      api.on('maintenance', function(service) {
+        checkChanges(service);
+      });
+
       checkChanges = function(service) {
         if (!lastService[service.name]) {
           lastService[service.name] = {};
@@ -47,9 +51,9 @@ exports.create = function(api, settings) {
       };
 
       api.on('refresh', function(status) {
-        var count = (status.summarize.critical + status.summarize.down + status.summarize.unknown).toString();
+        var count = status.summarize.up + status.summarize.critical + status.summarize.down + status.summarize.unknown + status.summarize.maintenance;
         if (lastCount != count) {
-          var msg = 'Up: ' + status.summarize.up + ', ' + 'Critical: ' + status.summarize.critical + ', Down: ' + status.summarize.down + ', Unknown: ' + status.summarize.unknown;
+          var msg = 'Up: ' + status.summarize.up + ', ' + 'Critical: ' + status.summarize.critical + ', Down: ' + status.summarize.down + ', Maintenance: ' +  status.summarize.maintenance + ', Unknown: ' + status.summarize.unknown;
           bot.say(channels, msg);
           lastCount = count;
         }

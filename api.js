@@ -98,7 +98,9 @@ module.exports.checkAllServices = function() {
     status.services[i].statusCode = 0;
     status.services[i].message = '';
 
-    sources[settings.services[i].check].call(null, settings.services[i], status.services[i], controller.emit);
+    sources[settings.services[i].check].call(null, settings.services[i], status.services[i], function (serviceStatus, service) {
+        controller.emit(serviceStatus, service);
+    });
   }
 
   /**
@@ -111,6 +113,7 @@ module.exports.checkAllServices = function() {
     status.summarize.lastupdate = status.lastupdate;
     status.summarize.up = _.reduce(_.select(status.services, function(data){ return data.status == 'up'; }), function(memo, num){ return memo + 1; }, 0);
     status.summarize.critical = _.reduce(_.select(status.services, function(data){ return data.status == 'critical'; }), function(memo, num){ return memo + 1; }, 0);
+    status.summarize.maintenance = _.reduce(_.select(status.services, function(data){ return data.status == 'maintenance'; }), function(memo, num){ return memo + 1; }, 0);
     status.summarize.down = _.reduce(_.select(status.services, function(data){ return data.status == 'down'; }), function(memo, num){ return memo + 1; }, 0);
     status.summarize.unknown = _.reduce(_.select(status.services, function(data){ return data.status == 'unknown'; }), function(memo, num){ return memo + 1; }, 0);
 
