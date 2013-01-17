@@ -13,7 +13,7 @@ body {
 /* LAST UPDATE */
 
 .lastupdate {
-	font-size: 11px; color: #557880; 
+	font-size: 11px; color: #557880;
 	text-align: center;
 	margin: 20px 0px 0px 0px;
 }
@@ -22,7 +22,7 @@ body {
 /* FOOTER */
 
 .footer {
-	font-size: 11px; color: #557880; 
+	font-size: 11px; color: #557880;
 	text-align: center;
 	margin: 0px 0px 20px 0px;
 }
@@ -35,24 +35,24 @@ body {
 
 	font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
 	color: #fff;
-	
+
 	width: 612px;
 	margin: 30px 10px 50px 10px;
 	border: 1px solid #353a3b;
-	
+
 	-webkit-border-radius: 5px; -moz-border-radius: 5px;
 	-webkit-box-shadow: 0px 2px 4px #000; -moz-box-shadow: 0px 2px 4px #000;
-	
+
 	background: #333;
 	background: url(../images/status-board-background-bottom.png) bottom left repeat;
 	background: url(../images/status-board-background-top.png) top left repeat-x,
 		url(../images/status-board-background-bottom.png) bottom left repeat;
-	
+
 }
 
 
 	/* VARIOUS BOARD STYLES */
-	
+
 	.arrivals-board a {
 		color: #b2d9ff;
 	}
@@ -67,7 +67,7 @@ body {
 	}
 
 	/* LEGEND */
-	
+
 	.legend {
 		position: relative;
 		font-size: 13px;	font-weight: bold; text-transform: uppercase; text-shadow: 0px -1px 0px #222;
@@ -76,7 +76,7 @@ body {
 		padding: 0px 15px;
 		border-bottom: 1px solid rgba(0,0,0,0.25);
 	}
-	
+
 		.legend span {
 			display: block;
 			position: absolute; top: 10px;
@@ -91,13 +91,16 @@ body {
 			left: 50px;
 		}
 		.legend .summarizecritical {
-			left: 190px;
+			left: 150px;
 		}
 		.legend .status {
 			left: 382px;
 		}
 		.legend .summarizedown {
-			left: 362px;
+			left: 280px;
+		}
+		.legend .summarizemaintenance {
+			left: 371px;
 		}
 		.legend .code {
 			left: 512px;
@@ -129,33 +132,34 @@ body {
 		font-size: 18px; line-height: 24px;
 
 		position: relative;
-		margin: 0px; 
+		margin: 0px;
     padding: 35px 0px 10px 0px;
-		
+
 		border-top: 1px solid #373737;
 		border-top: 1px solid rgba(255,255,255,0.08);
 		border-bottom: 1px solid #333;
 		border-bottom: 1px solid rgba(0,0,0,0.25);
-		
+
         background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.05)), to(rgba(255,255,255,0.0))) repeat-x;
 		-webkit-background-size: 100px 100px;
 	}
-	
-	
+
+
 		/* PROJECT HEADLINE */
-	
+
 		.project h2 {
 			font-size: 15px; line-height: 38px;	font-weight: normal;
 			color: #eee;
 			text-transform: uppercase; text-shadow: 0px -1px 0px #000;
 			margin: 8px 0px 8px 0px; padding: 0px 10px 0px 10px;
 		}
-	
+
 			.project h2 .service,
 			.project h2 .summarizeup,
 			.project h2 .summarizecritical,
 			.project h2 .status,
 			.project h2 .summarizedown,
+			.project h2 .summarizemaintenance,
 			.project h2 .code,
 			.project h2 .summarizeunknown {
 				display: block; height: 38px;
@@ -164,7 +168,7 @@ body {
 				margin-right: 5px; padding-left: 8px;
 				overflow: hidden;
 			}
-			
+
 			.project h2 .service {
 				left: 10px;
 				width: 350px;
@@ -172,7 +176,7 @@ body {
 
 			.project h2 .summarizeup {
 				font-size: 36px; line-height: 38px;	font-weight: normal;
-        text-align: center;
+                text-align: center;
 				left: 10px;
 				width: 85px;
 			}
@@ -180,7 +184,7 @@ body {
 			.project h2 .summarizecritical {
         font-size: 36px; line-height: 38px;	font-weight: normal;
         text-align: center;
-				left: 170px;
+				left: 130px;
 				width: 85px;
 			}
 
@@ -192,7 +196,14 @@ body {
 			.project h2 .summarizedown {
 				font-size: 36px; line-height: 38px;	font-weight: normal;
         text-align: center;
-        left: 335px;
+        left: 254px;
+				width: 85px;
+			}
+
+			.project h2 .summarizemaintenance {
+				font-size: 36px; line-height: 38px;	font-weight: normal;
+        text-align: center;
+        left: 375px;
 				width: 85px;
 			}
 
@@ -200,7 +211,7 @@ body {
 				left: 510px;
 				width: 70px;
 			}
-			
+
 			.project h2 .summarizeunknown {
 				font-size: 36px; line-height: 38px;	font-weight: normal;
         text-align: center;
@@ -220,7 +231,7 @@ body {
 				background: url(../images/status-display-strikethrough.png) 0px 17px repeat-x;
 				position: absolute; top: 0px; left: 2px;
 			}
-		
+
 			.project h2 .service .strikethrough {
 				width: 386px;
 			}
@@ -282,15 +293,19 @@ body {
                0px 0px 5px rgba(255, 88, 88, 0.8);
       }
       .project h2 .up.glow {
-        text-shadow: 0px -1px 0px #000, 
+        text-shadow: 0px -1px 0px #000,
                0px 0px 5px rgba(199, 255, 171, 0.8);
       }
+      .project h2 .maintenance.glow {
+        text-shadow: 0px -1px 0px #000,
+               0px 0px 5px rgba(204, 229, 225, 0.8);
+      }
       .project h2 .critical.glow {
-        text-shadow: 0px -1px 0px #000, 
+        text-shadow: 0px -1px 0px #000,
                0px 0px 5px rgba(204, 229, 225, 0.8);
       }
       .project h2 .unknown.glow {
-        text-shadow: 0px -1px 0px #000, 
+        text-shadow: 0px -1px 0px #000,
                0px 0px 5px rgba(204, 229, 225, 0.8);
       }
 
