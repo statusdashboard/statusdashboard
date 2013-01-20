@@ -93,6 +93,7 @@ module.exports.checkAllServices = function() {
   for (var i = 0; i < settings.services.length; i++) {
     status.services[i] = {};
     status.services[i].name = settings.services[i].name;
+    status.services[i].group = settings.services[i].group;
     status.services[i].label = settings.services[i].label;
     status.services[i].status = 'unknown';
     status.services[i].statusCode = 0;
