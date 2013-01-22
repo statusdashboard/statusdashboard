@@ -12,7 +12,7 @@ process.on('exit', function () {
 });
 
 process.on('uncaughtException', function(err) {
-  util.log(err);
+  util.log(err.stack.replace(/^    /gm, '                  '));
 });
 
 var dashboard = new server.dashboard(settings);
