@@ -1,10 +1,11 @@
 var util = require('util'),
     fs = require('fs'),
-    logger = require('util'),
     _ = require('underscore')._,
     humanized_time_span = require(__dirname + '/lib/humanized_time_span.js'),
     EventEmitter = require('events').EventEmitter,
     controller = new EventEmitter();
+
+var log;
 
 /**
   Set this module as an express.js controller
@@ -21,6 +22,8 @@ module.exports.setup = function (settings) {
 
   module.exports.configure(settings);
 
+  log = settings.logger ? settings.logger : require('util').log;
+
   /**
     Load available plugins
   */
@@ -30,11 +33,11 @@ module.exports.setup = function (settings) {
         if (fs.statSync(__dirname + '/plugins/' + directory).isDirectory() && fs.statSync(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').isFile()) {
           return require(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').create(controller, settings);
         } else {
-          logger.log("Excluding plugin: " + directory);
+          log("Excluding plugin: " + directory);
         }
       });
     } else {
-      logger.log("Error when creating plugin: " + err);
+      log("Error when creating plugin: " + err);
     }
   });
 
@@ -58,7 +61,7 @@ module.exports.configure = function (s) {
 };
 
 module.exports.addService = function (serviceCfg) {
-  logger.log('Adding new service: ' + serviceCfg.name);
+  log('Adding new service: ' + serviceCfg.name);
   module.exports.removeService(serviceCfg.name);
   settings.services.push(serviceCfg);
 };
@@ -85,7 +88,7 @@ status.services = [];
 module.exports.checkAllServices = function() {
   status.lastupdate = new Date().toUTCString();
 
-  logger.log('Refreshing status board...');
+  log('Refreshing status board...');
 
   /**
     Update the service status object, check the service
@@ -93,12 +96,15 @@ module.exports.checkAllServices = function() {
   for (var i = 0; i < settings.services.length; i++) {
     status.services[i] = {};
     status.services[i].name = settings.services[i].name;
+    status.services[i].group = settings.services[i].group;
     status.services[i].label = settings.services[i].label;
     status.services[i].status = 'unknown';
     status.services[i].statusCode = 0;
     status.services[i].message = '';
 
-    sources[settings.services[i].check].call(null, settings.services[i], status.services[i], controller.emit);
+    sources[settings.services[i].check].call(null, settings.services[i], status.services[i], function (serviceStatus, service) {
+        controller.emit(serviceStatus, service);
+    });
   }
 
   /**
@@ -111,6 +117,7 @@ module.exports.checkAllServices = function() {
     status.summarize.lastupdate = status.lastupdate;
     status.summarize.up = _.reduce(_.select(status.services, function(data){ return data.status == 'up'; }), function(memo, num){ return memo + 1; }, 0);
     status.summarize.critical = _.reduce(_.select(status.services, function(data){ return data.status == 'critical'; }), function(memo, num){ return memo + 1; }, 0);
+    status.summarize.maintenance = _.reduce(_.select(status.services, function(data){ return data.status == 'maintenance'; }), function(memo, num){ return memo + 1; }, 0);
     status.summarize.down = _.reduce(_.select(status.services, function(data){ return data.status == 'down'; }), function(memo, num){ return memo + 1; }, 0);
     status.summarize.unknown = _.reduce(_.select(status.services, function(data){ return data.status == 'unknown'; }), function(memo, num){ return memo + 1; }, 0);
 

@@ -1,9 +1,12 @@
 var _      = require('underscore')._,
-    logger = require('util');
+    log;
 
 exports.create = function(api, settings) {
+
+  log = settings.logger ? settings.logger : require('util').log;
+
   if (settings.plugins && settings.plugins.irc && settings.plugins.irc.enable) {
-    logger.log('Creating the plugin: ' + __filename);
+    log('Creating the plugin: ' + __filename);
 
     var irc = require('irc');
     var channels = settings.plugins.irc.options.channels;
@@ -31,6 +34,10 @@ exports.create = function(api, settings) {
         checkChanges(service);
       });
 
+      api.on('maintenance', function(service) {
+        checkChanges(service);
+      });
+
       checkChanges = function(service) {
         if (!lastService[service.name]) {
           lastService[service.name] = {};
@@ -47,9 +54,9 @@ exports.create = function(api, settings) {
       };
 
       api.on('refresh', function(status) {
-        var count = (status.summarize.critical + status.summarize.down + status.summarize.unknown).toString();
+        var count = status.summarize.up + status.summarize.critical + status.summarize.down + status.summarize.unknown + status.summarize.maintenance;
         if (lastCount != count) {
-          var msg = 'Up: ' + status.summarize.up + ', ' + 'Critical: ' + status.summarize.critical + ', Down: ' + status.summarize.down + ', Unknown: ' + status.summarize.unknown;
+          var msg = 'Up: ' + status.summarize.up + ', ' + 'Critical: ' + status.summarize.critical + ', Down: ' + status.summarize.down + ', Maintenance: ' +  status.summarize.maintenance + ', Unknown: ' + status.summarize.unknown;
           bot.say(channels, msg);
           lastCount = count;
         }
@@ -61,11 +68,11 @@ exports.create = function(api, settings) {
     });
 
     bot.on('join', function(channel, who) {
-      logger.log(who + ' has joined ' + channel);
+      log(who + ' has joined ' + channel);
       if (who == settings.plugins.irc.nick) {
 
         // TODO : Let's do it for each channel of the list...
-        logger.log('You are now connected to channel ' + channel + ' and ready to send messages');
+        log('You are now connected to channel ' + channel + ' and ready to send messages');
         connected = true;
         _.each(cache, function(message){
           bot.say(channels, message);
@@ -76,7 +83,7 @@ exports.create = function(api, settings) {
 
     // Add a private message listener to interact with the IRC bot
     bot.addListener('pm', function(nick, message) {
-        logger.log('Got private message from ' + nick + ': ' + message);
+        log('Got private message from ' + nick + ': ' + message);
         var callme = commands[trim(message)];
         if (typeof callme !== 'undefined') {
           bot.say(nick, callme.call(null, api));
@@ -88,7 +95,7 @@ exports.create = function(api, settings) {
 
   // Send the message or cache it
   var pushMessage = function(message) {
-    logger.log('Pushing message ' + message);
+    log('Pushing message ' + message);
     if (connected) {
       bot.say(channels, message);
     } else {
