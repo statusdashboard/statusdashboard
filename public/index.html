@@ -44,13 +44,32 @@
           });
 
           socket.on('status', function (status) {
-            var statusTab = _.map(status.services, function(value, key) { return value; });
+            var statusTab = [];
+            var groups = [];
+
+            _.each(status.services, function(value, key) {
+              if (typeof(value.group) !== 'string') {
+                value.group = 'others';
+              }
+
+              var groupIndex = groups.indexOf(value.group);
+
+              if (groupIndex === -1) {
+                groupIndex = groups.length;
+                groups.push(value.group);
+                statusTab.push({ name:value.group, projects: []});
+              };
+
+              statusTab[groupIndex].projects.push(value);
+            });
 
             $('#summarize').empty();
             $('#projects').empty();
-            $("#projectTemplate").template("projectsList");
+
+            $("#groupTemplate").template("group");
             $("#summarizeTemplate").template("summarizeData");
-            $.tmpl("projectsList", statusTab).appendTo("#projects");
+
+            $.tmpl("group", statusTab).appendTo("#projects");
             $.tmpl("summarizeData", status.summarize).appendTo("#summarize");
           });
 
@@ -96,17 +115,30 @@
       });
     });
   </script>
-  <script id="projectTemplate" type="text/html">
-    <li class="project">
-      <h2>
-        <span class="service"><span class="strikethrough"></span><strong>${label}</strong></span>
-        <span class="status ${status} glow"><span class="strikethrough"></span><strong>${status}</strong></span>
-        <span class="code"><span class="strikethrough"></span><strong>{{if statusCode != 0 && status != 'up'}}${statusCode}{{else}}&nbsp;{{/if}}</strong></span>
-      </h2>
-      {{if message }}
-      <p class="info"><span class="label">Message:</span>${message}</p>
-      {{/if}}
-    </li>
+  <script id="groupTemplate" type="text/html">
+      <li>
+        <h1 class="legend">${name}</h1>
+
+        <div class="legend">
+          <span class="service">Service</span>
+          <span class="status">Status</span>
+          <span class="code">Code</span>
+        </div>
+        <ul>
+          {{each(i, project) projects}}
+          <li class="project">
+              <h2>
+                <span class="service"><span class="strikethrough"></span><strong>${project.label}</strong></span>
+                <span class="status ${project.status} glow"><span class="strikethrough"></span><strong>${project.status}</strong></span>
+                <span class="code"><span class="strikethrough"></span><strong>{{if project.statusCode != 0 && project.status != 'up'}}${project.statusCode}{{else}}&nbsp;{{/if}}</strong></span>
+              </h2>
+              {{if project.message }}
+              <p class="info"><span class="label">Message:</span>${project.message}</p>
+              {{/if}}
+          </li>
+          {{/each}}
+        </ul>
+      </li>
   </script>
   <script id="summarizeTemplate" type="text/html">
     <li class="project">
@@ -114,7 +146,8 @@
         <span class="summarizeup up glow"><span class="strikethrough"></span><strong>${up}</strong></span>
         <span class="summarizecritical critical glow"><span class="strikethrough"></span><strong>${critical}</strong></span>
         <span class="summarizedown down glow"><span class="strikethrough"></span><strong>${down}</strong></span>
-  			<span class="summarizeunknown unknown glow"><span class="strikethrough"></span><strong>${unknown}</strong></span>
+        <span class="summarizemaintenance maintenance glow"><span class="strikethrough"></span><strong>${maintenance}</strong></span>
+        <span class="summarizeunknown unknown glow"><span class="strikethrough"></span><strong>${unknown}</strong></span>
       </h2>
       <p class="info"><span class="label">Last update:</span><span id="lastupdate">${lastupdate}</span></p>
     </li>
@@ -140,6 +173,7 @@
   			<span class="summarizeup">Up</span>
   			<span class="summarizecritical">Critical</span>
   			<span class="summarizedown">Down</span>
+  			<span class="summarizemaintenance">Maintenance</span>
   			<span class="summarizeunknown">Unknown</span>
       </div>
       <ul id="summarize"></ul>
@@ -147,11 +181,6 @@
         <span class="plugin">Plugins</span>
       </div>
       <div id="plugins" class="plugins">
-      </div>
-      <div class="legend">
-  			<span class="service">Service</span>
-  			<span class="status">Status</span>
-  			<span class="code">Code</span>
       </div>
       <ul id="projects"></ul>
     </div>
