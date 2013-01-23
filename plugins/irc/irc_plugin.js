@@ -1,8 +1,10 @@
-var _ = require('underscore')._;
+var _      = require('underscore')._,
+    logger = require('util');
 
 exports.create = function(api, settings) {
   if (settings.plugins && settings.plugins.irc && settings.plugins.irc.enable) {
-    console.log('Creating the plugin: ' + __filename);
+    logger.log('Creating the plugin: ' + __filename);
+
     var irc = require('irc');
     var channels = settings.plugins.irc.options.channels;
     var bot = new irc.Client(settings.plugins.irc.server, settings.plugins.irc.nick, settings.plugins.irc.options);
@@ -15,15 +17,15 @@ exports.create = function(api, settings) {
     bot.on('connect', function() {
       api.on('up', function(service) {
         checkChanges(service);
-      });  
+      });
 
       api.on('down', function(service) {
         checkChanges(service);
-      });  
+      });
 
       api.on('unknown', function(service) {
         checkChanges(service);
-      });  
+      });
 
       api.on('critical', function(service) {
         checkChanges(service);
@@ -55,14 +57,15 @@ exports.create = function(api, settings) {
     });
 
     bot.on('error', function(message) {
-      console.error('ERROR: %s: %s', message.command, message.args.join(' '));
+      logger.error('ERROR: '+ message.command + ': '+ message.args.join(' '));
     });
-    
+
     bot.on('join', function(channel, who) {
-      console.log('%s has joined %s', who, channel);
+      logger.log(who + ' has joined ' + channel);
       if (who == settings.plugins.irc.nick) {
+
         // TODO : Let's do it for each channel of the list...
-        console.log('You are now connected to channel %s and ready to send messages', channel);
+        logger.log('You are now connected to channel ' + channel + ' and ready to send messages');
         connected = true;
         _.each(cache, function(message){
           bot.say(channels, message);
@@ -70,22 +73,22 @@ exports.create = function(api, settings) {
         cache = [];
       }
     });
-    
+
     // Add a private message listener to interact with the IRC bot
     bot.addListener('pm', function(nick, message) {
-        console.log('Got private message from %s: %s', nick, message);
+        logger.log('Got private message from ' + nick + ': ' + message);
         var callme = commands[trim(message)];
         if (typeof callme !== 'undefined') {
           bot.say(nick, callme.call(null, api));
         } else {
-          bot.say(nick, commands['help'].call(null, api));
+          bot.say(nick, commands.help.call(null, api));
         }
     });
   }
-  
+
   // Send the message or cache it
   var pushMessage = function(message) {
-    console.log('Pushing message %s ', message);
+    logger.log('Pushing message ' + message);
     if (connected) {
       bot.say(channels, message);
     } else {
@@ -93,8 +96,8 @@ exports.create = function(api, settings) {
         cache.push(message);
       }
     }
-  }
-  
+  };
+
   var commands = {
     status : function(api) {
       return 'Up: ' + api.getStatus().summarize.up + ', ' + 'Critical: ' + api.getStatus().summarize.critical + ', Down: ' + api.getStatus().summarize.down + ', Unknown: ' + api.getStatus().summarize.unknown;
@@ -110,8 +113,8 @@ exports.create = function(api, settings) {
       return "Available commands : \'list\', \'status\', \'help\'";
     }
   };
-  
+
   var trim = function(string) {
     return string.replace(/^\s+/g,'').replace(/\s+$/g,'');
-  }
+  };
 };
