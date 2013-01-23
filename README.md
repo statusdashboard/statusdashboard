@@ -3,7 +3,7 @@ Status Dashboard
 
 Status Dashboard is status page for your configured services or applications.
 
-Demo @ [Heroku](http://heroku.com) demo: [http://statusdashboard-node.herokuapp.com](http://statusdashboard-node.herokuapp.com)
+Demo @ [Heroku](http://heroku.com) : [http://statusdashboard-node.herokuapp.com](http://statusdashboard-node.herokuapp.com)
 
 Screenshots
 =======
