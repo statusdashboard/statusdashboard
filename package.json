@@ -5,13 +5,18 @@
   "author": "Olivier Bazoud <olivier.bazoud@gmail.com>",
   "homepage": "http://github.com/obazoud/statusdashboard.git",
   "keywords": [
-    "node"
+    "status",
+    "dashboard",
+    "service"
   ],
   "maintainers": [{
     "name": "Olivier Bazoud",
     "email": "olivier.bazoud@gmail.com"
   }],
-  "contributors": [],
+  "contributors": [{
+    "name": "Marc Trudel",
+    "email": "mtrudel@wizcorp.jp"
+   }],
   "licenses": [{
     "type": "MIT",
     "url": "http://mths.be/mit"
@@ -23,10 +28,12 @@
     "type": "git",
     "url": "http://github.com/obazoud/statusdashboard.git"
   },
-  "main": "server.js",
+  "main": "./server.js",
+  "bin": {
+    "statusdashboard": "./bin/statusdashboard"
+  },
   "engines": {
-    "node": "0.6.x",
-    "npm": "1.0.x"
+    "node": ">=0.6.1"
   },
   "dependencies": {
     "socket.io": "0.9.10",
