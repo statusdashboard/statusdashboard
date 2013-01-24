@@ -99,7 +99,9 @@ module.exports.checkAllServices = function() {
     status.services[i].statusCode = 0;
     status.services[i].message = '';
 
-    sources[settings.services[i].check].call(null, settings.services[i], status.services[i], controller.emit);
+    sources[settings.services[i].check].call(null, settings.services[i], status.services[i], function(status, service) {
+      controller.emit(status, service);
+    });
   }
 
   /**
