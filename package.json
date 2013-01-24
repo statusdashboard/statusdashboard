@@ -1,6 +1,6 @@
 {
   "name": "statusdashboard",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A services status dashboard",
   "author": "Olivier Bazoud <olivier.bazoud@gmail.com>",
   "homepage": "http://github.com/obazoud/statusdashboard.git",

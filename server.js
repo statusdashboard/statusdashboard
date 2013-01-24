@@ -3,7 +3,7 @@ var path = require('path'),
     url  = require('url'),
     _    = require('underscore')._;
 
-exports.dashboard = function(settings) {
+exports.dashboard = function(settings, cb) {
   var rootPath = path.dirname(module.filename),
       api      = require('./api'),
       express  = require('express'),
@@ -117,4 +117,5 @@ exports.dashboard = function(settings) {
   // We make the API available for external control
   this.api = api;
   util.log('Server started.');
+  if (cb) cb();
 };
