@@ -23,7 +23,7 @@ exports.create = function() {
   };
 
   settings['demo'] = {
-    port: 4322,
+    port: 8080,
     hostname: '0.0.0.0',
     services: [{
       name: 'couchdb',
