@@ -3,11 +3,7 @@ Status Dashboard
 
 Status Dashboard is status page for your configured services or applications.
 
-Demo:
-
-* @ [Heroku](http://heroku.com) demo: [http://statusdashboard-node.herokuapp.com](http://statusdashboard-node.herokuapp.com)
-* @ [Nodester](http://nodester.com) demo: [http://statusdashboard.nodester.com](http://statusdashboard.nodester.com)
-* @ [No.de](https://no.de) demo: [http://statusdashboard.no.de](http://statusdashboard.no.de)
+Demo @ [Heroku](http://heroku.com) : [http://statusdashboard-node.herokuapp.com](http://statusdashboard-node.herokuapp.com)
 
 Screenshots
 =======
@@ -178,3 +174,5 @@ In the news
 
 * IT Wars: [StatusDashboard monitoring avec Node.js](http://www.it-wars.com/article265/statusdashboard-monitoring-avec-node-js)
 * William Durand blog: [Services Status Dashboard](http://williamdurand.fr/2012/01/16/services-status-dashboard/)
+* C.Hamerling blog: [Node.js client for Status Dashboard](http://chamerling.org/2012/10/23/node-js-client-for-status-dashboard/)
+* C.Hamerling blog: [Monitoring Tool in the Cloud in (less than) 2 minutes...](http://chamerling.org/2013/01/24/monitoring-tool-in-the-cloud-in-less-than-2-minutes/)

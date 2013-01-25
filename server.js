@@ -1,14 +1,16 @@
 var path = require('path'),
-    util = require('util'),
     url  = require('url'),
     _    = require('underscore')._;
 
-exports.dashboard = function(settings) {
+var log;
+
+exports.dashboard = function(settings, cb) {
   var rootPath = path.dirname(module.filename),
       api      = require('./api'),
       express  = require('express'),
       app      = express.createServer();
 
+  log = settings.logger ? settings.logger : require('util').log;
   /**
     Express app definition
 
@@ -18,7 +20,7 @@ exports.dashboard = function(settings) {
   app.configure(function () {
     var staticPath = path.join(rootPath, 'public');
 
-    util.log("Express server static directory: " + staticPath);
+    log("Express server static directory: " + staticPath);
 
     app.use(express['static'].call(null, staticPath));
     app.use(express.favicon(path.join(staticPath, 'favicon.ico')));
@@ -29,7 +31,7 @@ exports.dashboard = function(settings) {
 
   app.listen(settings.port, settings.hostname);
 
-  util.log('Server running at http://' + settings.hostname + ':' + settings.port);
+  log('Server running at http://' + settings.hostname + ':' + settings.port);
 
   /**
     Routes are connected to the api, and an extra route is added for self-health checking
@@ -66,7 +68,7 @@ exports.dashboard = function(settings) {
   io.sockets.on('connection', function(socket) {
 
     count++;
-    util.log('New client connected! (' + count + ')');
+    log('New client connected! (' + count + ')');
 
     socket.emit('title', settings.title);
     socket.emit('status', api.getStatus());
@@ -75,7 +77,7 @@ exports.dashboard = function(settings) {
 
     socket.on('disconnect', function() {
       count--;
-      util.log('Client disconnect! (' + count + ')');
+      log('Client disconnect! (' + count + ')');
       socket.broadcast.emit('count', count);
     });
   });
@@ -94,18 +96,18 @@ exports.dashboard = function(settings) {
 
   api.on("routeContribution", function(route) {
     app.get(route.path, route.binding);
-    util.log("Add GET route contribution: " + route.path);
+    log("Add GET route contribution: " + route.path);
   });
 
   api.on("postRouteContribution", function(route) {
     app.post(route.path, route.binding);
-    util.log("Add POST route contribution: " + route.path);
+    log("Add POST route contribution: " + route.path);
   });
 
   api.on("staticContribution", function(plugin) {
     var docRoot = __dirname + '/plugins/' + plugin + '/public';
     app.use("/api/" + plugin, express['static'].call(null, docRoot));
-    util.log("Add static contribution: " + plugin + ", " + docRoot);
+    log("Add static contribution: " + plugin + ", " + docRoot);
   });
 
   api.on("refresh", function(status) {
@@ -116,5 +118,6 @@ exports.dashboard = function(settings) {
 
   // We make the API available for external control
   this.api = api;
-  util.log('Server started.');
+  log('Server started.');
+  if (cb) cb();
 };
