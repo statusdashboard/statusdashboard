@@ -1,9 +1,10 @@
-var util = require('util'),
-    fs = require('fs'),
-    _ = require('underscore')._,
+var util                = require('util'),
+    fs                  = require('fs'),
+    async               = require('async'),
+    _                   = require('underscore')._,
     humanized_time_span = require(__dirname + '/lib/humanized_time_span.js'),
-    EventEmitter = require('events').EventEmitter,
-    controller = new EventEmitter();
+    EventEmitter        = require('events').EventEmitter,
+    controller          = new EventEmitter();
 
 var log;
 
@@ -85,6 +86,11 @@ var status = {};
 status.lastupdate = new Date().toGMTString();
 status.services = [];
 
+/**
+    This has been changed from a setInterval/setTimeout to async.
+    This allow us not to have to double-schedule. It also
+    transfers responsibility of timing out your tests to the individual tests.
+*/
 module.exports.checkAllServices = function() {
   status.lastupdate = new Date().toUTCString();
 
@@ -92,25 +98,14 @@ module.exports.checkAllServices = function() {
 
   /**
     Update the service status object, check the service
-  */
-  for (var i = 0; i < settings.services.length; i++) {
-    status.services[i] = {};
-    status.services[i].name = settings.services[i].name;
-    status.services[i].group = settings.services[i].group;
-    status.services[i].label = settings.services[i].label;
-    status.services[i].status = 'unknown';
-    status.services[i].statusCode = 0;
-    status.services[i].message = '';
 
-    sources[settings.services[i].check].call(null, settings.services[i], status.services[i], function(status, service) {
-      controller.emit(status, service);
-    });
-  }
+    This has been modified to return data as soon as possible; a timeout is still there
+    as a global timeout for all tests
 
-  /**
-    There should be something more elegant to do here than to double schedule...
+    This way, if you try to access a service which takes longer than settings.serviceDelay
+    to response, you will still get proper updates. In fact, the service will visually flap
   */
-  setTimeout(function() {
+  var refresh = function (err) {
     var statusTab = _.map(status.services, function(value, key) { return value; });
 
     status.summarize = {};
@@ -121,7 +116,27 @@ module.exports.checkAllServices = function() {
     status.summarize.unknown = _.reduce(_.select(status.services, function(data){ return data.status == 'unknown'; }), function(memo, num){ return memo + 1; }, 0);
 
     controller.emit("refresh", status);
-  }, settings.serviceDelay);
+  };
+
+  var refreshTimeout = setTimeout(refresh, settings.serviceDelay);
+  var i = 0;
+
+  async.forEach(settings.services, function (service, callback) {
+
+    status.services[i] = {};
+    status.services[i].name = settings.services[i].name;
+    status.services[i].label = settings.services[i].label;
+    status.services[i].status = 'unknown';
+    status.services[i].statusCode = 0;
+    status.services[i].message = '';
+
+    sources[settings.services[i].check].call(null, settings.services[i], status.services[i], function(serviceStatus, service) {
+        controller.emit(serviceStatus, service);
+        callback();
+    });
+
+    i++;
+  }, refresh);
 };
 
 module.exports.startChecking = function () {
