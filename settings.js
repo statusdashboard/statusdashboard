@@ -152,6 +152,10 @@ exports.create = function() {
       webhook: {
         enable : false,
         url: 'http://localhost:8080/api/webhook/test'
+      },
+      heartbeat: {
+        enable: false,
+        period: 20000
       }
     }
   };

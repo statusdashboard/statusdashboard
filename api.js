@@ -1,11 +1,12 @@
 var util                = require('util'),
     fs                  = require('fs'),
     async               = require('async'),
-    logger              = require('util'),
     _                   = require('underscore')._,
     humanized_time_span = require(__dirname + '/lib/humanized_time_span.js'),
     EventEmitter        = require('events').EventEmitter,
     controller          = new EventEmitter();
+
+var log;
 
 /**
   Set this module as an express.js controller
@@ -22,6 +23,8 @@ module.exports.setup = function (settings) {
 
   module.exports.configure(settings);
 
+  log = settings.logger ? settings.logger : require('util').log;
+
   /**
     Load available plugins
   */
@@ -31,11 +34,11 @@ module.exports.setup = function (settings) {
         if (fs.statSync(__dirname + '/plugins/' + directory).isDirectory() && fs.statSync(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').isFile()) {
           return require(__dirname + '/plugins/' + directory + '/' + directory + '_plugin.js').create(controller, settings);
         } else {
-          logger.log("Excluding plugin: " + directory);
+          log("Excluding plugin: " + directory);
         }
       });
     } else {
-      logger.log("Error when creating plugin: " + err);
+      log("Error when creating plugin: " + err);
     }
   });
 
@@ -59,7 +62,7 @@ module.exports.configure = function (s) {
 };
 
 module.exports.addService = function (serviceCfg) {
-  logger.log('Adding new service: ' + serviceCfg.name);
+  log('Adding new service: ' + serviceCfg.name);
   module.exports.removeService(serviceCfg.name);
   settings.services.push(serviceCfg);
 };
@@ -91,10 +94,7 @@ status.services = [];
 module.exports.checkAllServices = function() {
   status.lastupdate = new Date().toUTCString();
 
-  if (module.exports.checkRunning) {
-  }
-
-  logger.log('Refreshing status board...');
+  log('Refreshing status board...');
 
   /**
     Update the service status object, check the service
