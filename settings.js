@@ -19,7 +19,7 @@ exports.create = function() {
     },
     services: [],
     serviceInterval: 20000,
-    serviceDelay: 500
+    serviceDelay: 1000
   };
 
   settings['demo'] = {
@@ -101,7 +101,7 @@ exports.create = function() {
       check: 'pidfile',
       pidfile: '/tmp/terminal.pid'
     }],
-    serviceInterval: 5000,
+    serviceInterval: 6000,
     plugins : {
       console : {
         enable: false
