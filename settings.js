@@ -99,7 +99,8 @@ exports.create = function() {
       name: 'PID-file',
       label: 'Pid @ local',
       check: 'pidfile',
-      pidfile: '/tmp/terminal.pid'
+      pidfile: '/tmp/terminal.pid',
+      status: 'maintenance'
     }],
     serviceInterval: 6000,
     plugins : {
