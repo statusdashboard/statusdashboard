@@ -58,7 +58,7 @@ exports.create = function() {
         'ko': 'critical'
       }
     }, {
-      name: 'healthCheck-fixedvalue-ko)',
+      name: 'healthCheck-fixedvalue-ko',
       label: 'Olivier Bazoud blog: FixedValue: ko',
       check: 'http',
       host: 'blog.bazoud.com',
