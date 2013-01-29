@@ -107,9 +107,13 @@ Plugins
 Some plugins are available out-of-the-box:
 
 * Console
-* IRC bot
-* Twitter
+* Graphite, send service state in [Graphite](http://graphite.wikidot.com/)
+* Heartbeat
 * History, save service state in <a href="http://redis.io">Redis</a> (Thanks to <a href="https://github.com/sreeix">sreeix</a> initial pull request) and graph it!
+* IRC bot
+* Mail
+* Twitter
+* Webhook
 
 <img src="http://blog.bazoud.com/images/ssd7a.png" alt="">
 
