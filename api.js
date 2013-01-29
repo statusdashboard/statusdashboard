@@ -98,7 +98,11 @@ module.exports.checkAllServices = function() {
     status.services[i].name = settings.services[i].name;
     status.services[i].group = settings.services[i].group;
     status.services[i].label = settings.services[i].label;
-    status.services[i].status = 'unknown';
+    if (settings.services[i].status) {
+      status.services[i].status = settings.services[i].status;
+    } else {
+      status.services[i].status = 'unknown';
+    }
     status.services[i].statusCode = 0;
     status.services[i].message = '';
 
