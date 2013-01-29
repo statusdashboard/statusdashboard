@@ -45,6 +45,7 @@
     "hiredis": "0.1.14",
     "pkginfo": "0.2.3",
     "nodemailer": "0.3.28",
+    "graphite": "0.0.6",
     "request": "2.11.4"
   }
 }

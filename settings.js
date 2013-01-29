@@ -156,6 +156,11 @@ exports.create = function() {
       heartbeat: {
         enable: false,
         period: 20000
+      },
+      graphite: {
+        enable: false,
+        url: 'plaintext://xxx:2003/',
+        prefix: 'xxx'
       }
     }
   };
