@@ -26,17 +26,17 @@ exports.create = function() {
     port: 8080,
     hostname: '0.0.0.0',
     services: [{
-      name: 'couchdb', 
+      name: 'couchdb',
       label: 'Couchdb server @ local',
       check: 'http',
-      host: '127.0.0.1', 
+      host: '127.0.0.1',
       port: '5984',
       path: '/'
     }, {
-      name: 'blog.bazoud.com', 
+      name: 'blog.bazoud.com',
       label: 'Olivier Bazoud blog: Index',
       check: 'http',
-      host: 'blog.bazoud.com', 
+      host: 'blog.bazoud.com',
       port: '80',
       path: '/'
     }, {
@@ -80,10 +80,10 @@ exports.create = function() {
         { 'status': 'critical', 'min': 10 }
       ]
     }, {
-      name: 'redis', 
+      name: 'redis',
       label: 'Redis server @ local',
       check: 'tcp',
-      host: '127.0.0.1', 
+      host: '127.0.0.1',
       port: '6379',
       cmd: 'PING\r\n',
       rcv: '+PONG\r\n'
