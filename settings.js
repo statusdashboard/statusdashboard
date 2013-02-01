@@ -80,13 +80,19 @@ exports.create = function() {
         { 'status': 'critical', 'min': 10 }
       ]
     }, {
-      name: 'redis', 
+      name: 'redis',
       label: 'Redis server @ local',
       check: 'tcp',
-      host: '127.0.0.1', 
+      host: '127.0.0.1',
       port: '6379',
       cmd: 'PING\r\n',
       rcv: '+PONG\r\n'
+    }, {
+      name: 'redis-without-cmd',
+      label: 'Redis server @ local (without cmd)',
+      check: 'tcp',
+      host: '127.0.0.1',
+      port: '6379'
     }, {
       name: 'FTP-Local',
       label: 'Ftp @ local',
