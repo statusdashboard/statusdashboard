@@ -67,10 +67,9 @@ exports.create = function() {
 
 ### As a node module
 
-``
+```
 var dashboard = require('statusdashboard').dashboard(settings);
-
-``
+```
 
 #### Code
 
