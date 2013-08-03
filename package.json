@@ -36,7 +36,7 @@
     "node": ">=0.6.1"
   },
   "dependencies": {
-    "socket.io": "0.9.10",
+    "socket.io": "0.9.16",
     "express": "2.5.11",
     "underscore": "1.4.0",
     "irc": "0.3.4",
