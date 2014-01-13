@@ -124,7 +124,7 @@ exports.create = function() {
         }
       },
       xmpp: {
-        enable: true,
+        enable: false,
         from: {
           jid: 'from@jabber.org',
           password: 'XXX',
