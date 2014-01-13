@@ -113,6 +113,7 @@ Some plugins are available out-of-the-box:
 * Mail
 * Twitter
 * Webhook
+* XMPP
 
 <img src="http://blog.bazoud.com/images/ssd7a.png" alt="">
 

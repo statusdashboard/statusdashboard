@@ -123,6 +123,15 @@ exports.create = function() {
           channels: ['#statusdashboard']
         }
       },
+      xmpp: {
+        enable: true,
+        from: {
+          jid: 'from@jabber.org',
+          password: 'XXX',
+          host : 'jabber.org'
+        },
+        to: 'to@jabber.org'
+      },
       twitter: {
         enable: false,
         consumer_key: "",
