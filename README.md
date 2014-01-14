@@ -215,3 +215,9 @@ In the news
 * William Durand blog: [Services Status Dashboard](http://williamdurand.fr/2012/01/16/services-status-dashboard/)
 * C.Hamerling blog: [Node.js client for Status Dashboard](http://chamerling.wordpress.com/2012/10/23/node-js-client-for-status-dashboard/)
 * C.Hamerling blog: [Monitoring Tool in the Cloud in (less than) 2 minutes...](http://chamerling.wordpress.com/2013/01/24/monitoring-tool-in-the-cloud-in-less-than-2-minutes/)
+
+Licence
+=======
+
+Statusdashboard is provided under Apache Software Licence 2.0.
+
