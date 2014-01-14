@@ -107,9 +107,20 @@ exports.create = function() {
       check: 'pidfile',
       pidfile: '/tmp/terminal.pid',
       status: 'maintenance'
+    }, {
+      name: 'Local HTTP sample',
+      label: 'Local HTTP Sample: healthCheck',
+      check: 'http',
+      host: 'localhost',
+      port: '3303',
+      path: '/'
     }],
     serviceInterval: 6000,
     plugins : {
+      external: {
+        enable : false,
+        file : __dirname + '/plugins.json'
+      },
       console : {
         enable: false
       },
