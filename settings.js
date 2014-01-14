@@ -117,6 +117,10 @@ exports.create = function() {
     }],
     serviceInterval: 6000,
     plugins : {
+      external: {
+        enable : false,
+        file : __dirname + '/plugins.json'
+      },
       console : {
         enable: false
       },

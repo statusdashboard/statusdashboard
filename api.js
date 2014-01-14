@@ -51,6 +51,32 @@ module.exports.setup = function (settings) {
     source = source.substr(0, source.length - 3);
     sources[source] = require(__dirname + '/lib/sources/' + source).check;
   });
+
+  if (settings.plugins.external.enable) {
+    var file = settings.plugins.external.file || __dirname + '/plugins.json';
+    log('Loading external plugins defined in ' + file + ' file');
+    var plugins;
+
+    try {
+      plugins = require(file);
+    } catch (err) {
+      log('Can not load external plugins file ' + err);
+      return err;
+    }
+
+    console.log(plugins)
+
+    _.each(plugins, function(item) {
+      try {
+        log('Loading external plugin ' + item);
+        require(item)({api : controller, settings : settings});
+      } catch (err) {
+        log('Can not load external plugin ' + item + ' : ' + err);
+      }
+    })
+  } else {
+    log('External plugins are not enabled, change value in settings.plugins.external.enable if needed');
+  }
 };
 
 /**

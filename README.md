@@ -119,6 +119,27 @@ Some plugins are available out-of-the-box:
 
 <img src="http://blog.bazoud.com/images/ssd8a.png" alt="">
 
+External Plugins
+================
+
+You can develop independent plugins and load them into Status Dashboard by using the external plugin feature. A plugin example is available at [http://github.com/chamerling/sd-plugin-sample](http://github.com/chamerling/sd-plugin-sample).
+
+Plugins can be installed using npm CLI (from the status-dashboard directory):
+
+    npm install sd-plugin-sample
+
+Or by adding them as dependency in the status-dashboard package.json descriptor.
+
+In order to activate plugins, you have to add them to the plugins.json file (\["sd-plugin-sample"\], \["my_plugin"\]) and turn on the external plugins feature in settings.js:
+
+    plugins : {
+      external: {
+        enable : true,
+        file : __dirname + '/plugins.json'
+      },
+      ...
+    }
+
 REST API
 =======
 
